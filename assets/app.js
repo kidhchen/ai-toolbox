@@ -1,6 +1,8 @@
 const seedUrl = "./content/tools.seed.json";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
+const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
+const wishSelectColumns = "id,nickname,pain_point,preferred_format,current_workaround,priority,status,created_at";
 const storageKeys = {
   data: "ai_toolbox_data_override",
   comments: "ai_toolbox_comments",
@@ -141,12 +143,12 @@ function createSupabaseApi(config) {
   return {
     async listComments() {
       const rows = await request(
-        "tool_comments?select=id,tool_id,nickname,issue_type,content,likes,status,created_at&status=eq.visible&order=created_at.desc"
+        `tool_comments?select=${commentSelectColumns}&status=eq.visible&order=created_at.desc`
       );
       return rows.map(mapCommentRow);
     },
     async createComment(toolId, comment) {
-      const rows = await request("tool_comments", {
+      const rows = await request(`tool_comments?select=${commentSelectColumns}`, {
         method: "POST",
         headers: { Prefer: "return=representation" },
         body: JSON.stringify({
@@ -169,12 +171,12 @@ function createSupabaseApi(config) {
     },
     async listWishes() {
       const rows = await request(
-        "wishbox_requests?select=id,nickname,pain_point,preferred_format,current_workaround,priority,status,created_at&status=eq.new&order=created_at.desc"
+        `wishbox_requests?select=${wishSelectColumns}&status=eq.new&order=created_at.desc`
       );
       return rows.map(mapWishRow);
     },
     async createWish(wish) {
-      const rows = await request("wishbox_requests", {
+      const rows = await request(`wishbox_requests?select=${wishSelectColumns}`, {
         method: "POST",
         headers: { Prefer: "return=representation" },
         body: JSON.stringify({
