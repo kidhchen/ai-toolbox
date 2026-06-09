@@ -868,6 +868,57 @@ a {
   align-items: start;
 }
 
+.submit-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.72fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.submit-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.review-steps {
+  display: grid;
+  gap: 10px;
+}
+
+.review-steps div {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: 2px solid var(--line);
+  background: var(--paper);
+}
+
+.review-steps strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  border: 2px solid var(--line);
+  background: var(--mint);
+}
+
+.review-steps span {
+  line-height: 1.7;
+}
+
+.submission-note {
+  margin-top: 14px;
+}
+
+.submission-note p {
+  margin: 0;
+  line-height: 1.7;
+}
+
 .admin-panel {
   position: fixed;
   inset: 0 0 0 auto;
@@ -942,7 +993,8 @@ a {
 @media (max-width: 960px) {
   .dashboard-grid,
   .detail-layout,
-  .wish-layout {
+  .wish-layout,
+  .submit-layout {
     grid-template-columns: 1fr;
   }
 

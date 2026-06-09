@@ -12,7 +12,7 @@
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23121216'/%3E%3Crect x='4' y='4' width='10' height='10' fill='%2344d7a8'/%3E%3Crect x='18' y='4' width='10' height='10' fill='%23ffd447'/%3E%3Crect x='4' y='18' width='10' height='10' fill='%2337b9ff'/%3E%3Crect x='18' y='18' width='10' height='10' fill='%23ff6b55'/%3E%3C/svg%3E"
     >
-    <link rel="stylesheet" href="./assets/styles.css?v=20260609j">
+    <link rel="stylesheet" href="./assets/styles.css?v=20260609k">
   </head>
   <body>
     <header class="topbar">
@@ -26,43 +26,21 @@
       <nav class="topnav" aria-label="主导航">
         <a href="#/" class="nav-link" data-route="home">工具大厅</a>
         <a href="#/wishbox" class="nav-link" data-route="wishbox">许愿箱</a>
+        <a href="#/submit" class="nav-link" data-route="submit">工具投稿</a>
         <a
           href="https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh"
           class="nav-link"
           target="_blank"
           rel="noopener noreferrer"
         >飞书资料</a>
-        <button class="nav-link nav-button" type="button" id="open-admin">内容维护</button>
       </nav>
     </header>
 
     <main id="app" class="app-shell" tabindex="-1"></main>
 
-    <aside class="admin-panel" id="admin-panel" aria-hidden="true" aria-label="内容维护面板">
-      <div class="admin-panel__inner">
-        <div class="panel-head">
-          <div>
-            <p class="eyebrow">DATA CORE</p>
-            <h2>内容维护</h2>
-          </div>
-          <button class="icon-button" type="button" id="close-admin" aria-label="关闭内容维护">X</button>
-        </div>
-        <p class="muted" id="backend-status">
-          当前原型会把修改保存在本机浏览器。正式上线后，这里可以接 Supabase 或其他后台。
-        </p>
-        <textarea id="data-editor" class="data-editor" spellcheck="false" aria-label="工具数据 JSON"></textarea>
-        <div class="admin-actions">
-          <button class="pixel-button primary" type="button" id="save-data">保存本地数据</button>
-          <button class="pixel-button" type="button" id="export-data">导出 JSON</button>
-          <button class="pixel-button danger" type="button" id="reset-data">恢复种子数据</button>
-        </div>
-        <p id="admin-message" class="admin-message" role="status"></p>
-      </div>
-    </aside>
-
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <script src="./assets/supabase-config.js?v=20260609j" defer></script>
-    <script src="./assets/app.js?v=20260609j" defer></script>
+    <script src="./assets/supabase-config.js?v=20260609k" defer></script>
+    <script src="./assets/app.js?v=20260609k" defer></script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260609j";
+const seedUrl = "./content/tools.seed.json?v=20260609k";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -11,9 +11,9 @@ const storageKeys = {
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
-const adminPanel = document.querySelector("#admin-panel");
-const dataEditor = document.querySelector("#data-editor");
-const adminMessage = document.querySelector("#admin-message");
+let adminPanel = null;
+let dataEditor = null;
+let adminMessage = null;
 
 const state = {
   seed: null,
@@ -137,7 +137,8 @@ function createSupabaseApi(config) {
       throw new Error(details || `Supabase 请求失败：${response.status}`);
     }
     if (response.status === 204) return null;
-    return response.json();
+    const text = await response.text();
+    return text ? JSON.parse(text) : null;
   }
 
   return {
@@ -190,6 +191,29 @@ function createSupabaseApi(config) {
         })
       });
       return mapWishRow(rows[0]);
+    },
+    async createToolSubmission(submission) {
+      await request("tool_submissions", {
+        method: "POST",
+        headers: { Prefer: "return=minimal" },
+        body: JSON.stringify({
+          nickname: submission.nickname,
+          contact: submission.contact,
+          tool_name: submission.toolName,
+          category_id: submission.categoryId,
+          tool_type: submission.toolType,
+          summary: submission.summary,
+          pain_point: submission.painPoint,
+          usage_steps: submission.usageSteps,
+          tool_url: submission.toolUrl,
+          doc_url: submission.docUrl,
+          package_url: submission.packageUrl,
+          image_urls: submission.imageUrls,
+          notes: submission.notes,
+          status: "pending"
+        })
+      });
+      return true;
     }
   };
 }
@@ -458,11 +482,7 @@ function withFeishuResource(tool) {
 }
 
 function bindChrome() {
-  document.querySelector("#open-admin").addEventListener("click", openAdmin);
-  document.querySelector("#close-admin").addEventListener("click", closeAdmin);
-  document.querySelector("#save-data").addEventListener("click", saveAdminData);
-  document.querySelector("#reset-data").addEventListener("click", resetAdminData);
-  document.querySelector("#export-data").addEventListener("click", exportData);
+  mountLocalMaintenance();
 }
 
 function render() {
@@ -471,6 +491,12 @@ function render() {
     setRouteActive("home");
     const slug = decodeURIComponent(hash.replace("#/tool/", ""));
     renderTool(slug);
+    return;
+  }
+
+  if (hash.startsWith("#/submit")) {
+    setRouteActive("submit");
+    renderSubmissionPage();
     return;
   }
 
@@ -527,6 +553,7 @@ function renderHome() {
 
         <div class="quick-list">
           <a class="pixel-button primary" href="#/wishbox">进入许愿箱</a>
+          <a class="pixel-button" href="#/submit">提交工具</a>
           <a class="pixel-button" href="${feishuDocUrl}" target="_blank" rel="noopener noreferrer">飞书原始资料</a>
         </div>
       </aside>
@@ -1043,6 +1070,213 @@ function commentItem(comment, index) {
   `;
 }
 
+function renderSubmissionPage() {
+  app.innerHTML = `
+    <section class="screen submit-layout">
+      <article class="wish-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">SUBMIT TOOL</p>
+            <h1>工具投稿</h1>
+          </div>
+          <span class="pixel-badge">待审核</span>
+        </div>
+        <p class="muted">提交后会进入审核收件箱，通过后才会加入正式工具大厅。当前只接收图片、文档和安装包链接，暂不接收视频上传。</p>
+        <form class="wish-form" id="submission-form">
+          <div class="form-grid">
+            <label class="field">
+              <span>昵称</span>
+              <input name="nickname" maxlength="24" placeholder="例如：工具玩家07" required>
+            </label>
+            <label class="field">
+              <span>联系方式，可选</span>
+              <input name="contact" maxlength="120" placeholder="飞书、微信或邮箱">
+            </label>
+          </div>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>工具名称</span>
+              <input name="toolName" maxlength="80" placeholder="这个工具叫什么" required>
+            </label>
+            <label class="field">
+              <span>功能分类</span>
+              <select name="categoryId">
+                ${state.data.categories.map((category) => `<option value="${escapeHtml(category.id)}">${escapeHtml(category.name)}</option>`).join("")}
+              </select>
+            </label>
+          </div>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>工具类型</span>
+              <select name="toolType">
+                <option value="web_tool">网页工具</option>
+                <option value="html_tool">HTML工具</option>
+                <option value="chrome_extension">Chrome插件</option>
+                <option value="codex_skill">Codex Skill</option>
+                <option value="workflow_package">工作流包</option>
+                <option value="method">制作方法</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>工具入口链接，可选</span>
+              <input name="toolUrl" type="url" maxlength="500" placeholder="https://...">
+            </label>
+          </div>
+
+          <label class="field">
+            <span>一句话简介</span>
+            <textarea name="summary" maxlength="300" required placeholder="它能帮助别人在哪个制作环节省时间"></textarea>
+          </label>
+
+          <label class="field">
+            <span>解决的痛点</span>
+            <textarea name="painPoint" maxlength="800" required placeholder="说明原本最麻烦、最重复、最容易出错的地方"></textarea>
+          </label>
+
+          <label class="field">
+            <span>使用步骤</span>
+            <textarea name="usageSteps" maxlength="1200" placeholder="按 1、2、3 写清楚使用流程"></textarea>
+          </label>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>文档说明链接，可选</span>
+              <input name="docUrl" type="url" maxlength="500" placeholder="飞书、Notion、GitHub 文档等">
+            </label>
+            <label class="field">
+              <span>安装包 / 源码链接，可选</span>
+              <input name="packageUrl" type="url" maxlength="500" placeholder="网盘、GitHub Release、下载页等">
+            </label>
+          </div>
+
+          <label class="field">
+            <span>配图链接，可多行</span>
+            <textarea name="imageUrls" maxlength="1200" placeholder="每行一个图片链接，最多 6 张。请不要填写视频链接。"></textarea>
+          </label>
+
+          <label class="field">
+            <span>补充说明，可选</span>
+            <textarea name="notes" maxlength="800" placeholder="例如版本信息、适用软件、授权说明、希望如何展示"></textarea>
+          </label>
+
+          <div class="submit-actions">
+            <button class="pixel-button primary" type="submit">提交审核</button>
+            <span class="muted" id="submission-message" role="status"></span>
+          </div>
+        </form>
+      </article>
+
+      <aside class="wish-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">REVIEW FLOW</p>
+            <h2>发布规则</h2>
+          </div>
+        </div>
+        <div class="review-steps">
+          <div><strong>01</strong><span>投稿先进入 Supabase 待审核表。</span></div>
+          <div><strong>02</strong><span>你确认内容、链接和展示素材。</span></div>
+          <div><strong>03</strong><span>审核通过后再加入正式工具大厅。</span></div>
+        </div>
+        <div class="empty-state submission-note">
+          <h3>资源策略</h3>
+          <p>图片、文档和安装包先以链接形式提交；视频资源暂不开放投稿上传，避免占用站点存储空间。</p>
+        </div>
+      </aside>
+    </section>
+  `;
+
+  document.querySelector("#submission-form").addEventListener("submit", saveSubmission);
+}
+
+function formText(form, name) {
+  return String(form.get(name) || "").trim();
+}
+
+function parseLinkLines(value) {
+  return String(value || "")
+    .split(/\r?\n/)
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .slice(0, 6);
+}
+
+function isHttpUrl(value) {
+  try {
+    const url = new URL(value);
+    return ["http:", "https:"].includes(url.protocol);
+  } catch {
+    return false;
+  }
+}
+
+function hasVideoResource(values) {
+  return values.some((value) => /\.(mp4|mov|m4v|webm)([?#].*)?$/i.test(value));
+}
+
+async function saveSubmission(event) {
+  event.preventDefault();
+  const formElement = event.currentTarget;
+  const form = new FormData(formElement);
+  const message = document.querySelector("#submission-message");
+  const button = formElement.querySelector("button[type='submit']");
+  const imageUrls = parseLinkLines(form.get("imageUrls"));
+  const singleLinks = ["toolUrl", "docUrl", "packageUrl"].map((name) => formText(form, name)).filter(Boolean);
+  const allLinks = [...singleLinks, ...imageUrls];
+
+  const invalidLinks = allLinks.filter((link) => !isHttpUrl(link));
+  if (invalidLinks.length) {
+    message.textContent = "请填写有效的 http/https 链接。";
+    return;
+  }
+
+  if (hasVideoResource(allLinks)) {
+    message.textContent = "当前投稿不接收视频链接，请先移除视频资源。";
+    return;
+  }
+
+  const submission = {
+    nickname: formText(form, "nickname"),
+    contact: formText(form, "contact"),
+    toolName: formText(form, "toolName"),
+    categoryId: formText(form, "categoryId"),
+    toolType: formText(form, "toolType"),
+    summary: formText(form, "summary"),
+    painPoint: formText(form, "painPoint"),
+    usageSteps: formText(form, "usageSteps"),
+    toolUrl: formText(form, "toolUrl"),
+    docUrl: formText(form, "docUrl"),
+    packageUrl: formText(form, "packageUrl"),
+    imageUrls,
+    notes: formText(form, "notes")
+  };
+
+  if (!submission.nickname || !submission.toolName || !submission.summary || !submission.painPoint) {
+    message.textContent = "请补齐昵称、工具名称、简介和痛点。";
+    return;
+  }
+
+  if (!supabaseApi) {
+    message.textContent = "投稿后台暂未连接，请稍后再试。";
+    return;
+  }
+
+  try {
+    button.disabled = true;
+    message.textContent = "正在提交...";
+    await supabaseApi.createToolSubmission(submission);
+    formElement.reset();
+    message.textContent = "已进入待审核收件箱。";
+    showToast("投稿已提交");
+  } catch (error) {
+    message.textContent = "提交失败，请稍后重试。";
+  } finally {
+    button.disabled = false;
+  }
+}
+
 function renderWishbox() {
   app.innerHTML = `
     <section class="screen wish-layout">
@@ -1185,7 +1419,57 @@ function emptyState(title, text) {
   `;
 }
 
+function isLocalMaintenanceAllowed() {
+  const localHosts = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
+  const params = new URLSearchParams(window.location.search);
+  return localHosts.has(window.location.hostname) && params.get("admin") === "1";
+}
+
+function mountLocalMaintenance() {
+  if (!isLocalMaintenanceAllowed() || document.querySelector("#admin-panel")) return;
+
+  document.querySelector(".topnav")?.insertAdjacentHTML(
+    "beforeend",
+    '<button class="nav-link nav-button" type="button" id="open-admin">内容维护</button>'
+  );
+
+  document.body.insertAdjacentHTML("beforeend", `
+    <aside class="admin-panel" id="admin-panel" aria-hidden="true" aria-label="内容维护面板">
+      <div class="admin-panel__inner">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">DATA CORE</p>
+            <h2>内容维护</h2>
+          </div>
+          <button class="icon-button" type="button" id="close-admin" aria-label="关闭内容维护">X</button>
+        </div>
+        <p class="muted" id="backend-status">
+          当前后台：${escapeHtml(state.backend.label)}。
+        </p>
+        <textarea id="data-editor" class="data-editor" spellcheck="false" aria-label="工具数据 JSON"></textarea>
+        <div class="admin-actions">
+          <button class="pixel-button primary" type="button" id="save-data">保存本地数据</button>
+          <button class="pixel-button" type="button" id="export-data">导出 JSON</button>
+          <button class="pixel-button danger" type="button" id="reset-data">恢复种子数据</button>
+        </div>
+        <p id="admin-message" class="admin-message" role="status"></p>
+      </div>
+    </aside>
+  `);
+
+  adminPanel = document.querySelector("#admin-panel");
+  dataEditor = document.querySelector("#data-editor");
+  adminMessage = document.querySelector("#admin-message");
+
+  document.querySelector("#open-admin").addEventListener("click", openAdmin);
+  document.querySelector("#close-admin").addEventListener("click", closeAdmin);
+  document.querySelector("#save-data").addEventListener("click", saveAdminData);
+  document.querySelector("#reset-data").addEventListener("click", resetAdminData);
+  document.querySelector("#export-data").addEventListener("click", exportData);
+}
+
 function openAdmin() {
+  if (!dataEditor || !adminPanel || !adminMessage) return;
   dataEditor.value = JSON.stringify(state.data, null, 2);
   adminMessage.textContent = "";
   adminPanel.classList.add("is-open");
@@ -1193,11 +1477,13 @@ function openAdmin() {
 }
 
 function closeAdmin() {
+  if (!adminPanel) return;
   adminPanel.classList.remove("is-open");
   adminPanel.setAttribute("aria-hidden", "true");
 }
 
 function saveAdminData() {
+  if (!dataEditor || !adminMessage) return;
   try {
     const nextData = JSON.parse(dataEditor.value);
     if (!Array.isArray(nextData.tools) || !Array.isArray(nextData.categories)) {
@@ -1214,6 +1500,7 @@ function saveAdminData() {
 }
 
 function resetAdminData() {
+  if (!dataEditor || !adminMessage) return;
   state.data = state.seed;
   localStorage.removeItem(storageKeys.data);
   dataEditor.value = JSON.stringify(state.data, null, 2);

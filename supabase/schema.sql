@@ -125,3 +125,59 @@ create policy "tool assets are publicly readable"
   for select
   to anon, authenticated
   using (bucket_id in ('tool-images', 'tool-videos', 'tool-packages'));
+
+create table if not exists public.tool_submissions (
+  id uuid primary key default gen_random_uuid(),
+  nickname text not null check (char_length(nickname) between 1 and 24),
+  contact text,
+  tool_name text not null check (char_length(tool_name) between 2 and 80),
+  category_id text not null default 'workflow-automation',
+  tool_type text not null default 'web_tool',
+  summary text not null check (char_length(summary) between 1 and 300),
+  pain_point text not null check (char_length(pain_point) between 1 and 800),
+  usage_steps text,
+  tool_url text,
+  doc_url text,
+  package_url text,
+  image_urls jsonb not null default '[]'::jsonb check (jsonb_typeof(image_urls) = 'array'),
+  notes text,
+  status text not null default 'pending',
+  created_at timestamptz not null default now()
+);
+
+create index if not exists tool_submissions_status_created_idx
+  on public.tool_submissions (status, created_at desc);
+
+alter table public.tool_submissions enable row level security;
+
+drop policy if exists "tool submissions can be created publicly" on public.tool_submissions;
+create policy "tool submissions can be created publicly"
+  on public.tool_submissions
+  for insert
+  to anon, authenticated
+  with check (
+    status = 'pending'
+    and char_length(nickname) between 1 and 24
+    and char_length(tool_name) between 2 and 80
+    and char_length(summary) between 1 and 300
+    and char_length(pain_point) between 1 and 800
+    and jsonb_typeof(image_urls) = 'array'
+  );
+
+revoke all on public.tool_submissions from anon, authenticated;
+grant insert (
+  nickname,
+  contact,
+  tool_name,
+  category_id,
+  tool_type,
+  summary,
+  pain_point,
+  usage_steps,
+  tool_url,
+  doc_url,
+  package_url,
+  image_urls,
+  notes,
+  status
+) on public.tool_submissions to anon, authenticated;
