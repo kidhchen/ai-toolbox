@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260609i";
+const seedUrl = "./content/tools.seed.json?v=20260609j";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -298,7 +298,7 @@ async function init() {
   }
 
   const storedData = readJson(storageKeys.data, null);
-  state.data = normalizeData(mergeSeedVisuals(storedData || state.seed));
+  state.data = normalizeData(mergeSeedUpdates(storedData || state.seed));
   await loadRemoteFeedback();
   bindChrome();
   updateBackendStatus();
@@ -353,7 +353,48 @@ function shouldUseSeedMedia(current) {
   return !list.length || list.every((item) => item?.status === "imported_from_feishu");
 }
 
-function mergeSeedVisuals(data) {
+function hasUsableResourceLink(item) {
+  return Boolean(item?.src || item?.url || item?.downloadUrl || item?.previewUrl);
+}
+
+function shouldUseSeedResource(seedItem) {
+  return seedItem?.status === "uploaded" && hasUsableResourceLink(seedItem);
+}
+
+function itemsMatch(currentItem, seedItem) {
+  const currentLabel = String(currentItem?.label || "").trim();
+  const seedLabel = String(seedItem?.label || "").trim();
+  const currentOriginal = String(currentItem?.originalLabel || "").trim();
+  const seedOriginal = String(seedItem?.originalLabel || "").trim();
+
+  return Boolean(
+    currentLabel && currentLabel === seedLabel
+    || currentOriginal && currentOriginal === seedLabel
+    || seedOriginal && seedOriginal === currentLabel
+    || currentItem?.kind && currentItem.kind === seedItem?.kind && currentLabel && currentLabel === seedLabel
+  );
+}
+
+function mergeSeedList(currentItems = [], seedItems = []) {
+  const nextItems = cloneValue(Array.isArray(currentItems) ? currentItems : []);
+
+  seedItems.filter(shouldUseSeedResource).forEach((seedItem) => {
+    const existingIndex = nextItems.findIndex((currentItem) => itemsMatch(currentItem, seedItem));
+    if (existingIndex >= 0) {
+      nextItems[existingIndex] = {
+        ...nextItems[existingIndex],
+        ...cloneValue(seedItem)
+      };
+      return;
+    }
+
+    nextItems.push(cloneValue(seedItem));
+  });
+
+  return nextItems;
+}
+
+function mergeSeedUpdates(data) {
   const nextData = cloneValue(data || state.seed);
   const seedTools = new Map((state.seed?.tools || []).map((tool) => [tool.id || tool.slug, tool]));
 
@@ -366,6 +407,9 @@ function mergeSeedVisuals(data) {
         tool[key] = cloneValue(seedTool[key]);
       }
     });
+
+    tool.resources = mergeSeedList(tool.resources, seedTool.resources);
+    tool.media = mergeSeedList(tool.media, seedTool.media);
   });
 
   return nextData;
