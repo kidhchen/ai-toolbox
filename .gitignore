@@ -1,0 +1,14 @@
+.DS_Store
+.env
+.env.*
+node_modules/
+dist/
+build/
+
+# Supabase 本地开发缓存
+.supabase/
+
+# 飞书导入过程中的原始截图和验证图，不需要发布到 GitHub
+assets/feishu-images/_raw-screens/
+assets/feishu-images/verification-*.png
+assets/feishu-images/contact-sheet.jpg

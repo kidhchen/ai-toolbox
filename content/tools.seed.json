@@ -1,0 +1,828 @@
+{
+  "site": {
+    "name": "AI制作工具箱",
+    "language": "zh-CN",
+    "style": "pixel-geek-game",
+    "sourceUrl": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh",
+    "storagePolicy": "安装包、视频、图片、Skill包和HTML工具后续统一上传到网站存储。",
+    "commentsPolicy": "允许匿名昵称评论。"
+  },
+  "categories": [
+    {
+      "id": "storyboard-prompts",
+      "name": "剧本分镜与提示词",
+      "description": "从剧本拆分、起手式、场景视图到故事板生成的创作方法。"
+    },
+    {
+      "id": "video-audio",
+      "name": "视频与音频制作",
+      "description": "处理视频、音效、转场、XML、绿幕和ITV制作效率的工具。"
+    },
+    {
+      "id": "visual-assets",
+      "name": "图片与视觉素材",
+      "description": "用于抠图、高清放大、换背景和视觉素材增强的工具。"
+    },
+    {
+      "id": "workflow-automation",
+      "name": "自动化与工作流",
+      "description": "把重复操作交给Codex、脚本或跨软件工作流来完成。"
+    },
+    {
+      "id": "creation-entry",
+      "name": "工具入口与管理",
+      "description": "集中管理常用AI网址、提示词入口和制作流程快捷方式。"
+    },
+    {
+      "id": "course-layout",
+      "name": "教程与积木排版",
+      "description": "服务教程、课件、积木截图和说明素材整理的工具。"
+    }
+  ],
+  "tools": [
+    {
+      "id": "dianmao-prompt-assistant",
+      "slug": "dianmao-prompt-assistant",
+      "name": "点猫提示词助手",
+      "categoryId": "creation-entry",
+      "categoryIds": [
+        "creation-entry",
+        "storyboard-prompts"
+      ],
+      "type": "chrome_extension",
+      "developer": "跃鹏",
+      "status": "published",
+      "difficulty": "入门",
+      "summary": "把常用AI网站、提示词模板和一键打开入口整合到浏览器里，减少找网址、复制提示词和切换页面的时间。",
+      "targetUsers": [
+        "经常使用多个AI网站的制作同学",
+        "需要频繁复制提示词和打开工具页面的人",
+        "希望把提示词流程固定下来的团队成员"
+      ],
+      "painPoints": [
+        "常用AI网站分散，打开效率低。",
+        "提示词需要反复查找和复制。",
+        "不同网站输入框位置变化时，插入提示词容易失败。"
+      ],
+      "features": [
+        "收录常用AI制作网址。",
+        "智能工人按钮可一键打开豆包、DeepSeek、Oii、即梦等网站。",
+        "自动识别当前网页并尝试插入提示词。",
+        "插入失败时自动复制提示词，用户可手动粘贴。"
+      ],
+      "usageSteps": [
+        "下载插件压缩包并解压。",
+        "打开浏览器扩展管理页面。",
+        "开启开发者模式。",
+        "将解压后的插件文件夹拖入扩展页面。",
+        "看到点猫提示词助手后，将插件固定到浏览器工具栏。"
+      ],
+      "coverImage": {
+        "kind": "image",
+        "label": "点猫提示词助手界面",
+        "src": "assets/feishu-images/doc-image-01.png",
+        "status": "imported_from_feishu"
+      },
+      "featureMedia": [
+        {
+          "kind": "image",
+          "label": "网址收录与智能入口",
+          "src": "assets/feishu-images/doc-image-02.png",
+          "status": "imported_from_feishu"
+        },
+        {
+          "kind": "image",
+          "label": "提示词插入效果",
+          "src": "assets/feishu-images/doc-image-03.png",
+          "status": "imported_from_feishu"
+        }
+      ],
+      "stepMedia": [
+        {
+          "kind": "image",
+          "label": "插件解压与安装步骤",
+          "src": "assets/feishu-images/doc-image-08.png",
+          "status": "imported_from_feishu"
+        },
+        {
+          "kind": "image",
+          "label": "浏览器扩展固定步骤",
+          "src": "assets/feishu-images/doc-image-17.png",
+          "status": "imported_from_feishu"
+        }
+      ],
+      "resources": [
+        {
+          "kind": "feishu_source",
+          "label": "飞书原始说明 / 下载入口",
+          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#Ok4rdSjWpoQkkxxfkpbc8KSonui",
+          "status": "external_link"
+        },
+        {
+          "kind": "package",
+          "label": "点猫提示词助手下载.zip",
+          "storageKey": "pending/dianmao-prompt-assistant.zip",
+          "status": "pending_upload"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "提示词",
+        "Chrome插件",
+        "AI网站入口",
+        "效率工具"
+      ],
+      "version": "待补充"
+    },
+    {
+      "id": "prompt-formula-library",
+      "slug": "prompt-formula-library",
+      "name": "常用提示词公式库",
+      "categoryId": "storyboard-prompts",
+      "categoryIds": [
+        "storyboard-prompts"
+      ],
+      "type": "method_collection",
+      "developer": "多人共创",
+      "status": "published",
+      "difficulty": "入门",
+      "summary": "沉淀视频生成、分镜拆分、场景视图和故事板生成的常用提示词，方便复制使用和团队统一产出格式。",
+      "targetUsers": [
+        "AI视频制作同学",
+        "编剧和分镜同学",
+        "需要把剧本快速转成可执行视频提示词的人"
+      ],
+      "painPoints": [
+        "每次生成视频都要重新组织提示词。",
+        "分镜、声音、对白时间点和音效描述容易遗漏。",
+        "故事板和场景参考格式不统一。"
+      ],
+      "features": [
+        "提供2D动画和3D Q版视频生成起手式。",
+        "支持将剧本拆分成约15秒的视频段落。",
+        "支持生成单个场景的四视图。",
+        "支持根据角色、场景和剧本生成故事板。"
+      ],
+      "coverImage": {
+        "kind": "image",
+        "label": "提示词公式示例",
+        "src": "assets/feishu-images/doc-image-32.png",
+        "status": "imported_from_feishu"
+      },
+      "featureMedia": [
+        {
+          "kind": "image",
+          "label": "场景四视图效果",
+          "src": "assets/feishu-images/doc-image-33.png",
+          "status": "imported_from_feishu"
+        },
+        {
+          "kind": "image",
+          "label": "故事板生成效果",
+          "src": "assets/feishu-images/doc-image-39.png",
+          "status": "imported_from_feishu"
+        }
+      ],
+      "methods": [
+        {
+          "id": "video-starting-prompt",
+          "name": "视频生成起手式",
+          "sourceCredit": "侠在 & 毛毛",
+          "summary": "用于快速声明画质、镜头运动、角色一致性和禁止字幕/背景音乐等基础要求。",
+          "optimizedPrompt": "请生成电影级质感的高完成度动画画面，保持角色形象与参考图一致。镜头可以使用推拉、旋转、俯拍、仰拍等动态运动，构图要有叙事信息。不要生成字幕、水印或背景音乐；角色配音需自然收尾，动作要配合台词并保持生动。"
+        },
+        {
+          "id": "script-segmentation",
+          "name": "分镜拆分",
+          "sourceCredit": "Ame",
+          "summary": "把剧本拆成连续分段，每段约15秒，并输出剧情描述、故事板、声音风格、对白时间点和音效说明。",
+          "optimizedPrompt": "请将我提供的剧本拆分为连续视频段落，每段控制在约15秒内。每段输出剧情概述、0到15秒故事板、角色声音风格、对白出现时间段、环境声和动作音效说明。请保留原剧本对白，不添加字幕、水印或背景音乐，角色和场景需与参考保持一致。"
+        },
+        {
+          "id": "scene-four-views",
+          "name": "场景四视图",
+          "sourceCredit": "未标注",
+          "summary": "为单个场景生成高角度俯瞰、低角度仰视、侧面和反面四宫格视图。",
+          "optimizedPrompt": "请基于这个场景生成四宫格视图：高角度俯瞰、低角度仰视、侧面视角、反面视角。四个视图需要保持同一场景设定和空间关系，并在图中标注每个视角名称。"
+        },
+        {
+          "id": "image2-storyboard",
+          "name": "Image2 故事板",
+          "sourceCredit": "Ame",
+          "summary": "根据角色三视图、场景参考和剧本生成故事板，用于衔接即梦等视频生成工具。",
+          "optimizedPrompt": "请根据角色三视图、场景参考和剧本内容生成故事板。故事板需包含角色展示、场景展示、必要的场景四视图，以及九宫格剧情画面。每格请补充情节要点、人物动作、台词、景别、镜头类型、运镜和镜头参数建议。"
+        }
+      ],
+      "resources": [
+        {
+          "kind": "feishu_source",
+          "label": "飞书原始说明 / 下载入口",
+          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#SIhQd9guboHauexttXDc2i6CndH",
+          "status": "external_link"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "提示词模板",
+        "分镜",
+        "故事板",
+        "AI视频"
+      ],
+      "version": "1.0"
+    },
+    {
+      "id": "codex-sound-effect-method",
+      "slug": "codex-sound-effect-method",
+      "name": "Codex 自动加音效方法",
+      "categoryId": "video-audio",
+      "categoryIds": [
+        "video-audio",
+        "workflow-automation"
+      ],
+      "type": "codex_skill",
+      "developer": "益达",
+      "status": "published",
+      "difficulty": "进阶",
+      "summary": "用 Codex 辅助匹配音效、转场和插件效果，最后重新导入XML文件完成制作。",
+      "targetUsers": [
+        "需要给视频批量匹配音效的剪辑同学",
+        "希望减少手动查找、放置和调整音效的人"
+      ],
+      "painPoints": [
+        "音效和转场需要人工逐段匹配。",
+        "同类视频流程重复，手动操作耗时。",
+        "XML处理过程容易出错。"
+      ],
+      "features": [
+        "让 Codex 根据视频结构辅助规划音效。",
+        "支持转场和插件效果匹配思路。",
+        "最终通过重新导入XML完成效果应用。"
+      ],
+      "usageSteps": [
+        "准备需要处理的视频工程或XML文件。",
+        "向 Codex 描述音效、转场和插件效果要求。",
+        "让 Codex 生成或调整匹配方案。",
+        "将处理后的XML重新导入剪辑软件。"
+      ],
+      "coverImage": {
+        "kind": "image",
+        "label": "Codex 加音效流程示例",
+        "src": "assets/feishu-images/doc-image-43.png",
+        "status": "imported_from_feishu"
+      },
+      "featureMedia": [
+        {
+          "kind": "image",
+          "label": "音效匹配与工程示例",
+          "src": "assets/feishu-images/doc-image-44.png",
+          "status": "imported_from_feishu"
+        }
+      ],
+      "resources": [
+        {
+          "kind": "feishu_source",
+          "label": "飞书原始说明 / 下载入口",
+          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#KXR2dYLJjoxMXmxjPk7cFC91nBd",
+          "status": "external_link"
+        },
+        {
+          "kind": "tutorial",
+          "label": "Codex加音效方法教程",
+          "storageKey": "pending/codex-sound-effect-method.md",
+          "status": "pending_upload"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "Codex",
+        "Codex Skill",
+        "音效",
+        "XML",
+        "剪辑"
+      ],
+      "version": "待补充"
+    },
+    {
+      "id": "auto-sound-html",
+      "slug": "auto-sound-html",
+      "name": "自动加音效 HTML 工具",
+      "categoryId": "video-audio",
+      "categoryIds": [
+        "video-audio"
+      ],
+      "type": "html_tool",
+      "developer": "文成",
+      "status": "published",
+      "difficulty": "入门",
+      "summary": "打开网页后拖入XML文件即可处理音效模板，不需要复制复杂代码。",
+      "targetUsers": [
+        "需要快速处理XML音效模板的人",
+        "不想接触复杂代码的剪辑同学"
+      ],
+      "painPoints": [
+        "XML处理门槛高。",
+        "重复模板显示混乱。",
+        "手动复制代码不适合日常制作。"
+      ],
+      "features": [
+        "拖拽XML文件即可使用。",
+        "自动处理重复模板。",
+        "将重复模板合并显示，降低查找成本。"
+      ],
+      "usageSteps": [
+        "打开自动加音效HTML工具。",
+        "拖入需要处理的XML文件。",
+        "按页面提示完成处理。",
+        "导出或复制处理结果并用于剪辑流程。"
+      ],
+      "coverImage": {
+        "kind": "image",
+        "label": "自动加音效工具界面",
+        "src": "assets/feishu-images/doc-image-45.png",
+        "status": "imported_from_feishu"
+      },
+      "featureMedia": [
+        {
+          "kind": "image",
+          "label": "XML 处理说明",
+          "src": "assets/feishu-images/doc-image-47.png",
+          "status": "imported_from_feishu"
+        }
+      ],
+      "resources": [
+        {
+          "kind": "feishu_source",
+          "label": "飞书原始说明 / 下载入口",
+          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#W4lPdd6d5ocTphx0dbGcuOian1b",
+          "status": "external_link"
+        },
+        {
+          "kind": "html",
+          "label": "快速音4.0.html",
+          "storageKey": "pending/quick-sound-4.html",
+          "status": "pending_upload"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "HTML工具",
+        "XML",
+        "音效",
+        "剪辑"
+      ],
+      "version": "4.0"
+    },
+    {
+      "id": "batch-cutout-upscale",
+      "slug": "batch-cutout-upscale",
+      "name": "一键批量抠图 + 高清放大工具 2.0",
+      "categoryId": "visual-assets",
+      "categoryIds": [
+        "visual-assets"
+      ],
+      "type": "html_tool",
+      "developer": "三盛",
+      "status": "published",
+      "difficulty": "入门",
+      "summary": "把批量抠图、背景替换和高清放大合在一个工具里，减少多个软件来回切换。",
+      "targetUsers": [
+        "需要批量处理角色、道具、素材图的人",
+        "经常在抠图和高清放大工具之间切换的人"
+      ],
+      "painPoints": [
+        "抠图、换背景和放大分散在不同工具里。",
+        "批量素材处理流程重复。",
+        "手动修边和局部调整费时间。"
+      ],
+      "features": [
+        "批量抠除背景。",
+        "高清放大素材。",
+        "支持更换背景。",
+        "内置吸管、钢笔、橡皮擦等编辑工具。"
+      ],
+      "usageSteps": [
+        "打开工具并导入需要处理的图片。",
+        "选择抠图、换背景或高清放大功能。",
+        "必要时使用内置编辑工具修正细节。",
+        "选择导出格式并保存结果。"
+      ],
+      "coverImage": {
+        "kind": "image",
+        "label": "批量抠图与高清放大界面",
+        "src": "assets/feishu-images/doc-image-49.png",
+        "status": "imported_from_feishu"
+      },
+      "featureMedia": [
+        {
+          "kind": "image",
+          "label": "素材批处理面板",
+          "src": "assets/feishu-images/doc-image-50.png",
+          "status": "imported_from_feishu"
+        }
+      ],
+      "resources": [
+        {
+          "kind": "feishu_source",
+          "label": "飞书原始说明 / 下载入口",
+          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#OvGjdQ0eUoJbWZxPqmjcyJlonbg",
+          "status": "external_link"
+        },
+        {
+          "kind": "package",
+          "label": "批量抠图 + 高清放大",
+          "storageKey": "pending/batch-cutout-upscale",
+          "status": "pending_upload"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "抠图",
+        "高清放大",
+        "素材处理",
+        "批量处理"
+      ],
+      "version": "2.0"
+    },
+    {
+      "id": "greenscreen-video-cutout",
+      "slug": "greenscreen-video-cutout",
+      "name": "一键抠绿幕视频 + 高清放大工具 1.0",
+      "categoryId": "visual-assets",
+      "categoryIds": [
+        "visual-assets",
+        "video-audio"
+      ],
+      "type": "html_tool",
+      "developer": "待补充",
+      "status": "in_development",
+      "difficulty": "进阶",
+      "summary": "面向绿幕视频的一键抠除和高清增强工具，适合后续作为视频素材处理入口。",
+      "targetUsers": [
+        "需要处理绿幕视频素材的人",
+        "希望把视频抠像和增强流程集中在一个工具中的制作同学"
+      ],
+      "painPoints": [
+        "绿幕视频处理流程较长。",
+        "抠像和高清增强通常需要多个软件配合。",
+        "批量处理绿幕素材不够方便。"
+      ],
+      "features": [
+        "绿幕视频抠除，开发中。",
+        "视频高清放大，开发中。",
+        "未来可支持批量导入和导出。"
+      ],
+      "usageSteps": [
+        "当前版本建议标记为开发中。",
+        "先通过评论区收集使用场景和功能需求。"
+      ],
+      "coverImage": {
+        "kind": "image",
+        "label": "绿幕视频处理界面",
+        "src": "assets/feishu-images/doc-image-51.png",
+        "status": "imported_from_feishu"
+      },
+      "resources": [
+        {
+          "kind": "feishu_source",
+          "label": "飞书原始说明 / 下载入口",
+          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#QSkHdJN9todOQixYEFccftj8nUh",
+          "status": "external_link"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "绿幕",
+        "视频处理",
+        "高清放大",
+        "开发中"
+      ],
+      "version": "1.0"
+    },
+    {
+      "id": "block-layout-tool",
+      "slug": "block-layout-tool",
+      "name": "积木自动排版工具",
+      "categoryId": "course-layout",
+      "categoryIds": [
+        "course-layout"
+      ],
+      "type": "html_tool",
+      "developer": "文帆",
+      "status": "published",
+      "difficulty": "入门",
+      "summary": "拖入积木图片后自动排版，减少手动摆放和整理截图的时间。",
+      "targetUsers": [
+        "需要整理积木式编程截图的人",
+        "制作教程、课件或演示素材的同学"
+      ],
+      "painPoints": [
+        "积木截图手动排版费时间。",
+        "图片布局不统一，影响教程观感。",
+        "重复整理素材效率低。"
+      ],
+      "features": [
+        "拖入积木图片。",
+        "自动生成更整齐的排版。",
+        "适合网页端快速使用。"
+      ],
+      "usageSteps": [
+        "打开网页端工具。",
+        "拖入积木图片。",
+        "等待工具自动排版。",
+        "保存或导出排版结果。"
+      ],
+      "coverImage": {
+        "kind": "image",
+        "label": "积木自动排版工具界面",
+        "src": "assets/feishu-images/doc-image-52.png",
+        "status": "imported_from_feishu"
+      },
+      "featureMedia": [
+        {
+          "kind": "image",
+          "label": "积木拖入与排版效果",
+          "src": "assets/feishu-images/doc-image-53.png",
+          "status": "imported_from_feishu"
+        },
+        {
+          "kind": "image",
+          "label": "积木排版结果示例",
+          "src": "assets/feishu-images/doc-image-54.png",
+          "status": "imported_from_feishu"
+        }
+      ],
+      "resources": [
+        {
+          "kind": "feishu_source",
+          "label": "飞书原始说明 / 下载入口",
+          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#N9q8dE5tVogJzSxE429cmK53nlc",
+          "status": "external_link"
+        },
+        {
+          "kind": "html",
+          "label": "积木自动排版工具-网页端插件.html",
+          "storageKey": "pending/block-layout-tool.html",
+          "status": "pending_upload"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "积木",
+        "自动排版",
+        "HTML工具",
+        "教程制作"
+      ],
+      "version": "待补充"
+    },
+    {
+      "id": "finalcut-motion-html-bridge",
+      "slug": "finalcut-motion-html-bridge",
+      "name": "Final Cut / Motion 集成 HTML 工具",
+      "categoryId": "video-audio",
+      "categoryIds": [
+        "video-audio",
+        "workflow-automation"
+      ],
+      "type": "workflow_package",
+      "developer": "文帆",
+      "status": "published",
+      "difficulty": "工作流",
+      "summary": "把常用HTML小工具、网页入口和Motion工作流绑定在一起，让剪辑制作时更容易调用。",
+      "targetUsers": [
+        "经常使用Final Cut或Motion的剪辑同学",
+        "手里有多个HTML小工具但复用率不高的人",
+        "希望把网页工具绑定进本地制作流程的人"
+      ],
+      "painPoints": [
+        "HTML小程序分散，不好找。",
+        "工具每次都要重新打开，复用率低。",
+        "Motion和网页工具之间缺少快捷桥接。"
+      ],
+      "features": [
+        "将小程序绑定到Motion包。",
+        "内置常用网页快捷入口。",
+        "支持绑定新增小程序。",
+        "首次使用需完成权限设置和绑定步骤。"
+      ],
+      "usageSteps": [
+        "下载插件本体整合包和说明书。",
+        "按说明安装或打开整合好的Motion包。",
+        "首次使用时根据提示完成系统权限设置。",
+        "如需新建项目，将绑定程序、HTML小程序或网页链接说明放入Motion文件夹。",
+        "双击启动后生成启动脚本，通过Motion入口快速打开对应工具。"
+      ],
+      "coverImage": {
+        "kind": "image",
+        "label": "Final Cut / Motion 工具整合效果",
+        "src": "assets/feishu-images/doc-image-56.png",
+        "status": "imported_from_feishu"
+      },
+      "featureMedia": [
+        {
+          "kind": "image",
+          "label": "Motion 工具包界面",
+          "src": "assets/feishu-images/doc-image-57.png",
+          "status": "imported_from_feishu"
+        }
+      ],
+      "stepMedia": [
+        {
+          "kind": "image",
+          "label": "权限设置步骤",
+          "src": "assets/feishu-images/doc-image-62.png",
+          "status": "imported_from_feishu"
+        },
+        {
+          "kind": "image",
+          "label": "脚本与文件夹绑定步骤",
+          "src": "assets/feishu-images/doc-image-65.png",
+          "status": "imported_from_feishu"
+        }
+      ],
+      "resources": [
+        {
+          "kind": "feishu_source",
+          "label": "飞书原始说明 / 下载入口",
+          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#Vg8UdJq6cof4fsxbwDucw30qnde",
+          "status": "external_link"
+        },
+        {
+          "kind": "package",
+          "label": "插件本体整合包与说明书",
+          "storageKey": "pending/finalcut-motion-html-bridge-package",
+          "status": "pending_upload"
+        },
+        {
+          "kind": "package",
+          "label": "小程序本体",
+          "storageKey": "pending/finalcut-motion-html-bridge-miniapps",
+          "status": "pending_upload"
+        }
+      ],
+      "media": [
+        {
+          "kind": "video",
+          "label": "效果演示",
+          "duration": "00:38",
+          "storageKey": "pending/finalcut-motion-demo.mp4",
+          "status": "pending_upload"
+        }
+      ],
+      "tags": [
+        "Final Cut",
+        "Motion",
+        "HTML工具",
+        "工作流"
+      ],
+      "version": "1.0"
+    },
+    {
+      "id": "ai-screen-recording-skill",
+      "slug": "ai-screen-recording-skill",
+      "name": "自动化 AI 录屏",
+      "categoryId": "workflow-automation",
+      "categoryIds": [
+        "workflow-automation"
+      ],
+      "type": "codex_skill",
+      "developer": "绮婷",
+      "status": "published",
+      "difficulty": "工作流",
+      "summary": "给 Codex 提供录制地址和要求后，由AI在后台完成录制代码拼接和执行，减少人工盯屏。",
+      "targetUsers": [
+        "需要批量录制网页操作的人",
+        "需要制作工具演示和教程视频的人",
+        "希望把录屏流程交给AI执行的人"
+      ],
+      "painPoints": [
+        "录制网页操作需要一直盯着。",
+        "重复录屏占用大量人工时间。",
+        "不同页面流程需要反复调整录制步骤。"
+      ],
+      "features": [
+        "支持通过Codex Skill驱动录制。",
+        "提供录制地址和要求即可开始规划。",
+        "后台完成代码拼接和录制执行。"
+      ],
+      "usageSteps": [
+        "安装或导入自动化录屏Skill。",
+        "向Codex提供目标录制地址。",
+        "说明需要录制的操作流程和视频要求。",
+        "让Codex在后台完成录制任务。"
+      ],
+      "resources": [
+        {
+          "kind": "feishu_source",
+          "label": "飞书原始说明 / 下载入口",
+          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#MWied5cn3o8xXExws6tcxusInCg",
+          "status": "external_link"
+        },
+        {
+          "kind": "skill",
+          "label": "自动化AI录屏 Skill 包",
+          "storageKey": "pending/ai-screen-recording-skill",
+          "status": "pending_upload"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "Codex Skill",
+        "自动录屏",
+        "教程视频",
+        "自动化"
+      ],
+      "version": "待补充"
+    },
+    {
+      "id": "itv-auto-marker",
+      "slug": "itv-auto-marker",
+      "name": "ITV 自动打点工具",
+      "categoryId": "video-audio",
+      "categoryIds": [
+        "video-audio",
+        "workflow-automation"
+      ],
+      "type": "html_tool",
+      "developer": "文成",
+      "status": "iterating",
+      "difficulty": "进阶",
+      "summary": "减少ITV制作中新建文件夹和重复打点操作，提高制作效率。",
+      "targetUsers": [
+        "需要进行ITV制作和打点的人",
+        "希望减少重复文件夹创建和交互打点的人"
+      ],
+      "painPoints": [
+        "ITV制作中重复新建文件夹影响效率。",
+        "交互打点流程容易重复且耗时。",
+        "工具仍在持续迭代，需要收集真实反馈。"
+      ],
+      "features": [
+        "减少新建文件夹操作。",
+        "提升ITV制作效率。",
+        "提供交互工具演示。"
+      ],
+      "usageSteps": [
+        "打开ITV自动打点工具。",
+        "按演示视频中的流程操作。",
+        "根据当前项目完成打点。",
+        "通过评论区反馈遇到的问题和希望新增的能力。"
+      ],
+      "coverImage": {
+        "kind": "image",
+        "label": "ITV 自动打点资料入口",
+        "src": "assets/feishu-images/doc-image-73.png",
+        "status": "imported_from_feishu"
+      },
+      "resources": [
+        {
+          "kind": "feishu_source",
+          "label": "飞书原始说明 / 下载入口",
+          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#QJRFdS98IoFb5zxoVHlcWAVbnWf",
+          "status": "external_link"
+        },
+        {
+          "kind": "html",
+          "label": "ITV自动打点工具.html",
+          "originalLabel": "好像没怎么加快交互的工具.html",
+          "storageKey": "pending/itv-auto-marker.html",
+          "status": "pending_upload"
+        }
+      ],
+      "media": [
+        {
+          "kind": "video",
+          "label": "交互工具演示",
+          "duration": "03:51",
+          "storageKey": "pending/itv-auto-marker-demo.mp4",
+          "status": "pending_upload"
+        }
+      ],
+      "tags": [
+        "ITV",
+        "自动打点",
+        "HTML工具",
+        "持续迭代"
+      ],
+      "version": "待补充"
+    }
+  ],
+  "commentSchema": {
+    "toolId": "string",
+    "nickname": "string",
+    "content": "string",
+    "issueType": "none | bug | improvement | question",
+    "likes": "number",
+    "createdAt": "datetime",
+    "status": "visible | hidden"
+  },
+  "wishboxSchema": {
+    "nickname": "string",
+    "painPoint": "string",
+    "preferredFormat": "web_tool | chrome_extension | codex_skill | automation_script | unsure",
+    "currentWorkaround": "string",
+    "priority": "normal | wanted | daily_blocker",
+    "contact": "string_optional",
+    "createdAt": "datetime",
+    "status": "new | reviewing | planned | shipped | archived"
+  }
+}
