@@ -934,6 +934,7 @@ function mediaSlot(item) {
 function resourceItem(resource) {
   const href = resourceUrl(resource);
   const pending = resource.status === "pending_upload" && !href;
+  const actionLabel = resourceActionLabel(resource);
   return `
     <article class="resource-item">
       <div class="resource-title">
@@ -944,7 +945,7 @@ function resourceItem(resource) {
       ${href ? `<p class="muted">当前资源使用外部链接，后续可替换为网站存储地址。</p>` : ""}
       <div class="resource-row">
         ${href
-          ? `<a class="pixel-button primary" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">打开资源</a>`
+          ? `<a class="pixel-button primary" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(actionLabel)}</a>`
           : `<button class="pixel-button" type="button" disabled>等待资源</button>`
         }
         <span class="meta-item">${escapeHtml(resource.kind)}</span>
@@ -955,6 +956,13 @@ function resourceItem(resource) {
 
 function resourceUrl(resource) {
   return resource.url || resource.href || resource.downloadUrl || resource.previewUrl || resource.src || "";
+}
+
+function resourceActionLabel(resource) {
+  if (resource.downloadUrl || ["package", "skill"].includes(resource.kind)) return "下载资源";
+  if (["html", "html_tool"].includes(resource.kind)) return "打开工具";
+  if (resource.previewUrl) return "查看预览";
+  return "打开资源";
 }
 
 function commentItem(comment, index) {

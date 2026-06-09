@@ -68,6 +68,11 @@
 
 ## 推荐流程
 
+0. 先按上传清单整理文件
+   - 参考 `docs/supabase-resource-map.md`。
+   - 文件名尽量用英文、数字和短横线。
+   - 不要使用空格、中文括号和过长文件名，后续复制链接更稳定。
+
 1. 第一阶段：先用飞书公开链接
    - 在飞书中确认附件或视频对目标用户公开可访问。
    - 把链接填到资源的 `url` 字段。
@@ -89,6 +94,55 @@
 - `src`：适合图片直链、MP4/WebM 视频直链，可以直接在页面中展示或播放。
 - `downloadUrl`：适合安装包下载地址。
 - `previewUrl`：适合效果预览页。
+
+更简单地记：
+
+- 想在详情页直接显示图片或播放视频，用 `src`。
+- 想让用户点击打开 HTML 工具网页，用 `url`。
+- 想让用户下载 ZIP、Skill 包或安装包，用 `downloadUrl`。
+
+## Supabase Storage 上传步骤
+
+1. 进入 Supabase 项目后台。
+2. 打开左侧 `Storage`。
+3. 选择对应 bucket：
+   - 图片：`tool-images`
+   - 视频：`tool-videos`
+   - HTML / ZIP / Skill：`tool-packages`
+4. 按工具 slug 建文件夹，例如 `itv-auto-marker`。
+5. 上传文件。
+6. 点击文件，复制 `Public URL`。
+7. 把链接写入 `content/tools.seed.json`。
+
+Public URL 一般长这样：
+
+```text
+https://mmdxptnrfcwfulutzoex.supabase.co/storage/v1/object/public/tool-images/itv-auto-marker/cover.webp
+```
+
+## HTML 工具接入方式
+
+HTML 工具如果是一个单独网页文件，上传到 `tool-packages` 后，在资源里填 `url`：
+
+```json
+{
+  "kind": "html",
+  "label": "ITV自动打点工具.html",
+  "url": "https://mmdxptnrfcwfulutzoex.supabase.co/storage/v1/object/public/tool-packages/itv-auto-marker/itv-auto-marker.html",
+  "status": "uploaded"
+}
+```
+
+如果是 ZIP 包，需要用户下载后解压使用，就填 `downloadUrl`：
+
+```json
+{
+  "kind": "package",
+  "label": "插件本体整合包",
+  "downloadUrl": "https://mmdxptnrfcwfulutzoex.supabase.co/storage/v1/object/public/tool-packages/finalcut-motion-html-bridge/plugin-package.zip",
+  "status": "uploaded"
+}
+```
 
 ## 飞书链接使用注意
 
