@@ -122,13 +122,17 @@ https://mmdxptnrfcwfulutzoex.supabase.co/storage/v1/object/public/tool-images/it
 
 ## HTML 工具接入方式
 
-HTML 工具如果是一个单独网页文件，上传到 `tool-packages` 后，在资源里填 `url`：
+HTML 工具如果只是作为下载文件，上传到 `tool-packages` 后可以填 `downloadUrl`。
+
+如果希望用户点击后直接打开并使用网页工具，建议把 HTML 文件放进网站自己的 `tools/` 目录，再用 GitHub Pages 访问。原因是 Supabase Storage 对 HTML 文件会加安全限制，很多情况下会以文本方式打开，不适合作为可运行网页工具入口。
+
+网页工具入口这样填 `url`：
 
 ```json
 {
   "kind": "html",
   "label": "ITV自动打点工具.html",
-  "url": "https://mmdxptnrfcwfulutzoex.supabase.co/storage/v1/object/public/tool-packages/itv-auto-marker/itv-auto-marker.html",
+  "url": "./tools/finalcut-itv.html",
   "status": "uploaded"
 }
 ```

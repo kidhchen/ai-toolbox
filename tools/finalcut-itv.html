@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Final Cut 交互 data.itvm 生成工具 - 毫秒级预览版</title>
+<style>
+  :root{
+    --bg:#0f172a; --panel:#111827; --panel2:#182238; --text:#e5e7eb; --muted:#94a3b8;
+    --accent:#38bdf8; --green:#22c55e; --red:#ef4444; --yellow:#f59e0b; --line:#334155;
+    --input:#0b1220;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft Yahei",sans-serif;background:linear-gradient(135deg,#08111f,#111827 45%,#0f172a);color:var(--text)}
+  header{padding:28px 28px 18px;border-bottom:1px solid var(--line);background:rgba(15,23,42,.88);position:sticky;top:0;z-index:10;backdrop-filter: blur(10px)}
+  h1{margin:0 0 8px;font-size:26px;letter-spacing:.5px}
+  header p{margin:0;color:var(--muted);line-height:1.6}
+  main{max-width:1280px;margin:0 auto;padding:24px}
+  .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
+  .card{background:rgba(17,24,39,.82);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 14px 50px rgba(0,0,0,.22)}
+  .card h2{margin:0 0 14px;font-size:18px}
+  .card h3{margin:16px 0 10px;font-size:15px;color:#bae6fd}
+  .guideBox{border:1px solid rgba(56,189,248,.42);background:linear-gradient(180deg,rgba(14,165,233,.12),rgba(2,6,23,.32));border-radius:14px;padding:14px;margin:0 0 14px}
+  .guideBox h3{margin:0 0 8px;color:#e0f2fe}
+  .guideBox ul{margin:8px 0 0 20px;padding:0;color:#cbd5e1;line-height:1.65;font-size:13px}
+  .guideGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  .guideItem{border:1px solid var(--line);border-radius:12px;padding:10px;background:rgba(2,6,23,.38)}
+  .guideItem b{display:block;margin-bottom:6px;color:#bae6fd}
+  .badName{color:#fca5a5}.goodName{color:#86efac}
+  .drop{border:1px dashed #475569;border-radius:14px;padding:16px;background:rgba(2,6,23,.36);margin-bottom:12px}
+  .drop label{display:block;font-weight:700;margin-bottom:8px}
+  input[type=file]{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--input);color:var(--text)}
+  input[type=text],input[type=number],select,textarea{width:100%;padding:9px 10px;border-radius:9px;border:1px solid var(--line);background:var(--input);color:var(--text);outline:none}
+  input[type=number]{min-width:70px}
+  textarea{min-height:120px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;line-height:1.45}
+  .row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:10px 0}
+  .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+  .row4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0}
+  .muted{color:var(--muted);font-size:13px;line-height:1.6}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;color:#031124;background:var(--accent);transition:.15s transform,.15s opacity}
+  button:hover{transform:translateY(-1px)}
+  button:disabled{opacity:.45;cursor:not-allowed;transform:none}
+  button.secondary{background:#334155;color:#e5e7eb}
+  button.green{background:var(--green);color:#031124}
+  button.yellow{background:var(--yellow);color:#111827}
+  .status{padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(2,6,23,.5);margin:12px 0;color:var(--muted);white-space:pre-wrap}
+  .ok{color:#86efac}.warn{color:#fbbf24}.bad{color:#fca5a5}.info{color:#93c5fd}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;overflow:hidden;border-radius:12px}
+  th,td{border-bottom:1px solid var(--line);padding:8px;text-align:left;vertical-align:middle}
+  th{color:#cbd5e1;background:#0b1220;position:sticky;top:0}
+  td input{padding:6px 7px;font-size:12px}
+  .scroll{max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:12px;background:rgba(2,6,23,.24)}
+  .videoWrap{position:relative;width:100%;background:#020617;border:1px solid var(--line);border-radius:14px;overflow:hidden;min-height:240px;display:flex;align-items:center;justify-content:center}
+  .videoWrap.hasVideo{display:block;min-height:0}
+  video{width:100%;display:block;max-height:520px;background:#000}
+  .overlay{position:absolute;inset:0;pointer-events:none;touch-action:none}
+  .overlay.editing .box{pointer-events:auto}
+  .overlay.locked .box{pointer-events:none}
+  .overlay.locked .resizeHandle{display:none}
+  .box{position:absolute;border:2px solid #38bdf8;background:rgba(56,189,248,.13);border-radius:8px;color:white;font-weight:800;font-size:14px;text-shadow:0 1px 3px #000;display:flex;align-items:flex-start;justify-content:flex-start;padding:6px;cursor:move;pointer-events:auto;user-select:none;min-width:28px;min-height:22px}
+  .box.correct{border-color:#22c55e;background:rgba(34,197,94,.16)}
+  .box.wrong{border-color:#ef4444;background:rgba(239,68,68,.14)}
+  .box.active{outline:2px solid rgba(255,255,255,.9);box-shadow:0 0 0 4px rgba(56,189,248,.24),0 10px 26px rgba(0,0,0,.25)}
+  .box .boxLabel{pointer-events:none;line-height:1.2}
+  .resizeHandle{position:absolute;right:-7px;bottom:-7px;width:16px;height:16px;border-radius:5px;border:2px solid rgba(255,255,255,.95);background:#0ea5e9;box-shadow:0 2px 10px rgba(0,0,0,.35);cursor:nwse-resize;pointer-events:auto}
+  .resizeHandle::after{content:"";position:absolute;right:2px;bottom:2px;width:5px;height:5px;border-right:2px solid #fff;border-bottom:2px solid #fff;opacity:.9}
+  .pill{display:inline-flex;gap:6px;align-items:center;padding:4px 8px;border-radius:99px;background:#0b1220;border:1px solid var(--line);font-size:12px;color:#cbd5e1}
+
+  .timePanel{margin-top:12px;border:1px solid rgba(148,163,184,.32);border-radius:14px;background:rgba(2,6,23,.42);padding:12px}
+  .timeGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+  .timeItem{border:1px solid var(--line);border-radius:10px;background:rgba(15,23,42,.7);padding:9px}
+  .timeItem .label{color:var(--muted);font-size:12px;margin-bottom:5px}
+  .timeItem .value{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:15px;color:#e0f2fe;white-space:nowrap}
+  .timeButtons{display:flex;gap:8px;flex-wrap:wrap;align-items:end}
+  .timeButtons input{width:140px}
+  @media(max-width:980px){.timeGrid{grid-template-columns:1fr 1fr}.timeButtons input{width:100%}}
+  .code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#020617;border:1px solid var(--line);border-radius:12px;padding:12px;white-space:pre-wrap;max-height:380px;overflow:auto;font-size:12px;line-height:1.45}
+  .footer{color:var(--muted);font-size:12px;text-align:center;padding:20px}
+  @media(max-width:980px){.grid{grid-template-columns:1fr}.row,.row3,.row4{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Final Cut 交互 data.itvm 生成工具 <span style="font-size:15px;color:#93c5fd">毫秒级预览版</span></h1>
+  <p>拖入 FCPXML / XML 文本 + MP4，按规范命名自动识别 <span class="pill">ITV_Q_Q01_题目</span> <span class="pill">ITV_A_Q01_A_正确</span> <span class="pill">ITV_TARGET_Q02</span>，生成选择题交互 data.itvm 和交互包 ZIP。</p>
+</header>
+<main>
+  <div class="grid">
+    <section class="card">
+      <h2>1. 导入文件</h2>
+      <div class="guideBox">
+        <h3>⚠️ 命名规范提示：请给时间线片段使用完整 ITV 名称</h3>
+        <div class="muted">工具主要通过 Final Cut 时间线里 <b>title 的 name</b> 来识别交互。不要只写 <span class="badName">ITV_Q</span>、<span class="badName">ITV_A</span>，否则工具不知道题号、选项 ID、正确/错误和跳转关系。</div>
+        <div class="guideGrid">
+          <div class="guideItem">
+            <b>选择题推荐格式</b>
+            <div class="code">ITV_Q_Q01_题目
+ITV_A_Q01_A_正确
+ITV_A_Q01_B_错误
+ITV_FEEDBACK_Q01_RIGHT
+ITV_FEEDBACK_Q01_WRONG
+ITV_TARGET_Q02</div>
+          </div>
+          <div class="guideItem">
+            <b>不要这样命名</b>
+            <div class="code">ITV_Q
+题目
+adad
+ITV_A</div>
+          </div>
+        </div>
+        <ul>
+          <li><span class="goodName">ITV_Q_Q01_题目</span>：Q01 题目的题目片段。</li>
+          <li><span class="goodName">ITV_A_Q01_A_正确</span>：Q01 的 A 选项，且为正确答案。</li>
+          <li><span class="goodName">ITV_A_Q01_B_错误</span>：Q01 的 B 选项，且为错误答案。</li>
+          <li><span class="goodName">ITV_TARGET_Q02</span>：答对后跳转到 Q02 目标时间点。</li>
+          <li>多题时依次使用 <span class="goodName">Q01</span>、<span class="goodName">Q02</span>、<span class="goodName">Q03</span>。</li>
+        </ul>
+      </div>
+      <div class="drop">
+        <label>FCPXML / 粘贴文本 txt</label>
+        <input id="fcpxmlFile" type="file" accept=".fcpxml,.xml,.txt" />
+        <div class="muted">也可以直接把 FCPXML 内容粘到下面文本框。</div>
+      </div>
+      <textarea id="xmlText" placeholder="把 FCPXML 内容粘贴到这里，或者选择上面的文件。
+
+识别命名示例：
+ITV_Q_Q01_题目
+ITV_A_Q01_A_正确
+ITV_A_Q01_B_错误
+ITV_FEEDBACK_Q01_RIGHT
+ITV_FEEDBACK_Q01_WRONG
+ITV_TARGET_Q02"></textarea>
+      <div class="drop" style="margin-top:12px">
+        <label>视频 MP4</label>
+        <input id="videoFile" type="file" accept="video/mp4,.mp4" />
+        <div class="muted">用于读取文件名、大小、时长、分辨率、MD5，并生成缩略图。</div>
+      </div>
+      <div class="drop">
+        <label>可选：选择题 data.itvm 模板</label>
+        <input id="templateFile" type="file" accept=".itvm,.json,.txt" />
+        <div class="muted">建议拖入你已经能用的“选择题交互” data.itvm。工具会沿用 MakerVersion、courseId、错误音效字段等结构。</div>
+      </div>
+
+      <h3>生成设置</h3>
+      <div class="row">
+        <div>
+          <label class="muted">故事 / 视频名称</label>
+          <input id="storyName" type="text" placeholder="默认使用视频文件名" />
+        </div>
+        <div>
+          <label class="muted">交互类型</label>
+          <select id="mode">
+            <option value="simple-select" selected>选择题：选对才跳转 / 循环等待</option>
+            <option value="auto-pause">点击继续播放：每个热区单独暂停播放</option>
+          </select>
+        </div>
+      </div>
+      <div class="row3">
+        <div>
+          <label class="muted">默认答题限时，秒</label>
+          <input id="answerLimit" type="number" step="0.1" value="30" />
+        </div>
+        <div>
+          <label class="muted">默认热区宽</label>
+          <input id="defaultW" type="number" step="0.000001" value="0.352153" />
+        </div>
+        <div>
+          <label class="muted">默认热区高</label>
+          <input id="defaultH" type="number" step="0.000001" value="0.39966" />
+        </div>
+      </div>
+      <div class="row">
+        <label class="muted"><input id="useDefaultWrongSound" type="checkbox" checked /> 没有模板时使用默认错误音效字段</label>
+        <label class="muted"><input id="zipWithVideo" type="checkbox" checked /> ZIP 内包含 MP4</label>
+      </div>
+
+      <div class="btns">
+        <button id="parseBtn">识别交互</button>
+        <button id="buildBtn" class="green" disabled>生成 data.itvm</button>
+        <button id="downloadDataBtn" class="yellow" disabled>下载 data.itvm</button>
+        <button id="downloadZipBtn" class="yellow" disabled>下载交互包 ZIP</button>
+        <button id="resetBtn" class="secondary">清空</button>
+      </div>
+      <div id="status" class="status">等待导入文件。</div>
+    </section>
+
+    <section class="card">
+      <h2>2. 视频预览与热区</h2>
+      <div class="videoWrap" id="videoWrap">
+        <video id="previewVideo" controls muted></video>
+        <div id="overlay" class="overlay"></div>
+        <div id="videoEmpty" class="muted">导入 MP4 后，这里会显示热区预览。</div>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <div>
+          <label class="muted">预览题目</label>
+          <select id="previewQuestion" disabled></select>
+        </div>
+        <label class="muted" style="display:flex;align-items:end;gap:8px;padding-bottom:8px"><input id="dragEditToggle" type="checkbox" checked /> 开启拖拽编辑热区</label>
+      </div>
+      <div class="btns">
+        <button id="previewPlayBtn" class="secondary" disabled>播放/暂停</button>
+        <button id="seekTriggerBtn" class="secondary" disabled>跳到当前交互点</button>
+        <button id="refreshOverlayBtn" class="secondary" disabled>刷新热区预览</button>
+      </div>
+      <div class="timePanel">
+        <div class="timeGrid">
+          <div class="timeItem"><div class="label">当前播放时间</div><div id="currentTimeText" class="value">00:00:00.000</div></div>
+          <div class="timeItem"><div class="label">当前秒数</div><div id="currentSecondsText" class="value">0.000s</div></div>
+          <div class="timeItem"><div class="label">当前题触发时间</div><div id="triggerTimeText" class="value">--</div></div>
+          <div class="timeItem"><div class="label">当前时间 - 触发时间</div><div id="timeDeltaText" class="value">--</div></div>
+        </div>
+        <div class="timeButtons">
+          <div>
+            <label class="muted">精确跳转到秒，支持毫秒</label>
+            <input id="preciseSeek" type="number" step="0.001" value="0.000" disabled />
+          </div>
+          <button id="previewSeekInputBtn" class="secondary" disabled>精确跳转</button>
+          <button id="setTriggerFromCurrentBtn" class="green" disabled>用当前时间设为触发</button>
+          <button id="nudgeBackMsBtn" class="secondary" disabled>-1ms</button>
+          <button id="nudgeForwardMsBtn" class="secondary" disabled>+1ms</button>
+          <button id="nudgeBackFrameBtn" class="secondary" disabled>-1帧</button>
+          <button id="nudgeForwardFrameBtn" class="secondary" disabled>+1帧</button>
+        </div>
+      </div>
+      <div class="muted" style="margin-top:10px">现在可以直接在预览区编辑：拖动热区移动位置，拖右下角小方块调整宽高。时间显示已精确到毫秒，可用“精确跳转”检查触发点，也可以点击“用当前时间设为触发”把当前预览时间写回交互触发时间。</div>
+    </section>
+  </div>
+
+  <section class="card" style="margin-top:18px">
+    <h2>3. 识别结果与热区编辑</h2>
+    <div id="summary" class="status">还没有识别结果。</div>
+    <div id="editor"></div>
+  </section>
+
+  <section class="card" style="margin-top:18px">
+    <h2>4. 输出预览</h2>
+    <div class="btns">
+      <button id="copyJsonBtn" class="secondary" disabled>复制 JSON</button>
+    </div>
+    <div id="output" class="code">生成后会显示 data.itvm JSON。</div>
+  </section>
+</main>
+<div class="footer">本工具只在浏览器本地处理文件，不上传素材。建议用 Chrome / Edge 打开。</div>
+
+<script>
+'use strict';
+
+const $ = (id)=>document.getElementById(id);
+const state = {
+  xmlText: '', template: null, videoFile: null, videoMeta: null, thumbBytes: null, thumbPath: '',
+  parsed: null, outputObj: null, outputText: '', outputBlob: null, zipBlob: null,
+  previewQuestionIndex: 0, selectedHotspot: null, drag: null, previewVideoUrl: ''
+};
+
+function setStatus(msg, kind='info'){
+  $('status').innerHTML = `<span class="${kind}">${escapeHtml(msg)}</span>`;
+}
+function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function uuid(){
+  if (crypto.randomUUID) return crypto.randomUUID();
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0,v=c==='x'?r:(r&0x3|0x8);return v.toString(16);});
+}
+function downloadBlob(blob, filename){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+}
+function extOf(name){ const m=String(name||'').match(/\.([^.]+)$/); return m?m[1].toLowerCase():''; }
+function stripExt(name){ return String(name||'').replace(/\.[^.]+$/, ''); }
+
+$('fcpxmlFile').addEventListener('change', async (e)=>{
+  const f=e.target.files[0]; if(!f) return;
+  const t=await f.text(); $('xmlText').value=t; state.xmlText=t; setStatus('已读取 FCPXML 文件：'+f.name, 'ok');
+});
+$('templateFile').addEventListener('change', async(e)=>{
+  const f=e.target.files[0]; if(!f) return;
+  try { state.template = JSON.parse(await f.text()); setStatus('已读取 data.itvm 模板：'+f.name, 'ok'); }
+  catch(err){ setStatus('模板不是合法 JSON：'+err.message, 'bad'); }
+});
+$('videoFile').addEventListener('change', async(e)=>{
+  const f=e.target.files[0]; if(!f) return;
+  state.videoFile=f;
+  if(state.previewVideoUrl) URL.revokeObjectURL(state.previewVideoUrl);
+  const url=URL.createObjectURL(f);
+  state.previewVideoUrl=url;
+  const video=$('previewVideo');
+  video.pause();
+  video.removeAttribute('src');
+  video.load();
+  video.src=url;
+  video.controls=true;
+  video.muted=true;
+  video.playsInline=true;
+  video.load();
+  $('videoEmpty').style.display='none'; $('videoWrap').classList.add('hasVideo');
+  $('previewPlayBtn').disabled=false;
+  ['preciseSeek','previewSeekInputBtn','setTriggerFromCurrentBtn','nudgeBackMsBtn','nudgeForwardMsBtn','nudgeBackFrameBtn','nudgeForwardFrameBtn'].forEach(id=>$(id).disabled=false);
+  updatePreviewTimeDisplay();
+  $('storyName').placeholder=stripExt(f.name);
+  setStatus('已选择视频：'+f.name+'。如果浏览器控件被热区挡住，可直接点“播放/暂停”。生成时会计算 MD5，视频较大时需要等待。', 'ok');
+});
+$('resetBtn').addEventListener('click', ()=>location.reload());
+$('parseBtn').addEventListener('click', parseAll);
+$('buildBtn').addEventListener('click', buildOutput);
+$('downloadDataBtn').addEventListener('click', ()=> state.outputBlob && downloadBlob(state.outputBlob, 'data.itvm'));
+$('downloadZipBtn').addEventListener('click', async()=>{
+  if (!state.zipBlob) await buildZip();
+  if (state.zipBlob) downloadBlob(state.zipBlob, ((stripExt(state.videoFile?.name||'交互视频')||'交互视频')+'_交互包.zip'));
+});
+$('copyJsonBtn').addEventListener('click', async()=>{ await navigator.clipboard.writeText(state.outputText||''); setStatus('JSON 已复制。','ok'); });
+$('seekTriggerBtn').addEventListener('click', ()=>{
+  const q = state.parsed?.questions?.[state.previewQuestionIndex] || state.parsed?.questions?.[0];
+  if(q){ $('previewVideo').currentTime = Math.max(0, q.triggerSeconds||0); updatePreviewTimeDisplay(); }
+});
+$('previewSeekInputBtn').addEventListener('click', seekPreviewToInput);
+$('preciseSeek').addEventListener('keydown', (e)=>{ if(e.key==='Enter') seekPreviewToInput(); });
+$('setTriggerFromCurrentBtn').addEventListener('click', setCurrentTimeAsTrigger);
+$('nudgeBackMsBtn').addEventListener('click', ()=>nudgePreview(-0.001));
+$('nudgeForwardMsBtn').addEventListener('click', ()=>nudgePreview(0.001));
+$('nudgeBackFrameBtn').addEventListener('click', ()=>nudgePreview(-getFrameStep()));
+$('nudgeForwardFrameBtn').addEventListener('click', ()=>nudgePreview(getFrameStep()));
+$('refreshOverlayBtn').addEventListener('click', refreshOverlay);
+$('previewPlayBtn').addEventListener('click', async()=>{
+  const v=$('previewVideo');
+  if(!v.src) return;
+  try{
+    if(v.paused) await v.play();
+    else v.pause();
+  }catch(err){
+    setStatus('视频播放失败：'+err.message+'。请确认浏览器支持该 MP4 编码，或点击视频自带播放按钮。','bad');
+  }
+});
+$('previewQuestion').addEventListener('change', (e)=>{ state.previewQuestionIndex=Number(e.target.value)||0; state.selectedHotspot=null; refreshOverlay(); const q=state.parsed?.questions?.[state.previewQuestionIndex]; if(q) $('previewVideo').currentTime=Math.max(0,q.triggerSeconds||0); updatePreviewTimeDisplay(); });
+$('dragEditToggle').addEventListener('change', refreshOverlay);
+['timeupdate','loadedmetadata','seeked','play','pause'].forEach(evt=>$('previewVideo').addEventListener(evt, updatePreviewTimeDisplay));
+requestAnimationFrame(function tickPreviewTime(){ updatePreviewTimeDisplay(); requestAnimationFrame(tickPreviewTime); });
+
+function seekPreviewToInput(){
+  const v=$('previewVideo'); if(!v.src) return;
+  const max=Number.isFinite(v.duration) ? v.duration : 24*3600;
+  const t=clamp(Number($('preciseSeek').value)||0, 0, max);
+  v.currentTime=t; updatePreviewTimeDisplay();
+}
+function nudgePreview(delta){
+  const v=$('previewVideo'); if(!v.src) return;
+  const max=Number.isFinite(v.duration) ? v.duration : 24*3600;
+  v.currentTime=clamp((Number(v.currentTime)||0)+delta, 0, max);
+  updatePreviewTimeDisplay();
+}
+function getFrameStep(){
+  const fps=state.parsed?.format?.fps || 25;
+  return 1/Math.max(1,fps);
+}
+function setCurrentTimeAsTrigger(){
+  const q=currentPreviewQuestion(); if(!q) return;
+  q.triggerSeconds=Number((Number($('previewVideo').currentTime)||0).toFixed(3));
+  renderQuestionPicker(); renderEditor(); refreshOverlay(); updatePreviewTimeDisplay();
+  setStatus(`已将 ${q.id} 的触发时间设置为 ${q.triggerSeconds.toFixed(3)} 秒。`, 'ok');
+}
+function updatePreviewTimeDisplay(){
+  const v=$('previewVideo');
+  const cur=Number(v.currentTime)||0;
+  const timeText=$('currentTimeText'); if(timeText) timeText.textContent=secondsToTimecode(cur);
+  const secText=$('currentSecondsText'); if(secText) secText.textContent=cur.toFixed(3)+'s';
+  const seekInput=$('preciseSeek'); if(seekInput && document.activeElement!==seekInput) seekInput.value=cur.toFixed(3);
+  const q=currentPreviewQuestion?.();
+  const triggerText=$('triggerTimeText');
+  const deltaText=$('timeDeltaText');
+  if(q){
+    triggerText.textContent=`${secondsToTimecode(q.triggerSeconds)} / ${q.triggerSeconds.toFixed(3)}s`;
+    const delta=cur-q.triggerSeconds;
+    deltaText.textContent=(delta>=0?'+':'')+delta.toFixed(3)+'s';
+    deltaText.style.color=Math.abs(delta)<0.002?'#86efac':(Math.abs(delta)<0.041?'#fbbf24':'#e0f2fe');
+  }else{
+    if(triggerText) triggerText.textContent='--';
+    if(deltaText){ deltaText.textContent='--'; deltaText.style.color=''; }
+  }
+}
+
+function fcpxTimeToSeconds(value){
+  if(value == null || value === '') return 0;
+  let v=String(value).trim();
+  if(v.endsWith('s')) v=v.slice(0,-1);
+  if(v.includes('/')){ const [n,d]=v.split('/').map(Number); return d ? n/d : 0; }
+  return Number(v)||0;
+}
+function secondsToTimecode(seconds){
+  seconds = Math.max(0, Number(seconds)||0);
+  const h=Math.floor(seconds/3600), m=Math.floor((seconds%3600)/60), s=Math.floor(seconds%60);
+  const ms=Math.round((seconds-Math.floor(seconds))*1000);
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}.${String(ms).padStart(3,'0')}`;
+}
+function nearestGapStart(el){
+  let p=el.parentElement;
+  while(p){
+    if(String(p.tagName).toLowerCase()==='gap') return fcpxTimeToSeconds(p.getAttribute('start')||'0s');
+    p=p.parentElement;
+  }
+  return 0;
+}
+function realStartSeconds(el){
+  const offset=fcpxTimeToSeconds(el.getAttribute('offset') || el.getAttribute('start') || '0s');
+  const base=nearestGapStart(el);
+  const real=offset-base;
+  return Math.abs(real) < 1e-6 ? 0 : Math.max(0, real);
+}
+function getTexts(el){
+  return Array.from(el.getElementsByTagName('text-style')).map(n=>(n.textContent||'').trim()).filter(Boolean);
+}
+function getPosition(el){
+  const t=el.getElementsByTagName('adjust-transform')[0];
+  return t ? (t.getAttribute('position')||'') : '';
+}
+function parseAll(){
+  try{
+    const xmlText=$('xmlText').value.trim();
+    if(!xmlText) throw new Error('请先导入或粘贴 FCPXML 内容。');
+    state.xmlText=xmlText;
+    const parser=new DOMParser();
+    const xml=parser.parseFromString(xmlText, 'application/xml');
+    if(xml.getElementsByTagName('parsererror').length) throw new Error('XML 解析失败，请确认内容是 FCPXML。');
+
+    const fmt=xml.querySelector('resources > format') || xml.getElementsByTagName('format')[0];
+    const seq=xml.getElementsByTagName('sequence')[0];
+    const project=xml.getElementsByTagName('project')[0];
+    const frameDuration=fmt?.getAttribute('frameDuration') || '';
+    const fps=frameDuration ? (1/fcpxTimeToSeconds(frameDuration)) : 25;
+    const videoW=Number(fmt?.getAttribute('width')||1920);
+    const videoH=Number(fmt?.getAttribute('height')||1080);
+    const durationSeconds=seq ? fcpxTimeToSeconds(seq.getAttribute('duration')) : 0;
+    const baseGap=xml.getElementsByTagName('gap')[0];
+    const timelineZeroBase=baseGap?.getAttribute('start') || '0s';
+
+    const elements=[];
+    Array.from(xml.getElementsByTagName('title')).forEach(el=>{
+      const name=el.getAttribute('name')||'';
+      const texts=getTexts(el);
+      const item={
+        tag:'title', name, ref:el.getAttribute('ref')||'', lane:el.getAttribute('lane')||'',
+        startSeconds:realStartSeconds(el), durationSeconds:fcpxTimeToSeconds(el.getAttribute('duration')||'0s'),
+        texts, label:texts[0]||'', text:texts.length>1?texts.slice(1).join(' / '):(texts[0]||''),
+        position:getPosition(el), raw:{offset:el.getAttribute('offset'), start:el.getAttribute('start'), duration:el.getAttribute('duration')}
+      };
+      elements.push(item);
+    });
+
+    const markers=Array.from(xml.getElementsByTagName('marker')).map(el=>({
+      value:el.getAttribute('value')||'', seconds:Math.max(0, fcpxTimeToSeconds(el.getAttribute('start')||'0s')-nearestGapStart(el)), rawStart:el.getAttribute('start')||''
+    }));
+
+    const targets={};
+    const questionsMap=new Map();
+    function ensureQ(qid){
+      if(!questionsMap.has(qid)) questionsMap.set(qid,{id:qid, question:null, answers:[], feedbacks:{}, targets:{}, triggerSeconds:0, loopTime:0, sourceMarkers:[]});
+      return questionsMap.get(qid);
+    }
+
+    for(const el of elements){
+      let m;
+      if((m=el.name.match(/^ITV_Q_([A-Za-z0-9]+)_?/i))){
+        const q=ensureQ(m[1]); q.question=el; continue;
+      }
+      if((m=el.name.match(/^ITV_A_([A-Za-z0-9]+)_([A-Z])_(正确|错误)(?:_(.+))?/i))){
+        const q=ensureQ(m[1]);
+        q.answers.push({
+          qid:m[1], id:m[2], correct:m[3]==='正确', actionText:m[4]||'',
+          name:el.name, label:el.label||m[2], text:el.text||el.label||m[2], startSeconds:el.startSeconds,
+          durationSeconds:el.durationSeconds, position:el.position, raw:el.raw, hitArea:null
+        });
+        continue;
+      }
+      if((m=el.name.match(/^ITV_FEEDBACK_([A-Za-z0-9]+)_(RIGHT|WRONG|正确|错误)/i))){
+        const q=ensureQ(m[1]); const key=(m[2]==='RIGHT'||m[2]==='正确')?'right':'wrong'; q.feedbacks[key]=el; continue;
+      }
+      if((m=el.name.match(/^ITV_TARGET_([A-Za-z0-9_-]+)/i))){
+        targets[m[1]]=el; continue;
+      }
+    }
+
+    const questions=Array.from(questionsMap.values()).sort((a,b)=>{
+      const at=a.question?.startSeconds ?? (a.answers[0]?.startSeconds ?? 0);
+      const bt=b.question?.startSeconds ?? (b.answers[0]?.startSeconds ?? 0);
+      return at-bt;
+    });
+    for(const q of questions){
+      q.answers.sort((a,b)=>a.id.localeCompare(b.id));
+      const answerStart=q.answers.length?Math.min(...q.answers.map(a=>a.startSeconds)):null;
+      q.triggerSeconds=answerStart ?? q.question?.startSeconds ?? 0;
+      q.sourceMarkers=markers.filter(m=>Math.abs(m.seconds-q.triggerSeconds)<0.08 || /ITV|标记|交互|pause/i.test(m.value));
+      if(q.sourceMarkers.length) q.triggerSeconds=q.sourceMarkers[0].seconds;
+      const targetId = 'Q' + String(Number(q.id.replace(/^Q/i,''))+1).padStart(2,'0');
+      const target=targets[targetId] || targets[q.id] || Object.values(targets).find(t=>t.startSeconds>q.triggerSeconds);
+      q.target=target?{id:Object.keys(targets).find(k=>targets[k]===target)||'', startSeconds:target.startSeconds, name:target.name}:null;
+      q.loopTime=Math.max(0, (q.target?.startSeconds ?? q.feedbacks.right?.startSeconds ?? (q.triggerSeconds+15)) - q.triggerSeconds);
+      assignDefaultHitAreas(q);
+    }
+
+    state.parsed={projectName:project?.getAttribute('name')||'未命名项目', durationSeconds, format:{width:videoW,height:videoH,fps,frameDuration}, timelineZeroBase, questions, elements, markers, targets};
+    state.previewQuestionIndex=0; state.selectedHotspot=null;
+    renderQuestionPicker(); renderEditor(); refreshOverlay(); updatePreviewTimeDisplay();
+    $('buildBtn').disabled=false; $('refreshOverlayBtn').disabled=false; $('seekTriggerBtn').disabled=questions.length===0;
+    setStatus(`识别完成：${questions.length} 道题，${questions.reduce((n,q)=>n+q.answers.length,0)} 个选项，${Object.keys(targets).length} 个跳转目标。`, questions.length?'ok':'warn');
+  }catch(err){ setStatus(err.message || String(err),'bad'); }
+}
+function assignDefaultHitAreas(q){
+  const w=Number($('defaultW').value)||0.352153, h=Number($('defaultH').value)||0.39966;
+  const n=q.answers.length;
+  q.answers.forEach((a,i)=>{
+    let x=0.1,y=0.58;
+    if(n===1){x=0.5-w/2;y=0.46;}
+    else if(n===2){x=i===0?0.17627996701843027:0.47156703298156977;y=0.4005101360544217;}
+    else if(n===3){x=[0.03,0.335,0.64][i] ?? 0.1; y=0.46;}
+    else {x=(i%2===0)?0.17627996701843027:0.47156703298156977; y=(i<2)?0.3305:0.5905;}
+    a.hitArea={x:+x.toFixed(9), y:+y.toFixed(9), width:+w.toFixed(6), height:+h.toFixed(6)};
+  });
+}
+function renderEditor(){
+  const p=state.parsed;
+  if(!p){$('summary').textContent='还没有识别结果。';$('editor').innerHTML='';return;}
+  $('summary').innerHTML=`<span class="ok">项目：${escapeHtml(p.projectName)}</span>　视频规格：${p.format.width}×${p.format.height} / ${p.format.fps.toFixed(2)}fps　时间线时长：${secondsToTimecode(p.durationSeconds)}　timeline base：${escapeHtml(p.timelineZeroBase)}`;
+  let html='';
+  p.questions.forEach((q,qi)=>{
+    html += `<div class="scroll" style="margin:14px 0 20px"><table><thead><tr><th colspan="10">题目 ${escapeHtml(q.id)} ｜ 触发 <input data-q="${qi}" data-field="triggerSeconds" type="number" step="0.001" value="${q.triggerSeconds.toFixed(3)}" style="width:100px;display:inline-block"> 秒 ｜ 循环/跳转间隔 <input data-q="${qi}" data-field="loopTime" type="number" step="0.001" value="${q.loopTime.toFixed(3)}" style="width:100px;display:inline-block"> 秒 ｜ 目标：${escapeHtml(q.target?.name||'未检测到')}</th></tr><tr><th>选项</th><th>正确</th><th>文本</th><th>开始秒</th><th>x</th><th>y</th><th>width</th><th>height</th><th>FCP位置</th><th>片段名</th></tr></thead><tbody>`;
+    q.answers.forEach((a,ai)=>{
+      html += `<tr>
+        <td>${escapeHtml(a.id)}</td>
+        <td><input type="radio" name="correct_${qi}" data-q="${qi}" data-a="${ai}" data-field="correct" ${a.correct?'checked':''}></td>
+        <td><input data-q="${qi}" data-a="${ai}" data-field="text" type="text" value="${escapeHtml(a.text)}"></td>
+        <td>${a.startSeconds.toFixed(3)}</td>
+        <td><input data-q="${qi}" data-a="${ai}" data-field="x" type="number" step="0.000001" value="${a.hitArea.x}"></td>
+        <td><input data-q="${qi}" data-a="${ai}" data-field="y" type="number" step="0.000001" value="${a.hitArea.y}"></td>
+        <td><input data-q="${qi}" data-a="${ai}" data-field="width" type="number" step="0.000001" value="${a.hitArea.width}"></td>
+        <td><input data-q="${qi}" data-a="${ai}" data-field="height" type="number" step="0.000001" value="${a.hitArea.height}"></td>
+        <td>${escapeHtml(a.position||'')}</td>
+        <td>${escapeHtml(a.name)}</td>
+      </tr>`;
+    });
+    html += `</tbody></table></div>`;
+  });
+  $('editor').innerHTML=html || '<div class="status warn">没有识别到题目。请检查命名是否使用完整格式，例如：ITV_Q_Q01_题目、ITV_A_Q01_A_正确、ITV_A_Q01_B_错误。不要只写 ITV_Q、ITV_A，工具无法判断题号、选项和正确/错误。</div>';
+  $('editor').querySelectorAll('input').forEach(inp=>inp.addEventListener('change', onEditorChange));
+}
+function onEditorChange(e){
+  const el=e.target, q=state.parsed.questions[Number(el.dataset.q)], field=el.dataset.field;
+  if(!q) return;
+  if(el.dataset.a != null){
+    const a=q.answers[Number(el.dataset.a)]; if(!a) return;
+    if(field==='correct') q.answers.forEach((x,i)=>x.correct=i===Number(el.dataset.a));
+    else if(field==='text') a.text=el.value;
+    else { a.hitArea[field]=Number(el.value)||0; state.selectedHotspot=Number(el.dataset.a); state.previewQuestionIndex=Number(el.dataset.q)||0; }
+  }else{
+    q[field]=Number(el.value)||0;
+    state.previewQuestionIndex=Number(el.dataset.q)||0;
+    if(field==='triggerSeconds' && $('previewVideo').src){ $('previewVideo').currentTime=Math.max(0,q.triggerSeconds||0); }
+    renderQuestionPicker();
+  }
+  refreshOverlay(); updatePreviewTimeDisplay();
+}
+function renderQuestionPicker(){
+  const sel=$('previewQuestion');
+  const qs=state.parsed?.questions || [];
+  sel.innerHTML='';
+  qs.forEach((q,i)=>{
+    const opt=document.createElement('option');
+    opt.value=String(i);
+    opt.textContent=`${q.id} ｜ ${q.answers.length} 个选项 ｜ ${q.triggerSeconds.toFixed(3)}s`;
+    sel.appendChild(opt);
+  });
+  sel.disabled=qs.length===0;
+  sel.value=String(Math.min(state.previewQuestionIndex, Math.max(0,qs.length-1)));
+}
+function currentPreviewQuestion(){
+  const qs=state.parsed?.questions || [];
+  if(!qs.length) return null;
+  if(state.previewQuestionIndex<0 || state.previewQuestionIndex>=qs.length) state.previewQuestionIndex=0;
+  return qs[state.previewQuestionIndex];
+}
+function clamp(n,min,max){ return Math.min(max, Math.max(min, Number(n)||0)); }
+function round6(n){ return Number((Number(n)||0).toFixed(6)); }
+function refreshOverlay(){
+  const overlay=$('overlay'); overlay.innerHTML='';
+  const editing=$('dragEditToggle').checked;
+  overlay.classList.toggle('editing', editing);
+  overlay.classList.toggle('locked', !editing);
+  const q=currentPreviewQuestion(); if(!q) return;
+  q.answers.forEach((a,ai)=>{
+    const b=document.createElement('div');
+    b.className='box '+(a.correct?'correct':'wrong')+(state.selectedHotspot===ai?' active':'');
+    b.dataset.q=String(state.previewQuestionIndex);
+    b.dataset.a=String(ai);
+    updateHotspotBoxStyle(b,a);
+    const label=document.createElement('div'); label.className='boxLabel'; label.textContent=`${a.id}${a.correct?' 正确':' 错误'}`;
+    b.appendChild(label);
+    const h=document.createElement('div'); h.className='resizeHandle'; h.title='拖动调整宽高'; b.appendChild(h);
+    b.addEventListener('pointerdown', onHotspotPointerDown);
+    overlay.appendChild(b);
+  });
+}
+function updateHotspotBoxStyle(box,a){
+  box.style.left=(a.hitArea.x*100)+'%'; box.style.top=(a.hitArea.y*100)+'%';
+  box.style.width=(a.hitArea.width*100)+'%'; box.style.height=(a.hitArea.height*100)+'%';
+}
+function onHotspotPointerDown(e){
+  if(!$('dragEditToggle').checked) return;
+  if(e.button !== undefined && e.button !== 0) return;
+  const box=e.currentTarget;
+  const qi=Number(box.dataset.q), ai=Number(box.dataset.a);
+  const q=state.parsed?.questions?.[qi]; const a=q?.answers?.[ai]; if(!a) return;
+  state.previewQuestionIndex=qi; state.selectedHotspot=ai;
+  const overlay=$('overlay'); const rect=overlay.getBoundingClientRect();
+  state.drag={
+    mode:e.target.classList.contains('resizeHandle')?'resize':'move', qi, ai, box,
+    startX:e.clientX, startY:e.clientY, rect,
+    startArea:{...a.hitArea}
+  };
+  box.classList.add('active');
+  e.preventDefault(); e.stopPropagation();
+  try{ box.setPointerCapture(e.pointerId); }catch(_e){}
+  document.addEventListener('pointermove', onHotspotPointerMove);
+  document.addEventListener('pointerup', onHotspotPointerUp, {once:true});
+  document.addEventListener('pointercancel', onHotspotPointerUp, {once:true});
+}
+function onHotspotPointerMove(e){
+  const d=state.drag; if(!d) return;
+  const q=state.parsed?.questions?.[d.qi]; const a=q?.answers?.[d.ai]; if(!a) return;
+  const dx=(e.clientX-d.startX)/Math.max(1,d.rect.width);
+  const dy=(e.clientY-d.startY)/Math.max(1,d.rect.height);
+  const minSize=0.015;
+  if(d.mode==='move'){
+    a.hitArea.x=round6(clamp(d.startArea.x+dx,0,1-d.startArea.width));
+    a.hitArea.y=round6(clamp(d.startArea.y+dy,0,1-d.startArea.height));
+    a.hitArea.width=round6(d.startArea.width);
+    a.hitArea.height=round6(d.startArea.height);
+  }else{
+    a.hitArea.width=round6(clamp(d.startArea.width+dx,minSize,1-d.startArea.x));
+    a.hitArea.height=round6(clamp(d.startArea.height+dy,minSize,1-d.startArea.y));
+    a.hitArea.x=round6(d.startArea.x);
+    a.hitArea.y=round6(d.startArea.y);
+  }
+  updateHotspotBoxStyle(d.box,a);
+  syncHotspotInputs(d.qi,d.ai);
+  e.preventDefault();
+}
+function onHotspotPointerUp(){
+  document.removeEventListener('pointermove', onHotspotPointerMove);
+  state.drag=null;
+  refreshOverlay();
+}
+function syncHotspotInputs(qi,ai){
+  const q=state.parsed?.questions?.[qi]; const a=q?.answers?.[ai]; if(!a) return;
+  for(const f of ['x','y','width','height']){
+    const input=$('editor').querySelector(`input[data-q="${qi}"][data-a="${ai}"][data-field="${f}"]`);
+    if(input) input.value=String(round6(a.hitArea[f]));
+  }
+}
+
+async function buildOutput(){
+  try{
+    if(!state.parsed) throw new Error('请先识别 FCPXML。');
+    const videoFile=state.videoFile;
+    if(videoFile){
+      setStatus('正在读取视频元数据、计算 MD5、生成缩略图……视频越大等待越久。','info');
+      state.videoMeta = await getVideoMeta(videoFile, state.parsed.format);
+      state.thumbBytes = await makeThumbnail(videoFile, state.videoMeta.md5);
+      state.thumbPath = state.thumbBytes ? `.thumb/${state.videoMeta.md5}.png` : '';
+    }else{
+      state.videoMeta = fallbackVideoMeta(state.parsed.format, state.parsed.durationSeconds);
+      state.thumbBytes = null; state.thumbPath = '';
+    }
+    const obj=makeItvm();
+    state.outputObj=obj; state.outputText=JSON.stringify(obj,null,2);
+    state.outputBlob=new Blob([state.outputText],{type:'application/json'});
+    $('output').textContent=state.outputText;
+    $('downloadDataBtn').disabled=false; $('downloadZipBtn').disabled=!state.videoFile; $('copyJsonBtn').disabled=false;
+    state.zipBlob=null;
+    setStatus('data.itvm 已生成。可以先下载 data.itvm，或下载完整交互包 ZIP。','ok');
+  }catch(err){ setStatus(err.message||String(err),'bad'); }
+}
+function getTemplateBase(){
+  const t=state.template || {};
+  return {
+    MakerVersion: t.MakerVersion || '0.2.10',
+    courseId: t.courseId || uuid(),
+    version: t.version || '2',
+    sections: Array.isArray(t.sections)?t.sections:[],
+    audios: t.audios || defaultAudios(),
+    effects: t.effects || {},
+    images: t.images || {}
+  };
+}
+function defaultAudios(){
+  if(!$('useDefaultWrongSound').checked) return {};
+  return {
+    'cc62b62d0bb4c90fe5a1889c708a51fa': {
+      localPath: '选择错误(音效).mp3', fileSize: 21253, mtime: 1757907516680.466,
+      cdnUrl: 'https://online-education.codemao.cn/228/codecamp/24f234fe88db4e20bf73d89b743137d0.mp3',
+      md5: 'cc62b62d0bb4c90fe5a1889c708a51fa', type: 'mp3'
+    }
+  };
+}
+function firstWrongSoundFilename(base){
+  const tmpl=state.template;
+  const fromTemplate=tmpl?.stories?.[0]?.timeNodes?.find(n=>n.interact?.wrongSoundFilename)?.interact?.wrongSoundFilename;
+  if(fromTemplate) return fromTemplate;
+  const keys=Object.keys(base.audios||{});
+  return keys[0] || '';
+}
+function makeItvm(){
+  const base=getTemplateBase();
+  const p=state.parsed; const meta=state.videoMeta;
+  const storyId=uuid();
+  const storyName=($('storyName').value.trim() || stripExt(meta.localPath) || p.projectName || '交互视频');
+  const mode=$('mode').value;
+  const timeNodes=[];
+  for(const q of p.questions){
+    if(!q.answers.length) continue;
+    if(mode==='simple-select'){
+      const selections=q.answers.map(a=>({ id:uuid(), pos:{x:a.hitArea.x, y:a.hitArea.y}, size:{width:a.hitArea.width, height:a.hitArea.height}, name:a.id, text:a.text }));
+      const correctIndex=Math.max(0,q.answers.findIndex(a=>a.correct));
+      timeNodes.push({
+        id: uuid(), name: `${q.id}_选择题`, parentStoryId: storyId, type: 'interact',
+        interact: {
+          type: 'simple-select',
+          loopTime: Number(q.loopTime.toFixed(3)),
+          autoLoop: { isAuto: true, pos: {x:0.8,y:0.2}, size: {width:0.2,height:0.2} },
+          selections: selections.map(s=>({id:s.id,pos:s.pos,size:s.size})),
+          correctSelectId: selections[correctIndex].id,
+          correctSoundFilename: '',
+          wrongSoundFilename: firstWrongSoundFilename(base),
+          answerLimitedTime: { type:'default', value:Number(q.triggerSeconds.toFixed(3)), time:Number($('answerLimit').value)||30 },
+          reward: { opened:false }
+        },
+        time: Number(q.triggerSeconds.toFixed(3))
+      });
+    }else{
+      for(const a of q.answers){
+        timeNodes.push({
+          id: uuid(), name: `${q.id}_${a.id}_${a.correct?'正确':'错误'}`, parentStoryId: storyId, type:'interact',
+          interact: { type:'auto-pause', operation:'play', size:{width:a.hitArea.width,height:a.hitArea.height}, pos:{x:a.hitArea.x+a.hitArea.width/2,y:a.hitArea.y+a.hitArea.height/2}, answerLimitedTime:{type:'default',value:Number(q.triggerSeconds.toFixed(3)),time:Number($('answerLimit').value)||30} },
+          time: Number(q.triggerSeconds.toFixed(3))
+        });
+      }
+    }
+  }
+  const videos={};
+  videos[meta.md5]={ localPath:meta.localPath, mtime:meta.mtime, fileSize:meta.fileSize, cdnUrl:'', md5:meta.md5, duration:meta.duration, size:{width:meta.width,height:meta.height}, thumb:state.thumbPath || '', videoExData:{validNoSupport:false, videoCodecName:'h264', videoCodecLongName:'H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10'}, type:meta.type||'mp4' };
+  return { MakerVersion:base.MakerVersion, courseId:base.courseId, version:base.version, sections:base.sections, stories:[{ id:storyId, name:storyName, vidFilename:meta.md5, timeNodes, allowChangeProgress:true, next:null }], videos, audios:base.audios, effects:base.effects, images:base.images };
+}
+function fallbackVideoMeta(format, duration){
+  return { localPath:'请替换为视频文件名.mp4', mtime:Date.now(), fileSize:0, md5:'VIDEO_MD5_PLACEHOLDER', duration:Number(duration.toFixed(3)), width:format.width||1920, height:format.height||1080, type:'mp4' };
+}
+async function getVideoMeta(file, fallbackFormat){
+  const ab=await file.arrayBuffer();
+  const md5=md5ArrayBuffer(ab);
+  const meta=await loadVideoMeta(file);
+  return { localPath:file.name, mtime:file.lastModified||Date.now(), fileSize:file.size, md5, duration:Number((meta.duration||0).toFixed(3)), width:meta.width||fallbackFormat.width||1920, height:meta.height||fallbackFormat.height||1080, type:extOf(file.name)||'mp4', buffer:ab };
+}
+function loadVideoMeta(file){
+  return new Promise((resolve,reject)=>{
+    const v=document.createElement('video'); v.preload='metadata'; v.muted=true;
+    const url=URL.createObjectURL(file);
+    v.onloadedmetadata=()=>{ const r={duration:v.duration,width:v.videoWidth,height:v.videoHeight}; URL.revokeObjectURL(url); resolve(r); };
+    v.onerror=()=>{ URL.revokeObjectURL(url); reject(new Error('无法读取视频元数据。')); };
+    v.src=url;
+  });
+}
+function makeThumbnail(file, md5){
+  return new Promise((resolve)=>{
+    const v=document.createElement('video'); v.muted=true; v.playsInline=true; v.preload='auto';
+    const url=URL.createObjectURL(file);
+    let done=false;
+    function finish(bytes){ if(done) return; done=true; URL.revokeObjectURL(url); resolve(bytes||null); }
+    v.onloadeddata=()=>{ try{ v.currentTime=Math.min(0.5, Math.max(0, (v.duration||1)/3)); }catch(e){ draw(); } };
+    v.onseeked=draw;
+    v.onerror=()=>finish(null);
+    setTimeout(()=>{ if(!done) draw(); },2500);
+    function draw(){
+      try{
+        const w=v.videoWidth||1920,h=v.videoHeight||1080; const maxW=640; const tw=Math.min(maxW,w); const th=Math.round(tw*h/w);
+        const c=document.createElement('canvas'); c.width=tw; c.height=th; const ctx=c.getContext('2d'); ctx.drawImage(v,0,0,tw,th);
+        c.toBlob(async b=>{ if(!b) return finish(null); finish(new Uint8Array(await b.arrayBuffer())); }, 'image/png');
+      }catch(e){ finish(null); }
+    }
+    v.src=url;
+  });
+}
+async function buildZip(){
+  if(!state.outputText) await buildOutput();
+  if(!state.videoFile) throw new Error('需要先选择 MP4，才能生成完整交互包 ZIP。');
+  const md5=state.videoMeta.md5;
+  const entries=[];
+  entries.push({name:state.videoMeta.localPath, data:new Uint8Array(state.videoMeta.buffer || await state.videoFile.arrayBuffer())});
+  entries.push({name:'data.itvm', data:new TextEncoder().encode(state.outputText)});
+  if(state.thumbBytes) entries.push({name:`.thumb/${md5}.png`, data:state.thumbBytes});
+  entries.push({name:'【重要】请勿修改该目录下文件.txt', data:new TextEncoder().encode('该目录由交互工具生成，请勿手动修改 data.itvm、.thumb 或视频文件名，否则可能导致上传失败。')});
+  state.zipBlob=new Blob([createZip(entries)],{type:'application/zip'});
+  setStatus('完整交互包 ZIP 已生成。','ok');
+}
+
+// ---------- ZIP STORE ----------
+function crc32(buf){
+  let c=~0; for(let i=0;i<buf.length;i++){ c=(c>>>8)^crcTable[(c^buf[i])&0xff]; } return (~c)>>>0;
+}
+const crcTable=(()=>{const t=new Uint32Array(256); for(let n=0;n<256;n++){let c=n; for(let k=0;k<8;k++) c=(c&1)?(0xedb88320^(c>>>1)):(c>>>1); t[n]=c>>>0;} return t;})();
+function dosDateTime(date=new Date()){
+  const d=((date.getFullYear()-1980)<<9)|((date.getMonth()+1)<<5)|date.getDate();
+  const t=(date.getHours()<<11)|(date.getMinutes()<<5)|(date.getSeconds()>>1);
+  return {d,t};
+}
+function u16(v){const b=new Uint8Array(2); new DataView(b.buffer).setUint16(0,v,true); return b;}
+function u32(v){const b=new Uint8Array(4); new DataView(b.buffer).setUint32(0,v>>>0,true); return b;}
+function concat(arrs){const len=arrs.reduce((n,a)=>n+a.length,0); const out=new Uint8Array(len); let o=0; for(const a of arrs){out.set(a,o);o+=a.length;} return out;}
+function createZip(entries){
+  const enc=new TextEncoder(); let offset=0; const files=[]; const centrals=[]; const {d,t}=dosDateTime();
+  for(const e of entries){
+    const name=enc.encode(e.name); const data=e.data instanceof Uint8Array?e.data:new Uint8Array(e.data); const crc=crc32(data); const compSize=data.length, size=data.length;
+    const local=concat([u32(0x04034b50),u16(20),u16(0),u16(0),u16(t),u16(d),u32(crc),u32(compSize),u32(size),u16(name.length),u16(0),name,data]);
+    files.push(local);
+    const central=concat([u32(0x02014b50),u16(20),u16(20),u16(0),u16(0),u16(t),u16(d),u32(crc),u32(compSize),u32(size),u16(name.length),u16(0),u16(0),u16(0),u16(0),u32(0),u32(offset),name]);
+    centrals.push(central); offset+=local.length;
+  }
+  const centralDir=concat(centrals); const end=concat([u32(0x06054b50),u16(0),u16(0),u16(entries.length),u16(entries.length),u32(centralDir.length),u32(offset),u16(0)]);
+  return concat([...files, centralDir, end]);
+}
+
+// ---------- MD5 ArrayBuffer ----------
+function md5ArrayBuffer(buffer){
+  function add32(a,b){return (a+b)&0xffffffff;}
+  function rol(num,cnt){return (num<<cnt)|(num>>>(32-cnt));}
+  function cmn(q,a,b,x,s,t){return add32(rol(add32(add32(a,q),add32(x,t)),s),b);}
+  function ff(a,b,c,d,x,s,t){return cmn((b&c)|((~b)&d),a,b,x,s,t);}
+  function gg(a,b,c,d,x,s,t){return cmn((b&d)|(c&(~d)),a,b,x,s,t);}
+  function hh(a,b,c,d,x,s,t){return cmn(b^c^d,a,b,x,s,t);}
+  function ii(a,b,c,d,x,s,t){return cmn(c^(b|(~d)),a,b,x,s,t);}
+  const bytes=new Uint8Array(buffer); const len=bytes.length; const words=[];
+  for(let i=0;i<len;i++) words[i>>2]=(words[i>>2]||0)|(bytes[i]<<((i%4)*8));
+  const bitLen=len*8; words[bitLen>>5]=(words[bitLen>>5]||0)|(0x80<<(bitLen%32));
+  const idx=(((bitLen+64)>>>9)<<4)+14; words[idx]=bitLen&0xffffffff; words[idx+1]=Math.floor(bitLen/0x100000000);
+  let a=1732584193,b=-271733879,c=-1732584194,d=271733878;
+  for(let i=0;i<words.length;i+=16){
+    let olda=a,oldb=b,oldc=c,oldd=d;
+    a=ff(a,b,c,d,words[i+0]||0,7,-680876936); d=ff(d,a,b,c,words[i+1]||0,12,-389564586); c=ff(c,d,a,b,words[i+2]||0,17,606105819); b=ff(b,c,d,a,words[i+3]||0,22,-1044525330);
+    a=ff(a,b,c,d,words[i+4]||0,7,-176418897); d=ff(d,a,b,c,words[i+5]||0,12,1200080426); c=ff(c,d,a,b,words[i+6]||0,17,-1473231341); b=ff(b,c,d,a,words[i+7]||0,22,-45705983);
+    a=ff(a,b,c,d,words[i+8]||0,7,1770035416); d=ff(d,a,b,c,words[i+9]||0,12,-1958414417); c=ff(c,d,a,b,words[i+10]||0,17,-42063); b=ff(b,c,d,a,words[i+11]||0,22,-1990404162);
+    a=ff(a,b,c,d,words[i+12]||0,7,1804603682); d=ff(d,a,b,c,words[i+13]||0,12,-40341101); c=ff(c,d,a,b,words[i+14]||0,17,-1502002290); b=ff(b,c,d,a,words[i+15]||0,22,1236535329);
+    a=gg(a,b,c,d,words[i+1]||0,5,-165796510); d=gg(d,a,b,c,words[i+6]||0,9,-1069501632); c=gg(c,d,a,b,words[i+11]||0,14,643717713); b=gg(b,c,d,a,words[i+0]||0,20,-373897302);
+    a=gg(a,b,c,d,words[i+5]||0,5,-701558691); d=gg(d,a,b,c,words[i+10]||0,9,38016083); c=gg(c,d,a,b,words[i+15]||0,14,-660478335); b=gg(b,c,d,a,words[i+4]||0,20,-405537848);
+    a=gg(a,b,c,d,words[i+9]||0,5,568446438); d=gg(d,a,b,c,words[i+14]||0,9,-1019803690); c=gg(c,d,a,b,words[i+3]||0,14,-187363961); b=gg(b,c,d,a,words[i+8]||0,20,1163531501);
+    a=gg(a,b,c,d,words[i+13]||0,5,-1444681467); d=gg(d,a,b,c,words[i+2]||0,9,-51403784); c=gg(c,d,a,b,words[i+7]||0,14,1735328473); b=gg(b,c,d,a,words[i+12]||0,20,-1926607734);
+    a=hh(a,b,c,d,words[i+5]||0,4,-378558); d=hh(d,a,b,c,words[i+8]||0,11,-2022574463); c=hh(c,d,a,b,words[i+11]||0,16,1839030562); b=hh(b,c,d,a,words[i+14]||0,23,-35309556);
+    a=hh(a,b,c,d,words[i+1]||0,4,-1530992060); d=hh(d,a,b,c,words[i+4]||0,11,1272893353); c=hh(c,d,a,b,words[i+7]||0,16,-155497632); b=hh(b,c,d,a,words[i+10]||0,23,-1094730640);
+    a=hh(a,b,c,d,words[i+13]||0,4,681279174); d=hh(d,a,b,c,words[i+0]||0,11,-358537222); c=hh(c,d,a,b,words[i+3]||0,16,-722521979); b=hh(b,c,d,a,words[i+6]||0,23,76029189);
+    a=hh(a,b,c,d,words[i+9]||0,4,-640364487); d=hh(d,a,b,c,words[i+12]||0,11,-421815835); c=hh(c,d,a,b,words[i+15]||0,16,530742520); b=hh(b,c,d,a,words[i+2]||0,23,-995338651);
+    a=ii(a,b,c,d,words[i+0]||0,6,-198630844); d=ii(d,a,b,c,words[i+7]||0,10,1126891415); c=ii(c,d,a,b,words[i+14]||0,15,-1416354905); b=ii(b,c,d,a,words[i+5]||0,21,-57434055);
+    a=ii(a,b,c,d,words[i+12]||0,6,1700485571); d=ii(d,a,b,c,words[i+3]||0,10,-1894986606); c=ii(c,d,a,b,words[i+10]||0,15,-1051523); b=ii(b,c,d,a,words[i+1]||0,21,-2054922799);
+    a=ii(a,b,c,d,words[i+8]||0,6,1873313359); d=ii(d,a,b,c,words[i+15]||0,10,-30611744); c=ii(c,d,a,b,words[i+6]||0,15,-1560198380); b=ii(b,c,d,a,words[i+13]||0,21,1309151649);
+    a=ii(a,b,c,d,words[i+4]||0,6,-145523070); d=ii(d,a,b,c,words[i+11]||0,10,-1120210379); c=ii(c,d,a,b,words[i+2]||0,15,718787259); b=ii(b,c,d,a,words[i+9]||0,21,-343485551);
+    a=add32(a,olda); b=add32(b,oldb); c=add32(c,oldc); d=add32(d,oldd);
+  }
+  function hex(n){let s=''; for(let j=0;j<4;j++) s+=('0'+((n>>>(j*8))&255).toString(16)).slice(-2); return s;}
+  return hex(a)+hex(b)+hex(c)+hex(d);
+}
+</script>
+</body>
+</html>

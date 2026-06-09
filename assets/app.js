@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json";
+const seedUrl = "./content/tools.seed.json?v=20260609i";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -935,6 +935,7 @@ function resourceItem(resource) {
   const href = resourceUrl(resource);
   const pending = resource.status === "pending_upload" && !href;
   const actionLabel = resourceActionLabel(resource);
+  const note = href ? resourceNote(resource) : "";
   return `
     <article class="resource-item">
       <div class="resource-title">
@@ -942,7 +943,7 @@ function resourceItem(resource) {
         <span class="resource-status">${pending ? "待上传" : "可用"}</span>
       </div>
       ${resource.originalLabel ? `<p class="muted">原始文件名：${escapeHtml(resource.originalLabel)}</p>` : ""}
-      ${href ? `<p class="muted">当前资源使用外部链接，后续可替换为网站存储地址。</p>` : ""}
+      ${note ? `<p class="muted">${escapeHtml(note)}</p>` : ""}
       <div class="resource-row">
         ${href
           ? `<a class="pixel-button primary" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(actionLabel)}</a>`
@@ -963,6 +964,15 @@ function resourceActionLabel(resource) {
   if (["html", "html_tool"].includes(resource.kind)) return "打开工具";
   if (resource.previewUrl) return "查看预览";
   return "打开资源";
+}
+
+function resourceNote(resource) {
+  if (resource.status === "uploaded") {
+    if (["html", "html_tool"].includes(resource.kind)) return "资源已接入，点击即可打开工具。";
+    if (resource.downloadUrl || ["package", "skill"].includes(resource.kind)) return "资源已接入，点击即可下载。";
+    return "资源已接入，点击即可查看。";
+  }
+  return "当前资源使用外部链接，后续可替换为网站存储地址。";
 }
 
 function commentItem(comment, index) {

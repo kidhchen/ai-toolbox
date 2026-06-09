@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>🎬 FCPXML 拖入版模板音效工具（同模板只显示一个版）</title>
+    <style>
+        *{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+        body{max-width:1080px;margin:40px auto;padding:25px;background:#f4f7fc;color:#1f2937}
+        .box{background:#fff;border-radius:16px;padding:25px;margin-bottom:25px;box-shadow:0 2px 12px #00000008}
+        textarea{width:100%;height:260px;padding:14px;border:1px solid #ddd;border-radius:10px;font-size:14px;line-height:1.5;background:#fbfdff}
+        .btn{background:#007aff;color:#fff;border:none;padding:14px 26px;border-radius:12px;cursor:pointer;font-size:15px;margin-top:10px;transition:.15s}
+        .btn:hover{filter:brightness(.95);transform:translateY(-1px)}
+        .btn.secondary{background:#eef5ff;color:#0066d6;border:1px solid #cfe4ff;margin-left:8px}
+        .title{text-align:center;margin-bottom:30px}
+        .tips{background:#f8fbff;border:1px solid #dbeafe;border-radius:12px;padding:14px 16px;margin:12px 0;color:#31537a;font-size:14px;line-height:1.6}
+        .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0 22px}
+        .summary-card{border-radius:14px;padding:16px;background:#f8fafc;border:1px solid #edf2f7}
+        .summary-card strong{display:block;font-size:24px;margin-top:6px;color:#111827}
+        .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0 14px}
+        .pill-filter{border:1px solid #d9e5f5;background:#fff;border-radius:999px;padding:8px 12px;cursor:pointer;color:#31537a}
+        .pill-filter.active{background:#007aff;color:#fff;border-color:#007aff}
+        .section-title{font-size:16px;margin:22px 0 10px;color:#334155}
+        .item{padding:16px;border:1px solid #edf2f7;border-radius:14px;margin-bottom:12px;background:#fff}
+        .item.compound{border-left:5px solid #8b5cf6;background:#fbfaff}
+        .item.outside{border-left:5px solid #10b981;background:#fbfffd}
+        .item.mixed{border-left:5px solid #f59e0b;background:#fffdf7}
+        .item h4{margin:0 0 8px;font-size:15px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+        .badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;line-height:1;padding:6px 9px;border-radius:999px;font-weight:600}
+        .badge.compound{background:#ede9fe;color:#6d28d9}
+        .badge.outside{background:#d1fae5;color:#047857}
+        .badge.group{background:#fef3c7;color:#92400e}
+        .badge.mixed{background:#ffedd5;color:#c2410c}
+        .meta{font-size:12px;color:#64748b;margin-bottom:12px;line-height:1.6;word-break:break-all}
+        .drop-area{border:2px dashed #007aff;padding:18px;border-radius:12px;text-align:center;cursor:pointer;background:#f8faff;color:#1d4ed8;transition:.15s}
+        .drop-area.active{background:#e8f4ff;transform:scale(1.01)}
+        .fcpxml-drop-area{border:2px dashed #007aff;padding:34px 22px;border-radius:16px;text-align:center;cursor:pointer;background:#f0f8ff;color:#0f4c81;transition:.15s;margin:14px 0}
+        .fcpxml-drop-area.active{background:#e1f1ff;transform:scale(1.01)}
+        .fcpxml-drop-area strong{display:block;font-size:18px;margin-bottom:8px}
+        .fcpxml-drop-area small{display:block;color:#476987;line-height:1.6}
+        .file-info{margin-top:8px;font-size:13px;color:#666;line-height:1.6}
+        .ok{color:#047857;font-weight:600}
+        .warn{color:#b45309;font-weight:600}
+        .hidden{display:none!important}
+        .error{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:12px;padding:12px 14px;margin-top:12px;display:none}
+        code{background:#f1f5f9;padding:2px 6px;border-radius:6px}
+        @media(max-width:760px){body{margin:20px auto;padding:14px}.summary{grid-template-columns:1fr}.btn.secondary{margin-left:0}}
+    </style>
+</head>
+<body>
+    <h1 class="title">🎬 FCPXML 拖入版模板音效工具（同模板只显示一个版）</h1>
+
+    <div class="box">
+        <h3>1️⃣ 拖入你的 FCPXML 文件</h3>
+        <div class="tips">
+            直接把 <code>.fcpxml</code> / <code>.xml</code> 文件拖到下面区域，工具会读取文件内容并自动解析。<br>
+            会识别 <code>&lt;title&gt;</code> 标题模板所在位置：如果模板位于 <code>&lt;resources&gt;</code> 里的 <code>&lt;media&gt;</code> / 复合片段序列中，会标记为「复合片段内」；否则标记为「复合片段外」。<br>
+            <span class="ok">新增功能：</span>检测到相同名称的模板时，列表里只显示一个模板组。给这个模板组拖入一次音效，生成 XML 时会自动给该模板的全部位置添加音效。
+        </div>
+
+        <label style="display:block;margin:12px 0 8px;font-size:14px;color:#334155;font-weight:600">音效文件夹路径</label>
+        <input id="soundRootInput" type="text" value="/Users/jio/Desktop/文成常用音效/" style="width:100%;padding:12px 14px;border:1px solid #ddd;border-radius:10px;font-size:14px;background:#fbfdff;margin-bottom:12px" placeholder="例如：/Users/jio/Desktop/文成常用音效/">
+        <div class="tips" style="margin-top:0">
+            注意：浏览器通常只能读到你拖入音效的文件名和音频元数据，不能读到真实本地路径。这里的文件夹路径必须和 Final Cut Pro 能访问到的真实路径一致，文件也要放在这个文件夹里。含中文、空格的文件名会自动转成 FCP 更容易识别的 file URL。
+        </div>
+
+        <div id="fcpxmlDropArea" class="fcpxml-drop-area"
+             onclick="document.getElementById('fcpxmlFileInput').click()"
+             ondragover="dragOverFcpxml(event)"
+             ondragleave="dragLeaveFcpxml(event)"
+             ondrop="dropFcpxmlFile(event)">
+            <strong>📂 拖入 .fcpxml / .xml 文件，或点击选择文件</strong>
+            <small>读取后会自动解析标题模板。文件不会上传，只在当前浏览器里读取。</small>
+        </div>
+
+        <input class="hidden" id="fcpxmlFileInput" type="file" accept=".fcpxml,.fcpml,.xml,text/xml,application/xml" onchange="pickFcpxmlFile(event)">
+        <div class="file-info" id="xmlFileInfo">未选择 FCPXML 文件</div>
+        <button class="btn" onclick="parseCurrentXml()">重新解析当前 XML</button>
+        <div id="errorBox" class="error"></div>
+    </div>
+
+    <div class="box" id="audioPanel" style="display:none">
+        <h3>2️⃣ 给模板组拖入音效（相同模板只显示一个）</h3>
+        <div id="summary" class="summary"></div>
+
+        <div class="toolbar">
+            <button class="pill-filter active" onclick="setFilter('all', this)">全部模板组</button>
+            <button class="pill-filter" onclick="setFilter('compound', this)">包含复合片段内</button>
+            <button class="pill-filter" onclick="setFilter('outside', this)">包含复合片段外</button>
+        </div>
+
+        <div id="templateList"></div>
+
+        <button class="btn" onclick="generateFinalXml()">✅ 生成带音效的 XML</button>
+        <button class="btn secondary" onclick="copyDebugInfo()">复制识别提示</button>
+    </div>
+
+<script>
+const DEFAULT_SOUND_ROOT = "/Users/jio/Desktop/文成常用音效/";
+const DEFAULT_AUDIO_RATE = 48000;
+
+let originalXml = "";
+let currentXmlFileName = "";
+let templateList = [];
+let soundData = {};
+let currentFilter = "all";
+
+function showError(msg) {
+    const box = document.getElementById("errorBox");
+    box.textContent = msg;
+    box.style.display = msg ? "block" : "none";
+}
+
+function xmlAttr(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+}
+
+function htmlText(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+function getSoundRoot() {
+    const input = document.getElementById("soundRootInput");
+    return (input && input.value.trim()) || DEFAULT_SOUND_ROOT;
+}
+
+function normalizeSoundRoot(root) {
+    let value = String(root || "").trim();
+    if (!value) value = DEFAULT_SOUND_ROOT;
+    if (!value.endsWith("/")) value += "/";
+    return value;
+}
+
+function safeDecodeURIComponent(part) {
+    try {
+        return decodeURIComponent(part);
+    } catch (e) {
+        return part;
+    }
+}
+
+function encodePathPart(part) {
+    return encodeURIComponent(safeDecodeURIComponent(part));
+}
+
+function pathToFileUrl(root, fileName) {
+    const normalizedRoot = normalizeSoundRoot(root);
+    const fullPath = normalizedRoot + fileName;
+
+    if (/^file:\/\//i.test(fullPath)) {
+        const withoutScheme = fullPath.replace(/^file:\/\//i, "");
+        return "file://" + withoutScheme.split("/").map(part => encodePathPart(part)).join("/");
+    }
+
+    return "file://" + fullPath.split("/").map((part, i) => {
+        if (i === 0 && part === "") return "";
+        return encodePathPart(part);
+    }).join("/");
+}
+
+function secondsToFcpxTime(seconds, sampleRate = DEFAULT_AUDIO_RATE) {
+    const frames = Math.max(1, Math.floor(Number(seconds || 0) * sampleRate));
+    return `${frames}/${sampleRate}s`;
+}
+
+function framesToFcpxTime(frames, sampleRate = DEFAULT_AUDIO_RATE) {
+    const safeFrames = Math.max(1, Math.floor(Number(frames || 0)));
+    const safeRate = Math.max(1, Math.floor(Number(sampleRate || DEFAULT_AUDIO_RATE)));
+    return `${safeFrames}/${safeRate}s`;
+}
+
+function audioDataDuration(data) {
+    if (data && data.frames && data.sample) return framesToFcpxTime(data.frames, data.sample);
+    return secondsToFcpxTime(data ? data.duration : 0, data ? data.sample : DEFAULT_AUDIO_RATE);
+}
+
+function normalizeTemplateGroupName(name) {
+    return String(name || "")
+        .trim()
+        .replace(/\s+/g, " ")
+        .toLowerCase();
+}
+
+function buildTemplateGroupKey(name, index) {
+    const normalized = normalizeTemplateGroupName(name);
+    return normalized ? `template-name:${normalized}` : `template-unique:${index}`;
+}
+
+function updateTemplateGroupInfo() {
+    const groupMap = new Map();
+
+    templateList.forEach(tpl => {
+        if (!groupMap.has(tpl.groupKey)) groupMap.set(tpl.groupKey, []);
+        groupMap.get(tpl.groupKey).push(tpl);
+    });
+
+    templateList.forEach(tpl => {
+        const group = groupMap.get(tpl.groupKey) || [tpl];
+        tpl.groupCount = group.length;
+        tpl.groupIndexes = group.map(t => t.index);
+        tpl.groupFirstIndex = group[0].index;
+    });
+}
+
+function getVisibleTemplateGroups() {
+    const seen = new Set();
+    const result = [];
+
+    templateList.forEach(tpl => {
+        if (seen.has(tpl.groupKey)) return;
+        seen.add(tpl.groupKey);
+
+        const members = templateList.filter(t => t.groupKey === tpl.groupKey);
+        const compoundCount = members.filter(t => t.isCompound).length;
+        const outsideCount = members.length - compoundCount;
+
+        let groupDisplayLocation = "";
+        if (compoundCount && outsideCount) {
+            groupDisplayLocation = `复合片段内 ${compoundCount} 个 / 复合片段外 ${outsideCount} 个`;
+        } else if (compoundCount) {
+            groupDisplayLocation = `复合片段内 ${compoundCount} 个`;
+        } else {
+            groupDisplayLocation = `复合片段外 ${outsideCount} 个`;
+        }
+
+        result.push({
+            ...tpl,
+            groupMembers: members,
+            groupCompoundCount: compoundCount,
+            groupOutsideCount: outsideCount,
+            groupDisplayLocation
+        });
+    });
+
+    return result;
+}
+
+function getSameTemplateMembers(index) {
+    const tpl = templateList.find(t => t.index === index);
+    if (!tpl) return [];
+    return templateList.filter(t => t.groupKey === tpl.groupKey);
+}
+
+function applyAudioToSameTemplateGroup(index, data) {
+    const members = getSameTemplateMembers(index);
+
+    if (!members.length) {
+        soundData[index] = data;
+        refreshFileInfo(index);
+        return 1;
+    }
+
+    members.forEach(member => {
+        soundData[member.index] = {
+            ...data,
+            groupAppliedFrom: index
+        };
+        refreshFileInfo(member.index);
+    });
+
+    return members.length;
+}
+
+function expandSoundDataToSameTemplateGroups() {
+    const selectedIndexes = Object.keys(soundData).map(Number).sort((a, b) => a - b);
+    const expanded = new Set();
+
+    selectedIndexes.forEach(idx => {
+        const data = soundData[idx];
+        const members = getSameTemplateMembers(idx);
+
+        if (!members.length) {
+            expanded.add(idx);
+            return;
+        }
+
+        members.forEach(member => {
+            if (!soundData[member.index]) {
+                soundData[member.index] = {
+                    ...data,
+                    groupAppliedFrom: idx
+                };
+            }
+            expanded.add(member.index);
+        });
+    });
+
+    return Array.from(expanded).sort((a, b) => a - b);
+}
+
+function getNodeName(node) {
+    return (node && (node.localName || node.nodeName) || "").toLowerCase();
+}
+
+function closestAncestor(node, tagName) {
+    let p = node ? node.parentNode : null;
+    tagName = tagName.toLowerCase();
+
+    while (p && p.nodeType === 1) {
+        if (getNodeName(p) === tagName) return p;
+        p = p.parentNode;
+    }
+
+    return null;
+}
+
+function hasAncestor(node, tagName) {
+    return !!closestAncestor(node, tagName);
+}
+
+function isInsideResourcesMedia(node) {
+    const media = closestAncestor(node, "media");
+    return media && hasAncestor(media, "resources") ? media : null;
+}
+
+function buildResourceRefMap(doc) {
+    const map = new Map();
+    const refs = Array.from(doc.getElementsByTagName("ref-clip"));
+
+    refs.forEach(refClip => {
+        const ref = refClip.getAttribute("ref");
+        if (!ref) return;
+
+        if (!map.has(ref)) map.set(ref, []);
+        map.get(ref).push({
+            name: refClip.getAttribute("name") || "未命名复合片段",
+            offset: refClip.getAttribute("offset") || "",
+            duration: refClip.getAttribute("duration") || ""
+        });
+    });
+
+    return map;
+}
+
+function getTitleTagPositions(xml) {
+    const positions = [];
+    const re = /<title(?=[\s/>])/g;
+    let m;
+
+    while ((m = re.exec(xml)) !== null) positions.push(m.index);
+    return positions;
+}
+
+function isSelfClosingStartTag(xml, startIndex) {
+    const end = xml.indexOf(">", startIndex);
+    if (end === -1) return false;
+    return /\/\s*>$/.test(xml.slice(startIndex, end + 1));
+}
+
+function findElementEnd(xml, startIndex, tagName) {
+    const firstEnd = xml.indexOf(">", startIndex);
+    if (firstEnd === -1) return startIndex;
+
+    if (/\/\s*>$/.test(xml.slice(startIndex, firstEnd + 1))) return firstEnd + 1;
+
+    const openRe = new RegExp(`<${tagName}(?=[\\s/>])`, "g");
+    const closeRe = new RegExp(`</${tagName}\\s*>`, "g");
+
+    openRe.lastIndex = firstEnd + 1;
+    closeRe.lastIndex = firstEnd + 1;
+
+    let depth = 1;
+    let pos = firstEnd + 1;
+
+    while (depth > 0) {
+        openRe.lastIndex = pos;
+        closeRe.lastIndex = pos;
+
+        const openMatch = openRe.exec(xml);
+        const closeMatch = closeRe.exec(xml);
+
+        if (!closeMatch) return firstEnd + 1;
+
+        if (openMatch && openMatch.index < closeMatch.index) {
+            const openEnd = xml.indexOf(">", openMatch.index);
+            if (openEnd === -1) return firstEnd + 1;
+
+            if (!/\/\s*>$/.test(xml.slice(openMatch.index, openEnd + 1))) depth++;
+            pos = openEnd + 1;
+        } else {
+            depth--;
+            pos = closeMatch.index + closeMatch[0].length;
+        }
+    }
+
+    return pos;
+}
+
+function collectExistingIds(xml) {
+    const ids = new Set();
+    const re = /\bid="([^"]+)"/g;
+    let m;
+
+    while ((m = re.exec(xml)) !== null) ids.add(m[1]);
+    return ids;
+}
+
+function makeUniqueResourceId(existingIds, prefix = "r") {
+    let max = 0;
+
+    existingIds.forEach(id => {
+        const m = id.match(/^r(\d+)$/);
+        if (m) max = Math.max(max, Number(m[1]));
+    });
+
+    let next = Math.max(1000, max + 1);
+    while (existingIds.has(`${prefix}${next}`)) next++;
+
+    const id = `${prefix}${next}`;
+    existingIds.add(id);
+    return id;
+}
+
+function updateProjectUidAndName(xml) {
+    return xml.replace(/<project\b([^>]*)>/, (full, attrs) => {
+        const newUid = "PROJ_" + Math.random().toString(36).slice(2, 10).toUpperCase();
+        let newAttrs = attrs;
+
+        if (/\buid="[^"]*"/.test(newAttrs)) {
+            newAttrs = newAttrs.replace(/\buid="[^"]*"/, `uid="${newUid}"`);
+        } else {
+            newAttrs += ` uid="${newUid}"`;
+        }
+
+        if (/\bname="[^"]*"/.test(newAttrs)) {
+            newAttrs = newAttrs.replace(/\bname="([^"]*)"/, (m, name) => `name="${xmlAttr(name)}_带音效"`);
+        } else {
+            newAttrs += ` name="带音效项目"`;
+        }
+
+        return `<project${newAttrs}>`;
+    });
+}
+
+function dragOverFcpxml(e) {
+    e.preventDefault();
+    document.getElementById("fcpxmlDropArea").classList.add("active");
+}
+
+function dragLeaveFcpxml(e) {
+    e.preventDefault();
+    document.getElementById("fcpxmlDropArea").classList.remove("active");
+}
+
+function dropFcpxmlFile(e) {
+    e.preventDefault();
+    document.getElementById("fcpxmlDropArea").classList.remove("active");
+    handleFcpxmlFile(e.dataTransfer.files[0]);
+}
+
+function pickFcpxmlFile(e) {
+    handleFcpxmlFile(e.target.files[0]);
+}
+
+async function handleFcpxmlFile(file) {
+    showError("");
+    if (!file) return;
+
+    const okName = /\.(fcpxml|fcpml|xml)$/i.test(file.name);
+    if (!okName) {
+        alert("请拖入 .fcpxml、.fcpml 或 .xml 文件。");
+        return;
+    }
+
+    const info = document.getElementById("xmlFileInfo");
+    if (info) info.innerHTML = "正在读取 FCPXML 文件……";
+
+    try {
+        const text = await file.text();
+
+        if (!/<fcpxml[\s>]/i.test(text)) {
+            showError("这个文件里没有识别到 <fcpxml> 根内容，请确认拖入的是 Final Cut Pro 导出的 FCPXML 文件。");
+            if (info) info.innerHTML = "未选择有效 FCPXML 文件";
+            return;
+        }
+
+        originalXml = text;
+        currentXmlFileName = file.name;
+
+        templateList = [];
+        soundData = {};
+
+        if (info) {
+            info.innerHTML = `<span class="ok">✅ 已读取：${htmlText(file.name)}</span> ｜ 文件大小：${Math.round((file.size || 0) / 1024)} KB`;
+        }
+
+        parseTemplate();
+    } catch (err) {
+        console.error(err);
+        showError("读取文件失败。请确认浏览器有权限读取该文件，或者重新导出 FCPXML 后再拖入。");
+        if (info) info.innerHTML = "读取失败";
+    }
+}
+
+function parseCurrentXml() {
+    if (!originalXml.trim()) {
+        alert("请先拖入 FCPXML 文件！");
+        return;
+    }
+
+    parseTemplate();
+}
+
+function parseTemplate() {
+    showError("");
+
+    if (!originalXml.trim()) return alert("请先拖入 FCPXML 文件！");
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(originalXml, "application/xml");
+    const parseError = doc.getElementsByTagName("parsererror")[0];
+
+    if (parseError) {
+        showError("XML 解析失败：请确认拖入的是完整、未损坏的 FCPXML。建议从 Final Cut Pro 重新导出 XML 后再试。");
+        return;
+    }
+
+    const titles = Array.from(doc.getElementsByTagName("title"));
+    const titlePositions = getTitleTagPositions(originalXml);
+    const refMap = buildResourceRefMap(doc);
+
+    templateList = [];
+    soundData = {};
+
+    titles.forEach((node, index) => {
+        const startIndex = titlePositions[index] ?? -1;
+        const endIndex = startIndex >= 0 ? findElementEnd(originalXml, startIndex, "title") : -1;
+
+        const media = isInsideResourcesMedia(node);
+        const ancestorRefClip = closestAncestor(node, "ref-clip");
+        const isCompound = !!media || (!!ancestorRefClip && hasAncestor(ancestorRefClip, "project"));
+
+        const mediaId = media ? (media.getAttribute("id") || "") : "";
+        const mediaName = media ? (media.getAttribute("name") || "未命名复合片段") : "";
+        const refUsages = mediaId && refMap.has(mediaId) ? refMap.get(mediaId) : [];
+        const firstUsage = refUsages[0];
+        const refClipName = firstUsage ? firstUsage.name : (ancestorRefClip ? ancestorRefClip.getAttribute("name") : "");
+        const whereName = media ? (mediaName || refClipName || mediaId) : (refClipName || "主项目时间线");
+
+        const rawTemplateName = node.getAttribute("name") || "";
+        const displayTemplateName = rawTemplateName || `未命名模板 ${index + 1}`;
+        const groupKey = rawTemplateName.trim()
+            ? buildTemplateGroupKey(rawTemplateName, index)
+            : `template-unique:${index}`;
+
+        templateList.push({
+            index,
+            name: displayTemplateName,
+            groupKey,
+            groupName: rawTemplateName || displayTemplateName,
+            offset: node.getAttribute("offset") || "0s",
+            duration: node.getAttribute("duration") || "",
+            startIndex,
+            endIndex,
+            isCompound,
+            mediaId,
+            mediaName,
+            refCount: refUsages.length,
+            whereName,
+            locationLabel: isCompound ? "复合片段内" : "复合片段外",
+            note: media
+                ? `资源序列：${whereName}${mediaId ? `（${mediaId}）` : ""}${refUsages.length ? `，主时间线引用 ${refUsages.length} 次` : ""}`
+                : (ancestorRefClip ? `位于 ref-clip：${whereName}` : "位于主项目时间线")
+        });
+    });
+
+    updateTemplateGroupInfo();
+
+    if (templateList.length === 0) {
+        alert("未识别到任何模板，请检查 XML 中是否包含 <title> 标签！");
+        return;
+    }
+
+    renderTemplateList();
+    document.getElementById("audioPanel").style.display = "block";
+
+    const inside = templateList.filter(t => t.isCompound).length;
+    const outside = templateList.length - inside;
+    const groupCount = new Set(templateList.map(t => t.groupKey)).size;
+
+    alert(`✅ ${currentXmlFileName ? "文件「" + currentXmlFileName + "」" : "当前 XML"}解析完成：识别到 ${templateList.length} 个模板，显示为 ${groupCount} 个模板组；复合片段内 ${inside} 个，复合片段外 ${outside} 个。`);
+}
+
+function renderTemplateList() {
+    const inside = templateList.filter(t => t.isCompound).length;
+    const outside = templateList.length - inside;
+    const visibleGroups = getVisibleTemplateGroups();
+
+    document.getElementById("summary").innerHTML = `
+        <div class="summary-card">总模板数<strong>${templateList.length}</strong></div>
+        <div class="summary-card">显示模板组<strong>${visibleGroups.length}</strong></div>
+        <div class="summary-card">复合片段内<strong>${inside}</strong></div>
+        <div class="summary-card">复合片段外<strong>${outside}</strong></div>
+    `;
+
+    const container = document.getElementById("templateList");
+    container.innerHTML = "";
+
+    const heading = document.createElement("div");
+    heading.className = "section-title";
+    heading.textContent = "模板组列表：相同模板只显示一个，拖入音效后会同步到该模板的全部位置";
+    container.appendChild(heading);
+
+    visibleGroups.forEach(tpl => {
+        const item = document.createElement("div");
+
+        let itemClass = "outside";
+        let badgeClass = "outside";
+
+        if (tpl.groupCompoundCount > 0 && tpl.groupOutsideCount > 0) {
+            itemClass = "mixed";
+            badgeClass = "mixed";
+        } else if (tpl.groupCompoundCount > 0) {
+            itemClass = "compound";
+            badgeClass = "compound";
+        }
+
+        item.className = `item ${itemClass}`;
+        item.dataset.hasCompound = tpl.groupCompoundCount > 0 ? "1" : "0";
+        item.dataset.hasOutside = tpl.groupOutsideCount > 0 ? "1" : "0";
+
+        const refText = tpl.isCompound && tpl.refCount
+            ? `｜复合片段引用次数：${tpl.refCount}`
+            : "";
+
+        item.innerHTML = `
+            <h4>
+                <span>📌 模板组：${htmlText(tpl.name)}</span>
+                <span class="badge ${badgeClass}">${tpl.groupDisplayLocation}</span>
+                ${tpl.groupCount > 1 ? `<span class="badge group">🔁 同模板 ×${tpl.groupCount}</span>` : ""}
+            </h4>
+
+            <div class="meta">
+                代表位置：${htmlText(tpl.note)}<br>
+                模板 offset：<code>${htmlText(tpl.offset)}</code>${tpl.duration ? `｜模板 duration：<code>${htmlText(tpl.duration)}</code>` : ""}${refText}
+                ${tpl.groupCount > 1 ? `<br><span class="ok">同模板共 ${tpl.groupCount} 个位置：这里只显示 1 个，给它添加音效后，生成 XML 时会自动添加到全部 ${tpl.groupCount} 个位置。</span>` : ""}
+            </div>
+
+            <div class="drop-area" id="drop_${tpl.index}"
+                 onclick="document.getElementById('file_${tpl.index}').click()"
+                 ondragover="dragOver(event)"
+                 ondragleave="dragLeave(event)"
+                 ondrop="dropFile(event, ${tpl.index})">
+                ${tpl.groupCount > 1 ? `拖入音效文件，自动同步到同模板 ${tpl.groupCount} 个位置` : "拖入音效文件，或点击选择音效"}
+            </div>
+
+            <input class="hidden" id="file_${tpl.index}" type="file" accept="audio/*" onchange="pickFile(event, ${tpl.index})">
+            <div class="file-info" id="info_${tpl.index}">${soundData[tpl.index] ? "已选择音效" : "未选择音效"}</div>
+        `;
+
+        container.appendChild(item);
+        refreshFileInfo(tpl.index);
+    });
+
+    applyFilter();
+}
+
+function setFilter(filter, btn) {
+    currentFilter = filter;
+    document.querySelectorAll(".pill-filter").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    applyFilter();
+}
+
+function applyFilter() {
+    document.querySelectorAll(".item").forEach(item => {
+        let show = true;
+
+        if (currentFilter === "compound") {
+            show = item.dataset.hasCompound === "1";
+        }
+
+        if (currentFilter === "outside") {
+            show = item.dataset.hasOutside === "1";
+        }
+
+        item.classList.toggle("hidden", !show);
+    });
+}
+
+function dragOver(e) {
+    e.preventDefault();
+    e.currentTarget.classList.add("active");
+}
+
+function dragLeave(e) {
+    e.currentTarget.classList.remove("active");
+}
+
+function dropFile(e, index) {
+    e.preventDefault();
+    e.currentTarget.classList.remove("active");
+    handleAudioFile(e.dataTransfer.files[0], index);
+}
+
+function pickFile(e, index) {
+    handleAudioFile(e.target.files[0], index);
+}
+
+function readAscii(view, offset, length) {
+    let out = "";
+    for (let i = 0; i < length; i++) out += String.fromCharCode(view.getUint8(offset + i));
+    return out;
+}
+
+function parseWavMetadata(arrayBuffer) {
+    const view = new DataView(arrayBuffer);
+
+    if (view.byteLength < 44) return null;
+    if (readAscii(view, 0, 4) !== "RIFF" || readAscii(view, 8, 4) !== "WAVE") return null;
+
+    let pos = 12;
+    let sampleRate = 0;
+    let channels = 1;
+    let blockAlign = 0;
+    let dataBytes = 0;
+
+    while (pos + 8 <= view.byteLength) {
+        const id = readAscii(view, pos, 4);
+        const size = view.getUint32(pos + 4, true);
+        const dataStart = pos + 8;
+
+        if (id === "fmt " && size >= 16) {
+            channels = view.getUint16(dataStart + 2, true) || 1;
+            sampleRate = view.getUint32(dataStart + 4, true) || DEFAULT_AUDIO_RATE;
+            blockAlign = view.getUint16(dataStart + 12, true) || 0;
+        } else if (id === "data") {
+            dataBytes = size;
+        }
+
+        pos = dataStart + size + (size % 2);
+    }
+
+    if (!sampleRate) return null;
+
+    let frames = 0;
+    if (dataBytes && blockAlign) frames = Math.floor(dataBytes / blockAlign);
+
+    return {
+        sample: sampleRate,
+        channels,
+        frames,
+        duration: frames ? frames / sampleRate : 0,
+        source: "WAV 真实采样数"
+    };
+}
+
+function readAiffExtended80(view, offset) {
+    const expon = view.getUint16(offset, false) & 0x7fff;
+    const hiMant = view.getUint32(offset + 2, false);
+    const loMant = view.getUint32(offset + 6, false);
+
+    if (expon === 0 && hiMant === 0 && loMant === 0) return 0;
+
+    const value = (hiMant * Math.pow(2, expon - 16383 - 31)) + (loMant * Math.pow(2, expon - 16383 - 63));
+    return Math.round(value);
+}
+
+function parseAiffMetadata(arrayBuffer) {
+    const view = new DataView(arrayBuffer);
+
+    if (view.byteLength < 54) return null;
+
+    const form = readAscii(view, 0, 4);
+    const kind = readAscii(view, 8, 4);
+
+    if (form !== "FORM" || (kind !== "AIFF" && kind !== "AIFC")) return null;
+
+    let pos = 12;
+
+    while (pos + 8 <= view.byteLength) {
+        const id = readAscii(view, pos, 4);
+        const size = view.getUint32(pos + 4, false);
+        const dataStart = pos + 8;
+
+        if (id === "COMM" && size >= 18) {
+            const channels = view.getUint16(dataStart, false) || 1;
+            const frames = view.getUint32(dataStart + 2, false) || 0;
+            const sampleRate = readAiffExtended80(view, dataStart + 8) || DEFAULT_AUDIO_RATE;
+
+            return {
+                sample: sampleRate,
+                channels,
+                frames,
+                duration: frames ? frames / sampleRate : 0,
+                source: "AIFF 真实采样数"
+            };
+        }
+
+        pos = dataStart + size + (size % 2);
+    }
+
+    return null;
+}
+
+async function decodeAudioMetadata(arrayBuffer) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return null;
+
+    const ctx = new AudioContextClass();
+
+    try {
+        const buffer = await ctx.decodeAudioData(arrayBuffer.slice(0));
+        const sample = buffer.sampleRate || DEFAULT_AUDIO_RATE;
+        const frames = Math.max(1, Math.floor(buffer.duration * sample));
+
+        return {
+            sample,
+            channels: buffer.numberOfChannels || 1,
+            frames,
+            duration: frames / sample,
+            source: "浏览器解码估算"
+        };
+    } finally {
+        if (ctx && ctx.close) ctx.close();
+    }
+}
+
+async function getAudioMetadata(file) {
+    const arrayBuffer = await file.arrayBuffer();
+
+    const parsed = parseWavMetadata(arrayBuffer) || parseAiffMetadata(arrayBuffer);
+    if (parsed && parsed.frames) return parsed;
+
+    const decoded = await decodeAudioMetadata(arrayBuffer);
+    if (decoded) return decoded;
+
+    return await new Promise((resolve, reject) => {
+        const audio = new Audio();
+        const url = URL.createObjectURL(file);
+
+        audio.src = url;
+
+        audio.onloadedmetadata = function() {
+            const sample = DEFAULT_AUDIO_RATE;
+            const frames = Math.max(1, Math.floor(audio.duration * sample));
+
+            URL.revokeObjectURL(url);
+
+            resolve({
+                sample,
+                channels: 1,
+                frames,
+                duration: frames / sample,
+                source: "HTML Audio 兜底估算"
+            });
+        };
+
+        audio.onerror = function() {
+            URL.revokeObjectURL(url);
+            reject(new Error("无法读取音频时长"));
+        };
+    });
+}
+
+async function handleAudioFile(file, index) {
+    if (!file) return;
+
+    const isAudio = file.type ? file.type.startsWith("audio/") : /\.(wav|aif|aiff|mp3|m4a|aac|flac|caf)$/i.test(file.name);
+    if (!isAudio) return alert("请拖入或选择音频文件！");
+
+    const info = document.getElementById(`info_${index}`);
+    if (info) info.innerHTML = "正在读取音效真实时长和采样率……";
+
+    try {
+        const meta = await getAudioMetadata(file);
+
+        const audioData = {
+            file: file.name,
+            duration: meta.duration,
+            sample: meta.sample || DEFAULT_AUDIO_RATE,
+            frames: meta.frames || Math.floor((meta.duration || 0) * (meta.sample || DEFAULT_AUDIO_RATE)),
+            channels: meta.channels || 1,
+            source: meta.source || "未知方式",
+            size: file.size || 0
+        };
+
+        const syncedCount = applyAudioToSameTemplateGroup(index, audioData);
+
+        if (syncedCount > 1 && info) {
+            info.innerHTML += `<br><span class="ok">✅ 已同步到同模板 ${syncedCount} 个位置。</span>`;
+        }
+    } catch (err) {
+        console.error(err);
+        if (info) info.innerHTML = "未选择音效";
+        alert("无法读取这个音频的真实时长，请换一个标准音频文件再试。建议优先使用 WAV 或 AIFF。");
+    }
+}
+
+function refreshFileInfo(index) {
+    const info = document.getElementById(`info_${index}`);
+    if (!info) return;
+
+    const data = soundData[index];
+    const tpl = templateList.find(t => t.index === index);
+
+    if (!data) {
+        info.innerHTML = "未选择音效";
+        return;
+    }
+
+    const pathPreview = normalizeSoundRoot(getSoundRoot()) + data.file;
+    const encodedUrl = pathToFileUrl(getSoundRoot(), data.file);
+
+    const groupTip = tpl && tpl.groupCount > 1
+        ? `<br><span class="ok">🔁 同模板自动同步：共 ${tpl.groupCount} 个位置都会添加这个音效。</span>`
+        : "";
+
+    info.innerHTML = `<span class="ok">✅ ${htmlText(data.file)}</span> ｜ 音效时长：${Number(data.duration).toFixed(6)}s ｜ 采样率：${htmlText(data.sample)}Hz ｜ 声道：${htmlText(data.channels || 1)} ｜ 样本帧：${htmlText(data.frames || "估算")} ｜ ${htmlText(data.source || "读取完成")} ｜ 将插入：${tpl ? tpl.locationLabel : "对应位置"}${groupTip}<br>FCP 查找路径：<code>${htmlText(pathPreview)}</code><br>XML file URL：<code>${htmlText(encodedUrl)}</code>`;
+}
+
+function makeSoundAssetXml(id, data, duration) {
+    const baseName = data.file.replace(/\.[^.]+$/, "");
+    const src = pathToFileUrl(getSoundRoot(), data.file);
+
+    return `
+<asset id="${xmlAttr(id)}" name="${xmlAttr(baseName)}" start="0s" duration="${duration}" hasAudio="1" audioSources="1" audioChannels="${data.channels || 1}" audioRate="${data.sample}">
+    <media-rep kind="original-media" src="${xmlAttr(src)}"/>
+</asset>`;
+}
+
+function makeAudioClipXml(assetId, tpl, data, duration) {
+    return `
+<asset-clip ref="${xmlAttr(assetId)}" lane="-1" offset="${xmlAttr(tpl.offset || "0s")}" name="${xmlAttr(data.file)}" start="0s" duration="${duration}" audioRole="effects"/>`;
+}
+
+function generateFinalXml() {
+    showError("");
+
+    if (!templateList.length) return alert("请先解析模板！");
+
+    const usedIndexes = expandSoundDataToSameTemplateGroups();
+
+    if (!usedIndexes.length) return alert("请至少给一个模板组拖入音效！");
+
+    const root = normalizeSoundRoot(getSoundRoot());
+    if (!root || root === "/") {
+        return alert("请先填写正确的音效文件夹路径。");
+    }
+
+    const badTemplates = usedIndexes
+        .map(i => templateList.find(t => t.index === i))
+        .filter(t => !t || t.endIndex < 0);
+
+    if (badTemplates.length) {
+        showError("有模板无法定位到原始 XML 位置，已停止生成。建议重新拖入完整 FCPXML 文件后再解析。");
+        return;
+    }
+
+    let xml = originalXml;
+    const resourcesClose = xml.indexOf("</resources>");
+
+    if (resourcesClose === -1) {
+        showError("未找到 </resources>，无法写入音效资源。请确认是完整 FCPXML。");
+        return;
+    }
+
+    const existingIds = collectExistingIds(xml);
+    let resourcesToInsert = "";
+    const indexToAssetId = {};
+    const reusableAssets = new Map();
+
+    usedIndexes.forEach(idx => {
+        const data = soundData[idx];
+        const duration = audioDataDuration(data);
+        const assetKey = [pathToFileUrl(getSoundRoot(), data.file), data.size || 0, duration, data.sample, data.channels || 1].join("|");
+
+        if (reusableAssets.has(assetKey)) {
+            indexToAssetId[idx] = reusableAssets.get(assetKey);
+            return;
+        }
+
+        const assetId = makeUniqueResourceId(existingIds);
+        reusableAssets.set(assetKey, assetId);
+        indexToAssetId[idx] = assetId;
+        resourcesToInsert += makeSoundAssetXml(assetId, data, duration);
+    });
+
+    xml = xml.slice(0, resourcesClose) + resourcesToInsert + "\n" + xml.slice(resourcesClose);
+    const shift = resourcesToInsert.length + 1;
+
+    const insertions = [];
+
+    usedIndexes.forEach(idx => {
+        const tpl = templateList.find(t => t.index === idx);
+        const data = soundData[idx];
+        const duration = audioDataDuration(data);
+        const audioClipXml = makeAudioClipXml(indexToAssetId[idx], tpl, data, duration);
+        const pos = tpl.endIndex + (tpl.endIndex > resourcesClose ? shift : 0);
+        insertions.push({ pos, text: audioClipXml });
+    });
+
+    insertions.sort((a, b) => b.pos - a.pos).forEach(ins => {
+        xml = xml.slice(0, ins.pos) + ins.text + xml.slice(ins.pos);
+    });
+
+    xml = updateProjectUidAndName(xml);
+
+    const inside = usedIndexes.filter(idx => templateList.find(t => t.index === idx)?.isCompound).length;
+    const outside = usedIndexes.length - inside;
+    const groupUsed = new Set(usedIndexes.map(idx => templateList.find(t => t.index === idx)?.groupKey).filter(Boolean)).size;
+
+    downloadXml(xml, `带音效项目_同模板只显示一个_模板组${groupUsed}_复合片段内${inside}_外${outside}.fcpxml`);
+}
+
+function downloadXml(xml, filename) {
+    const blob = new Blob([xml], { type: "text/xml;charset=utf-8" });
+    const a = document.createElement("a");
+
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+
+    document.body.appendChild(a);
+    a.click();
+
+    URL.revokeObjectURL(a.href);
+    a.remove();
+}
+
+function copyDebugInfo() {
+    if (!templateList.length) return alert("请先解析模板！");
+
+    const visibleGroups = getVisibleTemplateGroups();
+
+    const lines = visibleGroups.map(t => {
+        const data = soundData[t.index];
+        return `模板组｜${t.name}｜同模板×${t.groupCount}｜${t.groupDisplayLocation}｜代表offset=${t.offset}${data ? `｜音效=${data.file}` : "｜未选择音效"}`;
+    });
+
+    navigator.clipboard.writeText(lines.join("\n")).then(() => {
+        alert("已复制模板组识别提示。");
+    }).catch(() => {
+        alert(lines.join("\n"));
+    });
+}
+</script>
+</body>
+</html>

@@ -359,8 +359,8 @@
         {
           "kind": "html",
           "label": "快速音4.0.html",
-          "storageKey": "pending/quick-sound-4.html",
-          "status": "pending_upload"
+          "url": "./tools/instant-sound-effects-4.html",
+          "status": "uploaded"
         }
       ],
       "media": [],
@@ -561,8 +561,8 @@
         {
           "kind": "html",
           "label": "积木自动排版工具-网页端插件.html",
-          "storageKey": "pending/block-layout-tool.html",
-          "status": "pending_upload"
+          "url": "./tools/auto-block-layout.html",
+          "status": "uploaded"
         }
       ],
       "media": [],
@@ -664,8 +664,8 @@
           "kind": "video",
           "label": "效果演示",
           "duration": "00:38",
-          "storageKey": "pending/finalcut-motion-demo.mp4",
-          "status": "pending_upload"
+          "src": "https://mmdxptnrfcwfulutzoex.supabase.co/storage/v1/object/public/tool-videos/html-plugin-Effects-video.mp4",
+          "status": "uploaded"
         }
       ],
       "tags": [
@@ -784,8 +784,8 @@
           "kind": "html",
           "label": "ITV自动打点工具.html",
           "originalLabel": "好像没怎么加快交互的工具.html",
-          "storageKey": "pending/itv-auto-marker.html",
-          "status": "pending_upload"
+          "url": "./tools/finalcut-itv.html",
+          "status": "uploaded"
         }
       ],
       "media": [
@@ -793,8 +793,8 @@
           "kind": "video",
           "label": "交互工具演示",
           "duration": "03:51",
-          "storageKey": "pending/itv-auto-marker-demo.mp4",
-          "status": "pending_upload"
+          "src": "https://mmdxptnrfcwfulutzoex.supabase.co/storage/v1/object/public/tool-videos/finalcut-itv-tutorial.mp4",
+          "status": "uploaded"
         }
       ],
       "tags": [

@@ -29,6 +29,21 @@ tool-packages/{tool-slug}/{file-name}
 
 ## 当前资源清单
 
+## 已接入的正式资源
+
+视频继续使用 Supabase Storage 直链：
+
+- `tool-videos/finalcut-itv-tutorial.mp4`：已接入 `ITV 自动打点工具` 的「交互工具演示」。
+- `tool-videos/html-plugin-Effects-video.mp4`：已接入 `Final Cut / Motion 集成 HTML 工具` 的「效果演示」。
+
+HTML 工具已镜像到 GitHub Pages 的 `tools/` 目录，用于直接打开运行：
+
+- `tools/instant-sound-effects-4.html`：已接入 `自动加音效 HTML 工具`。
+- `tools/auto-block-layout.html`：已接入 `积木自动排版工具`。
+- `tools/finalcut-itv.html`：已接入 `ITV 自动打点工具`。
+
+说明：Supabase Storage 可以保存 HTML 文件，但直接打开时可能以文本方式显示。要让 HTML 工具像网页一样运行，优先放到 GitHub Pages 的 `tools/` 目录。
+
 ### 点猫提示词助手
 
 slug：`dianmao-prompt-assistant`
