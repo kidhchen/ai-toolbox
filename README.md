@@ -18,7 +18,7 @@ http://localhost:4173/
 
 - 网站代码：`index.html`、`assets/app.js`、`assets/styles.css`
 - 工具基础内容：`content/tools.seed.json`
-- 飞书导入后的原型图片：`assets/feishu-images/doc-image-*.png`
+- 文档导入后的原型图片：`assets/doc-images/doc-image-*.png`
 - Supabase 数据库脚本：`supabase/schema.sql`
 - 上线和资源维护说明：`docs/github-supabase-workflow.md`
 

@@ -3,7 +3,6 @@
     "name": "AI制作工具箱",
     "language": "zh-CN",
     "style": "pixel-geek-game",
-    "sourceUrl": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh",
     "storagePolicy": "安装包、视频、图片、Skill包和HTML工具后续统一上传到网站存储。",
     "commentsPolicy": "允许匿名昵称评论。"
   },
@@ -53,69 +52,85 @@
       "developer": "跃鹏",
       "status": "published",
       "difficulty": "入门",
-      "summary": "把常用AI网站、提示词模板和一键打开入口整合到浏览器里，减少找网址、复制提示词和切换页面的时间。",
+      "summary": "把常用AI网站、提示词模板、常用提示词公式和一键打开入口整合到浏览器里，减少找网址、复制提示词和切换页面的时间。",
       "targetUsers": [
         "经常使用多个AI网站的制作同学",
         "需要频繁复制提示词和打开工具页面的人",
-        "希望把提示词流程固定下来的团队成员"
+        "希望把提示词流程固定下来的团队成员",
+        "需要用到图片、视频、多风格等多种 AI 生成提示词的人"
       ],
       "painPoints": [
         "常用AI网站分散，打开效率低。",
         "提示词需要反复查找和复制。",
-        "不同网站输入框位置变化时，插入提示词容易失败。"
+        "需要用到多种类型的 AI 生成提示词，临时组织容易漏信息。",
+        "分镜、场景四视图和故事板提示词格式不统一。"
       ],
       "features": [
         "收录常用AI制作网址。",
-        "智能工人按钮可一键打开豆包、DeepSeek、Oii、即梦等网站。",
+        "智能工人按钮可一键召唤豆包、DeepSeek、Oii、即梦等网站。",
         "自动识别当前网页并尝试插入提示词。",
-        "插入失败时自动复制提示词，用户可手动粘贴。"
+        "插入失败时自动复制提示词，用户可手动粘贴。",
+        "内置常用提示词公式库，覆盖视频生成起手式、分镜拆分、场景四视图和 Image2 故事板。"
       ],
       "usageSteps": [
         "下载插件压缩包并解压。",
-        "打开浏览器扩展管理页面。",
+        "打开浏览器扩展程序页面，进入管理扩展程序。",
         "开启开发者模式。",
         "将解压后的插件文件夹拖入扩展页面。",
-        "看到点猫提示词助手后，将插件固定到浏览器工具栏。"
+        "看到点猫提示词助手后，将插件固定到浏览器工具栏。",
+        "按制作需求使用网址入口、智能工人和提示词公式。"
       ],
       "coverImage": {
         "kind": "image",
         "label": "点猫提示词助手界面",
-        "src": "assets/feishu-images/doc-image-01.png",
-        "status": "imported_from_feishu"
+        "src": "assets/doc-images/doc-image-01.png",
+        "status": "imported_from_docs"
       },
       "featureMedia": [
         {
           "kind": "image",
           "label": "网址收录与智能入口",
-          "src": "assets/feishu-images/doc-image-02.png",
-          "status": "imported_from_feishu"
+          "src": "assets/doc-images/doc-image-02.png",
+          "status": "imported_from_docs"
         },
         {
           "kind": "image",
           "label": "提示词插入效果",
-          "src": "assets/feishu-images/doc-image-03.png",
-          "status": "imported_from_feishu"
+          "src": "assets/doc-images/doc-image-03.png",
+          "status": "imported_from_docs"
+        },
+        {
+          "kind": "image",
+          "label": "场景四视图效果",
+          "src": "assets/doc-images/doc-image-33.png",
+          "status": "imported_from_docs"
+        },
+        {
+          "kind": "image",
+          "label": "故事板生成效果",
+          "src": "assets/doc-images/doc-image-39.png",
+          "status": "imported_from_docs"
         }
       ],
       "stepMedia": [
         {
           "kind": "image",
           "label": "插件解压与安装步骤",
-          "src": "assets/feishu-images/doc-image-08.png",
-          "status": "imported_from_feishu"
+          "src": "assets/doc-images/doc-image-08.png",
+          "status": "imported_from_docs"
         },
         {
           "kind": "image",
           "label": "浏览器扩展固定步骤",
-          "src": "assets/feishu-images/doc-image-17.png",
-          "status": "imported_from_feishu"
+          "src": "assets/doc-images/doc-image-17.png",
+          "status": "imported_from_docs"
         }
       ],
       "resources": [
         {
-          "kind": "feishu_source",
-          "label": "飞书原始说明 / 下载入口",
-          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#Ok4rdSjWpoQkkxxfkpbc8KSonui",
+          "kind": "source_doc",
+          "label": "图文说明 / 资源入口",
+          "url": "https://alidocs.dingtalk.com/i/nodes/ZX6GRezwJl7ZrYdQHr4AjmNrVdqbropQ?utm_scene=team_space",
           "status": "external_link"
         },
         {
@@ -130,59 +145,14 @@
         "提示词",
         "Chrome插件",
         "AI网站入口",
-        "效率工具"
+        "效率工具",
+        "提示词模板",
+        "分镜",
+        "故事板",
+        "AI视频",
+        "提示词公式库"
       ],
-      "version": "待补充"
-    },
-    {
-      "id": "prompt-formula-library",
-      "slug": "prompt-formula-library",
-      "name": "常用提示词公式库",
-      "categoryId": "storyboard-prompts",
-      "categoryIds": [
-        "storyboard-prompts"
-      ],
-      "type": "method_collection",
-      "developer": "多人共创",
-      "status": "published",
-      "difficulty": "入门",
-      "summary": "沉淀视频生成、分镜拆分、场景视图和故事板生成的常用提示词，方便复制使用和团队统一产出格式。",
-      "targetUsers": [
-        "AI视频制作同学",
-        "编剧和分镜同学",
-        "需要把剧本快速转成可执行视频提示词的人"
-      ],
-      "painPoints": [
-        "每次生成视频都要重新组织提示词。",
-        "分镜、声音、对白时间点和音效描述容易遗漏。",
-        "故事板和场景参考格式不统一。"
-      ],
-      "features": [
-        "提供2D动画和3D Q版视频生成起手式。",
-        "支持将剧本拆分成约15秒的视频段落。",
-        "支持生成单个场景的四视图。",
-        "支持根据角色、场景和剧本生成故事板。"
-      ],
-      "coverImage": {
-        "kind": "image",
-        "label": "提示词公式示例",
-        "src": "assets/feishu-images/doc-image-32.png",
-        "status": "imported_from_feishu"
-      },
-      "featureMedia": [
-        {
-          "kind": "image",
-          "label": "场景四视图效果",
-          "src": "assets/feishu-images/doc-image-33.png",
-          "status": "imported_from_feishu"
-        },
-        {
-          "kind": "image",
-          "label": "故事板生成效果",
-          "src": "assets/feishu-images/doc-image-39.png",
-          "status": "imported_from_feishu"
-        }
-      ],
+      "version": "1.0",
       "methods": [
         {
           "id": "video-starting-prompt",
@@ -212,23 +182,7 @@
           "summary": "根据角色三视图、场景参考和剧本生成故事板，用于衔接即梦等视频生成工具。",
           "optimizedPrompt": "请根据角色三视图、场景参考和剧本内容生成故事板。故事板需包含角色展示、场景展示、必要的场景四视图，以及九宫格剧情画面。每格请补充情节要点、人物动作、台词、景别、镜头类型、运镜和镜头参数建议。"
         }
-      ],
-      "resources": [
-        {
-          "kind": "feishu_source",
-          "label": "飞书原始说明 / 下载入口",
-          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#SIhQd9guboHauexttXDc2i6CndH",
-          "status": "external_link"
-        }
-      ],
-      "media": [],
-      "tags": [
-        "提示词模板",
-        "分镜",
-        "故事板",
-        "AI视频"
-      ],
-      "version": "1.0"
+      ]
     },
     {
       "id": "codex-sound-effect-method",
@@ -243,46 +197,48 @@
       "developer": "益达",
       "status": "published",
       "difficulty": "进阶",
-      "summary": "用 Codex 辅助匹配音效、转场和插件效果，最后重新导入XML文件完成制作。",
+      "summary": "用 Codex 辅助匹配音效、转场和插件效果，最后重新导入 XML 文件完成制作。",
       "targetUsers": [
-        "需要给视频批量匹配音效的剪辑同学",
+        "使用 Final Cut 进行视频制作的伙伴",
+        "需要给视频批量匹配音效的同学",
         "希望减少手动查找、放置和调整音效的人"
       ],
       "painPoints": [
         "音效和转场需要人工逐段匹配。",
-        "同类视频流程重复，手动操作耗时。",
-        "XML处理过程容易出错。"
+        "同类视频音效处理流程重复，手动操作耗时。",
+        "XML 处理过程容易出错。"
       ],
       "features": [
         "让 Codex 根据视频结构辅助规划音效。",
         "支持转场和插件效果匹配思路。",
-        "最终通过重新导入XML完成效果应用。"
+        "最终通过重新导入 XML 完成效果应用。",
+        "规则可继续优化并转成 Codex Skill 安装使用。"
       ],
       "usageSteps": [
-        "准备需要处理的视频工程或XML文件。",
+        "准备 XML 文件音效规则框架，以及需要添加音效的 XML 文件。",
         "向 Codex 描述音效、转场和插件效果要求。",
         "让 Codex 生成或调整匹配方案。",
-        "将处理后的XML重新导入剪辑软件。"
+        "将处理后的 XML 重新导入剪辑软件。"
       ],
       "coverImage": {
         "kind": "image",
         "label": "Codex 加音效流程示例",
-        "src": "assets/feishu-images/doc-image-43.png",
-        "status": "imported_from_feishu"
+        "src": "assets/doc-images/doc-image-43.png",
+        "status": "imported_from_docs"
       },
       "featureMedia": [
         {
           "kind": "image",
           "label": "音效匹配与工程示例",
-          "src": "assets/feishu-images/doc-image-44.png",
-          "status": "imported_from_feishu"
+          "src": "assets/doc-images/doc-image-44.png",
+          "status": "imported_from_docs"
         }
       ],
       "resources": [
         {
-          "kind": "feishu_source",
-          "label": "飞书原始说明 / 下载入口",
-          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#KXR2dYLJjoxMXmxjPk7cFC91nBd",
+          "kind": "source_doc",
+          "label": "图文说明 / 资源入口",
+          "url": "https://alidocs.dingtalk.com/i/nodes/gwva2dxOW4K2Pkbgf0MLdQ5z8bkz3BRL?utm_scene=team_space",
           "status": "external_link"
         },
         {
@@ -314,46 +270,48 @@
       "developer": "文成",
       "status": "published",
       "difficulty": "入门",
-      "summary": "打开网页后拖入XML文件即可处理音效模板，不需要复制复杂代码。",
+      "summary": "打开网页后拖入 XML 文件即可批量处理音效模板，不需要复制复杂代码。",
       "targetUsers": [
-        "需要快速处理XML音效模板的人",
-        "不想接触复杂代码的剪辑同学"
+        "使用 Final Cut 进行视频制作的伙伴",
+        "需要快速处理音效，又想保留定制化空间的同学",
+        "同样的 Motion 模板希望统一使用一类音效的人"
       ],
       "painPoints": [
-        "XML处理门槛高。",
-        "重复模板显示混乱。",
-        "手动复制代码不适合日常制作。"
+        "需要机械化手动加音效。",
+        "不能给重复的模板快速加音效。",
+        "无法使用 Codex 这类付费 AI 平台时，也需要一个轻量工具。"
       ],
       "features": [
-        "拖拽XML文件即可使用。",
+        "拖拽 XML 文件即可使用。",
         "自动处理重复模板。",
-        "将重复模板合并显示，降低查找成本。"
+        "将重复模板合并显示，降低查找成本。",
+        "按页面提示完成路径设置和音效处理。"
       ],
       "usageSteps": [
-        "打开自动加音效HTML工具。",
-        "拖入需要处理的XML文件。",
-        "按页面提示完成处理。",
+        "在 Final Cut 中导出 XML 格式文件。",
+        "打开网页工具并拖入需要处理的 XML 文件。",
+        "按页面提示完成路径设置和音效处理。",
         "导出或复制处理结果并用于剪辑流程。"
       ],
       "coverImage": {
         "kind": "image",
         "label": "自动加音效工具界面",
-        "src": "assets/feishu-images/doc-image-45.png",
-        "status": "imported_from_feishu"
+        "src": "assets/doc-images/doc-image-45.png",
+        "status": "imported_from_docs"
       },
       "featureMedia": [
         {
           "kind": "image",
           "label": "XML 处理说明",
-          "src": "assets/feishu-images/doc-image-47.png",
-          "status": "imported_from_feishu"
+          "src": "assets/doc-images/doc-image-47.png",
+          "status": "imported_from_docs"
         }
       ],
       "resources": [
         {
-          "kind": "feishu_source",
-          "label": "飞书原始说明 / 下载入口",
-          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#W4lPdd6d5ocTphx0dbGcuOian1b",
+          "kind": "source_doc",
+          "label": "图文说明 / 资源入口",
+          "url": "https://alidocs.dingtalk.com/i/nodes/amweZ92PV6v25O1jCKBnRg4xVxEKBD6p?utm_scene=team_space",
           "status": "external_link"
         },
         {
@@ -384,7 +342,7 @@
       "developer": "三盛",
       "status": "published",
       "difficulty": "入门",
-      "summary": "把批量抠图、背景替换和高清放大合在一个工具里，减少多个软件来回切换。",
+      "summary": "把批量抠图、背景替换和高清放大功能合在一个工具里，减少多个软件来回切换。",
       "targetUsers": [
         "需要批量处理角色、道具、素材图的人",
         "经常在抠图和高清放大工具之间切换的人"
@@ -409,22 +367,28 @@
       "coverImage": {
         "kind": "image",
         "label": "批量抠图与高清放大界面",
-        "src": "assets/feishu-images/doc-image-49.png",
-        "status": "imported_from_feishu"
+        "src": "assets/doc-images/doc-image-49.png",
+        "status": "imported_from_docs"
       },
       "featureMedia": [
         {
           "kind": "image",
           "label": "素材批处理面板",
-          "src": "assets/feishu-images/doc-image-50.png",
-          "status": "imported_from_feishu"
+          "src": "assets/doc-images/doc-image-50.png",
+          "status": "imported_from_docs"
         }
       ],
       "resources": [
         {
-          "kind": "feishu_source",
-          "label": "飞书原始说明 / 下载入口",
-          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#OvGjdQ0eUoJbWZxPqmjcyJlonbg",
+          "kind": "source_doc",
+          "label": "图文说明 / 资源入口",
+          "url": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHZrRyAjpJxkXOEP2?utm_scene=team_space",
+          "status": "external_link"
+        },
+        {
+          "kind": "web_tool",
+          "label": "打开一键批量抠图 + 高清放大工具",
+          "url": "https://yyffyysalt-spec.github.io/yyff/",
           "status": "external_link"
         },
         {
@@ -478,17 +442,10 @@
       "coverImage": {
         "kind": "image",
         "label": "绿幕视频处理界面",
-        "src": "assets/feishu-images/doc-image-51.png",
-        "status": "imported_from_feishu"
+        "src": "assets/doc-images/doc-image-51.png",
+        "status": "imported_from_docs"
       },
-      "resources": [
-        {
-          "kind": "feishu_source",
-          "label": "飞书原始说明 / 下载入口",
-          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#QSkHdJN9todOQixYEFccftj8nUh",
-          "status": "external_link"
-        }
-      ],
+      "resources": [],
       "media": [],
       "tags": [
         "绿幕",
@@ -534,30 +491,24 @@
       "coverImage": {
         "kind": "image",
         "label": "积木自动排版工具界面",
-        "src": "assets/feishu-images/doc-image-52.png",
-        "status": "imported_from_feishu"
+        "src": "assets/doc-images/doc-image-52.png",
+        "status": "imported_from_docs"
       },
       "featureMedia": [
         {
           "kind": "image",
           "label": "积木拖入与排版效果",
-          "src": "assets/feishu-images/doc-image-53.png",
-          "status": "imported_from_feishu"
+          "src": "assets/doc-images/doc-image-53.png",
+          "status": "imported_from_docs"
         },
         {
           "kind": "image",
           "label": "积木排版结果示例",
-          "src": "assets/feishu-images/doc-image-54.png",
-          "status": "imported_from_feishu"
+          "src": "assets/doc-images/doc-image-54.png",
+          "status": "imported_from_docs"
         }
       ],
       "resources": [
-        {
-          "kind": "feishu_source",
-          "label": "飞书原始说明 / 下载入口",
-          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#N9q8dE5tVogJzSxE429cmK53nlc",
-          "status": "external_link"
-        },
         {
           "kind": "html",
           "label": "积木自动排版工具-网页端插件.html",
@@ -614,38 +565,32 @@
       "coverImage": {
         "kind": "image",
         "label": "Final Cut / Motion 工具整合效果",
-        "src": "assets/feishu-images/doc-image-56.png",
-        "status": "imported_from_feishu"
+        "src": "assets/doc-images/doc-image-56.png",
+        "status": "imported_from_docs"
       },
       "featureMedia": [
         {
           "kind": "image",
           "label": "Motion 工具包界面",
-          "src": "assets/feishu-images/doc-image-57.png",
-          "status": "imported_from_feishu"
+          "src": "assets/doc-images/doc-image-57.png",
+          "status": "imported_from_docs"
         }
       ],
       "stepMedia": [
         {
           "kind": "image",
           "label": "权限设置步骤",
-          "src": "assets/feishu-images/doc-image-62.png",
-          "status": "imported_from_feishu"
+          "src": "assets/doc-images/doc-image-62.png",
+          "status": "imported_from_docs"
         },
         {
           "kind": "image",
           "label": "脚本与文件夹绑定步骤",
-          "src": "assets/feishu-images/doc-image-65.png",
-          "status": "imported_from_feishu"
+          "src": "assets/doc-images/doc-image-65.png",
+          "status": "imported_from_docs"
         }
       ],
       "resources": [
-        {
-          "kind": "feishu_source",
-          "label": "飞书原始说明 / 下载入口",
-          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#Vg8UdJq6cof4fsxbwDucw30qnde",
-          "status": "external_link"
-        },
         {
           "kind": "package",
           "label": "插件本体整合包与说明书",
@@ -712,12 +657,6 @@
       ],
       "resources": [
         {
-          "kind": "feishu_source",
-          "label": "飞书原始说明 / 下载入口",
-          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#MWied5cn3o8xXExws6tcxusInCg",
-          "status": "external_link"
-        },
-        {
           "kind": "skill",
           "label": "自动化AI录屏 Skill 包",
           "storageKey": "pending/ai-screen-recording-skill",
@@ -770,16 +709,10 @@
       "coverImage": {
         "kind": "image",
         "label": "ITV 自动打点资料入口",
-        "src": "assets/feishu-images/doc-image-73.png",
-        "status": "imported_from_feishu"
+        "src": "assets/doc-images/doc-image-73.png",
+        "status": "imported_from_docs"
       },
       "resources": [
-        {
-          "kind": "feishu_source",
-          "label": "飞书原始说明 / 下载入口",
-          "url": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh#QJRFdS98IoFb5zxoVHlcWAVbnWf",
-          "status": "external_link"
-        },
         {
           "kind": "html",
           "label": "ITV自动打点工具.html",

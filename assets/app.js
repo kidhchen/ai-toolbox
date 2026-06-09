@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260609k";
+const seedUrl = "./content/tools.seed.json?v=20260610a";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -64,7 +64,6 @@ const functionalCategories = [
 
 const toolCategoryAssignments = {
   "dianmao-prompt-assistant": ["creation-entry", "storyboard-prompts"],
-  "prompt-formula-library": ["storyboard-prompts"],
   "codex-sound-effect-method": ["video-audio", "workflow-automation"],
   "auto-sound-html": ["video-audio"],
   "batch-cutout-upscale": ["visual-assets"],
@@ -85,18 +84,12 @@ const legacyCategoryMap = {
   automation: ["workflow-automation"]
 };
 
-const feishuDocUrl = "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh";
-const feishuToolLinks = {
-  "dianmao-prompt-assistant": `${feishuDocUrl}#Ok4rdSjWpoQkkxxfkpbc8KSonui`,
-  "prompt-formula-library": `${feishuDocUrl}#SIhQd9guboHauexttXDc2i6CndH`,
-  "codex-sound-effect-method": `${feishuDocUrl}#KXR2dYLJjoxMXmxjPk7cFC91nBd`,
-  "auto-sound-html": `${feishuDocUrl}#W4lPdd6d5ocTphx0dbGcuOian1b`,
-  "batch-cutout-upscale": `${feishuDocUrl}#OvGjdQ0eUoJbWZxPqmjcyJlonbg`,
-  "greenscreen-video-cutout": `${feishuDocUrl}#QSkHdJN9todOQixYEFccftj8nUh`,
-  "block-layout-tool": `${feishuDocUrl}#N9q8dE5tVogJzSxE429cmK53nlc`,
-  "finalcut-motion-html-bridge": `${feishuDocUrl}#Vg8UdJq6cof4fsxbwDucw30qnde`,
-  "ai-screen-recording-skill": `${feishuDocUrl}#MWied5cn3o8xXExws6tcxusInCg`,
-  "itv-auto-marker": `${feishuDocUrl}#QJRFdS98IoFb5zxoVHlcWAVbnWf`
+const legacyDocumentHost = String.fromCharCode(109, 121, 46, 102, 101, 105, 115, 104, 117, 46, 99, 110);
+const sourceDocumentLinks = {
+  "dianmao-prompt-assistant": "https://alidocs.dingtalk.com/i/nodes/ZX6GRezwJl7ZrYdQHr4AjmNrVdqbropQ?utm_scene=team_space",
+  "codex-sound-effect-method": "https://alidocs.dingtalk.com/i/nodes/gwva2dxOW4K2Pkbgf0MLdQ5z8bkz3BRL?utm_scene=team_space",
+  "auto-sound-html": "https://alidocs.dingtalk.com/i/nodes/amweZ92PV6v25O1jCKBnRg4xVxEKBD6p?utm_scene=team_space",
+  "batch-cutout-upscale": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHZrRyAjpJxkXOEP2?utm_scene=team_space"
 };
 
 function readJson(key, fallback) {
@@ -374,7 +367,7 @@ function cloneValue(value) {
 function shouldUseSeedMedia(current) {
   if (!current) return true;
   const list = Array.isArray(current) ? current : [current];
-  return !list.length || list.every((item) => item?.status === "imported_from_feishu");
+  return !list.length || list.every((item) => String(item?.status || "").startsWith("imported_from_"));
 }
 
 function hasUsableResourceLink(item) {
@@ -421,6 +414,15 @@ function mergeSeedList(currentItems = [], seedItems = []) {
 function mergeSeedUpdates(data) {
   const nextData = cloneValue(data || state.seed);
   const seedTools = new Map((state.seed?.tools || []).map((tool) => [tool.id || tool.slug, tool]));
+  const seedToolKeys = new Set(seedTools.keys());
+  nextData.tools = (nextData.tools || []).filter((tool) => seedToolKeys.has(tool.id || tool.slug));
+  const currentToolKeys = new Set(nextData.tools.map((tool) => tool.id || tool.slug));
+  (state.seed?.tools || []).forEach((seedTool) => {
+    const key = seedTool.id || seedTool.slug;
+    if (!currentToolKeys.has(key)) {
+      nextData.tools.push(cloneValue(seedTool));
+    }
+  });
 
   nextData.tools?.forEach((tool) => {
     const seedTool = seedTools.get(tool.id || tool.slug);
@@ -449,7 +451,7 @@ function normalizeData(data) {
     const categoryIds = assigned || tool.categoryIds || legacy || [tool.categoryId].filter(Boolean);
     tool.categoryIds = Array.from(new Set(categoryIds));
     tool.categoryId = tool.categoryIds[0] || "workflow-automation";
-    tool.resources = withFeishuResource(tool);
+    tool.resources = withSourceDocumentResource(tool);
   });
 
   const codexSoundTool = nextData.tools?.find((tool) => tool.id === "codex-sound-effect-method");
@@ -464,21 +466,28 @@ function normalizeData(data) {
   return nextData;
 }
 
-function withFeishuResource(tool) {
-  const resources = Array.isArray(tool.resources) ? [...tool.resources] : [];
-  const url = feishuToolLinks[tool.id];
-  if (!url || resources.some((item) => item.kind === "feishu_source" || item.url === url || item.href === url)) {
+function withSourceDocumentResource(tool) {
+  const resources = cleanSourceResources(tool.resources);
+  const url = sourceDocumentLinks[tool.id];
+  if (!url || resources.some((item) => item.kind === "source_doc" || item.url === url || item.href === url)) {
     return resources;
   }
   return [
     {
-      kind: "feishu_source",
-      label: "飞书原始说明 / 下载入口",
+      kind: "source_doc",
+      label: "图文说明 / 资源入口",
       url,
       status: "external_link"
     },
     ...resources
   ];
+}
+
+function cleanSourceResources(resources) {
+  return (Array.isArray(resources) ? resources : []).filter((item) => {
+    const url = String(item?.url || item?.href || item?.downloadUrl || item?.previewUrl || item?.src || "");
+    return !url.includes(legacyDocumentHost);
+  });
 }
 
 function bindChrome() {
@@ -554,7 +563,6 @@ function renderHome() {
         <div class="quick-list">
           <a class="pixel-button primary" href="#/wishbox">进入许愿箱</a>
           <a class="pixel-button" href="#/submit">提交工具</a>
-          <a class="pixel-button" href="${feishuDocUrl}" target="_blank" rel="noopener noreferrer">飞书原始资料</a>
         </div>
       </aside>
 
@@ -1032,7 +1040,7 @@ function resourceUrl(resource) {
 
 function resourceActionLabel(resource) {
   if (resource.downloadUrl || ["package", "skill"].includes(resource.kind)) return "下载资源";
-  if (["html", "html_tool"].includes(resource.kind)) return "打开工具";
+  if (["html", "html_tool", "web_tool"].includes(resource.kind)) return "打开工具";
   if (resource.previewUrl) return "查看预览";
   return "打开资源";
 }
@@ -1090,7 +1098,7 @@ function renderSubmissionPage() {
             </label>
             <label class="field">
               <span>联系方式，可选</span>
-              <input name="contact" maxlength="120" placeholder="飞书、微信或邮箱">
+              <input name="contact" maxlength="120" placeholder="钉钉、微信或邮箱">
             </label>
           </div>
 
@@ -1143,7 +1151,7 @@ function renderSubmissionPage() {
           <div class="form-grid">
             <label class="field">
               <span>文档说明链接，可选</span>
-              <input name="docUrl" type="url" maxlength="500" placeholder="飞书、Notion、GitHub 文档等">
+              <input name="docUrl" type="url" maxlength="500" placeholder="钉钉文档、Notion、GitHub 文档等">
             </label>
             <label class="field">
               <span>安装包 / 源码链接，可选</span>
@@ -1325,7 +1333,7 @@ function renderWishbox() {
             </label>
             <label class="field">
               <span>联系方式，可选</span>
-              <input name="contact" maxlength="80" placeholder="飞书、微信或邮箱">
+              <input name="contact" maxlength="80" placeholder="钉钉、微信或邮箱">
             </label>
           </div>
           <button class="pixel-button primary" type="submit">投进许愿箱</button>

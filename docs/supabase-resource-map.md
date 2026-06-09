@@ -60,15 +60,7 @@ slug：`dianmao-prompt-assistant`
 
 - `tool-packages/dianmao-prompt-assistant/dianmao-prompt-assistant.zip`
 
-### 常用提示词公式库
-
-slug：`prompt-formula-library`
-
-图片：
-
-- `tool-images/prompt-formula-library/cover.webp`
-- `tool-images/prompt-formula-library/feature-four-view.webp`
-- `tool-images/prompt-formula-library/feature-storyboard.webp`
+说明：常用提示词公式库已合并到 `点猫提示词助手` 正文内容中，不再作为独立工具入口维护。
 
 ### Codex 自动加音效方法
 

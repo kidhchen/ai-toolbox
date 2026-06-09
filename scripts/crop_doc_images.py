@@ -8,7 +8,7 @@ from PIL import Image
 
 
 ROOT = Path(__file__).resolve().parents[1]
-IMAGE_DIR = ROOT / "assets" / "feishu-images"
+IMAGE_DIR = ROOT / "assets" / "doc-images"
 RAW_DIR = IMAGE_DIR / "_raw-screens"
 RAW_JSON = RAW_DIR / "raw-screens.json"
 
@@ -58,7 +58,7 @@ def main() -> None:
             manifest_images.append(
                 {
                     "id": f"doc-image-{counter:02d}",
-                    "file": f"assets/feishu-images/{file_name}",
+                    "file": f"assets/doc-images/{file_name}",
                     "sourceScreenshot": shot["file"],
                     "sourceScrollY": rect.get("scrollY"),
                     "renderedWidth": x2 - x1,
@@ -66,7 +66,7 @@ def main() -> None:
                     "naturalWidth": rect.get("naturalWidth"),
                     "naturalHeight": rect.get("naturalHeight"),
                     "alt": rect.get("alt"),
-                    "originalSrc": "blob-url-from-feishu-session"
+                    "originalSrc": "blob-url-from-source-session"
                     if src.startswith("blob:")
                     else src,
                     "context": rect.get("context", ""),
@@ -77,8 +77,8 @@ def main() -> None:
     (IMAGE_DIR / "manifest.json").write_text(
         json.dumps(
             {
-                "source": "feishu-rendered-crops",
-                "sourceUrl": "https://my.feishu.cn/wiki/MCSEw5tSzihbDfk1MWBcsy1rnQh",
+                "source": "source-rendered-crops",
+                "sourceUrl": "https://example.com/source-doc",
                 "images": manifest_images,
             },
             ensure_ascii=False,
