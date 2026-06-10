@@ -1726,6 +1726,377 @@ html[data-theme="night"] body.home-page .gallery-hero__copy h1 {
   color: #edf5ee;
 }
 
+body.tool-detail-page {
+  background:
+    radial-gradient(circle at 14% 0%, rgba(124, 58, 237, 0.08), transparent 28%),
+    radial-gradient(circle at 86% 10%, rgba(6, 182, 212, 0.10), transparent 26%),
+    #fbfbfd;
+}
+
+html[data-theme="night"] body.tool-detail-page {
+  background: transparent;
+}
+
+body.tool-detail-page .topbar {
+  border-bottom: 1px solid rgba(18, 18, 22, 0.08);
+  background: rgba(251, 251, 253, 0.78);
+  backdrop-filter: blur(18px);
+}
+
+html[data-theme="night"] body.tool-detail-page .topbar {
+  border-bottom-color: rgba(83, 255, 185, 0.14);
+  background: rgba(5, 7, 13, 0.74);
+}
+
+body.tool-detail-page .nav-link {
+  min-width: auto;
+  border-color: rgba(18, 18, 22, 0.10);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.70);
+  box-shadow: none;
+}
+
+html[data-theme="night"] body.tool-detail-page .nav-link {
+  border-color: rgba(83, 255, 185, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(237, 245, 238, 0.82);
+}
+
+body.tool-detail-page .nav-link.is-active {
+  background: #121216;
+  color: #fff;
+}
+
+html[data-theme="night"] body.tool-detail-page .nav-link.is-active {
+  background: rgba(0, 240, 168, 0.18);
+  color: var(--mint);
+}
+
+body.tool-detail-page .app-shell {
+  width: min(1640px, calc(100% - clamp(28px, 5vw, 92px)));
+  padding-top: clamp(26px, 3vw, 48px);
+}
+
+.tool-detail-screen {
+  gap: clamp(22px, 3vw, 42px);
+}
+
+.detail-back {
+  justify-self: start;
+  min-width: auto;
+  border-color: rgba(18, 18, 22, 0.10);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: none;
+}
+
+html[data-theme="night"] .detail-back {
+  border-color: rgba(83, 255, 185, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(237, 245, 238, 0.86);
+}
+
+body.tool-detail-page .detail-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+  gap: clamp(24px, 2.4vw, 38px);
+}
+
+body.tool-detail-page .detail-band {
+  padding: clamp(24px, 3vw, 44px);
+  border: 1px solid rgba(18, 18, 22, 0.07);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 26px 80px rgba(22, 26, 39, 0.10);
+  backdrop-filter: blur(18px);
+}
+
+html[data-theme="night"] body.tool-detail-page .detail-band {
+  border-color: rgba(83, 255, 185, 0.13);
+  background: rgba(255, 255, 255, 0.055);
+  box-shadow: 0 28px 88px rgba(0, 0, 0, 0.34);
+}
+
+body.tool-detail-page .detail-sidebar {
+  position: sticky;
+  top: 104px;
+}
+
+body.tool-detail-page .detail-title {
+  gap: 18px;
+  margin-bottom: clamp(28px, 4vw, 50px);
+}
+
+body.tool-detail-page .detail-title h1 {
+  max-width: 980px;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Noto Sans SC", sans-serif;
+  font-size: clamp(44px, 4.6vw, 76px);
+  font-weight: 820;
+  line-height: 1.04;
+}
+
+body.tool-detail-page .detail-title p {
+  max-width: 920px;
+  color: rgba(18, 18, 22, 0.62);
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Noto Sans SC", sans-serif;
+  font-size: clamp(18px, 1.25vw, 23px);
+  line-height: 1.75;
+}
+
+html[data-theme="night"] body.tool-detail-page .detail-title p,
+html[data-theme="night"] body.tool-detail-page .media-slot figcaption span,
+html[data-theme="night"] body.tool-detail-page .comment-meta,
+html[data-theme="night"] body.tool-detail-page .method-item p,
+html[data-theme="night"] body.tool-detail-page .resource-item p {
+  color: rgba(237, 245, 238, 0.58);
+}
+
+body.tool-detail-page .detail-title .pixel-badge,
+body.tool-detail-page .detail-title .status-badge,
+body.tool-detail-page .meta-item {
+  min-height: 28px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(124, 58, 237, 0.10);
+  color: #4c1d95;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Noto Sans SC", sans-serif;
+  font-size: 12px;
+}
+
+body.tool-detail-page .detail-title .status-badge[data-status="published"],
+body.tool-detail-page .detail-title .meta-item:first-child {
+  background: rgba(68, 215, 168, 0.16);
+  color: #087f5b;
+}
+
+html[data-theme="night"] body.tool-detail-page .detail-title .pixel-badge,
+html[data-theme="night"] body.tool-detail-page .detail-title .status-badge,
+html[data-theme="night"] body.tool-detail-page .meta-item {
+  background: rgba(231, 255, 122, 0.10);
+  color: var(--sun);
+}
+
+html[data-theme="night"] body.tool-detail-page .detail-title .status-badge[data-status="published"],
+html[data-theme="night"] body.tool-detail-page .detail-title .meta-item:first-child {
+  background: rgba(68, 215, 168, 0.14);
+  color: var(--mint);
+}
+
+body.tool-detail-page .section-block {
+  margin-top: clamp(26px, 3vw, 44px);
+  padding-top: clamp(24px, 3vw, 38px);
+  border-top: 1px solid rgba(18, 18, 22, 0.08);
+}
+
+html[data-theme="night"] body.tool-detail-page .section-block {
+  border-top-color: rgba(83, 255, 185, 0.12);
+}
+
+body.tool-detail-page .section-block h2 {
+  margin-bottom: 16px;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Noto Sans SC", sans-serif;
+  font-size: clamp(22px, 1.8vw, 30px);
+  font-weight: 780;
+  line-height: 1.25;
+}
+
+body.tool-detail-page .clean-list,
+body.tool-detail-page .step-list {
+  display: grid;
+  gap: 10px;
+  padding-left: 0;
+  list-style: none;
+}
+
+body.tool-detail-page .clean-list li,
+body.tool-detail-page .step-list li {
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px solid rgba(18, 18, 22, 0.07);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.62);
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Noto Sans SC", sans-serif;
+}
+
+html[data-theme="night"] body.tool-detail-page .clean-list li,
+html[data-theme="night"] body.tool-detail-page .step-list li {
+  border-color: rgba(83, 255, 185, 0.10);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+body.tool-detail-page .step-list {
+  counter-reset: step;
+}
+
+body.tool-detail-page .step-list li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+
+body.tool-detail-page .step-list li::before {
+  counter-increment: step;
+  content: counter(step, decimal-leading-zero);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  min-height: 28px;
+  border-radius: 999px;
+  background: rgba(68, 215, 168, 0.18);
+  color: #087f5b;
+  font-weight: 800;
+}
+
+html[data-theme="night"] body.tool-detail-page .step-list li::before {
+  background: rgba(0, 240, 168, 0.14);
+  color: var(--mint);
+}
+
+body.tool-detail-page .media-hero {
+  margin-bottom: clamp(28px, 4vw, 52px);
+}
+
+body.tool-detail-page .media-slot {
+  border: 1px solid rgba(18, 18, 22, 0.07);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 20px 60px rgba(22, 26, 39, 0.08);
+  overflow: hidden;
+}
+
+html[data-theme="night"] body.tool-detail-page .media-slot {
+  border-color: rgba(83, 255, 185, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+}
+
+body.tool-detail-page .media-slot img,
+body.tool-detail-page .media-slot video,
+body.tool-detail-page .media-placeholder {
+  border-bottom: 0;
+}
+
+body.tool-detail-page .media-slot img {
+  background: #0f1320;
+}
+
+body.tool-detail-page .media-placeholder {
+  background:
+    radial-gradient(circle at 30% 25%, rgba(68, 215, 168, 0.22), transparent 32%),
+    radial-gradient(circle at 78% 36%, rgba(143, 108, 255, 0.22), transparent 30%),
+    #111624;
+}
+
+body.tool-detail-page .media-pixel {
+  border: 0;
+  border-radius: 999px;
+  filter: blur(10px);
+  opacity: 0.78;
+}
+
+body.tool-detail-page .play-pixel {
+  border-width: 1px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+body.tool-detail-page .media-slot figcaption {
+  min-height: auto;
+  gap: 8px;
+  padding: 14px 16px 16px;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Noto Sans SC", sans-serif;
+}
+
+body.tool-detail-page .visual-grid,
+body.tool-detail-page .media-row {
+  gap: clamp(14px, 1.8vw, 22px);
+}
+
+body.tool-detail-page .resource-item,
+body.tool-detail-page .method-item,
+body.tool-detail-page .comment-item,
+body.tool-detail-page .wish-item {
+  padding: 16px;
+  border: 1px solid rgba(18, 18, 22, 0.07);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.66);
+  box-shadow: none;
+}
+
+html[data-theme="night"] body.tool-detail-page .resource-item,
+html[data-theme="night"] body.tool-detail-page .method-item,
+html[data-theme="night"] body.tool-detail-page .comment-item,
+html[data-theme="night"] body.tool-detail-page .wish-item {
+  border-color: rgba(83, 255, 185, 0.10);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+body.tool-detail-page .prompt-box {
+  border: 1px solid rgba(18, 18, 22, 0.08);
+  border-radius: 14px;
+  background: #101722;
+  color: #f8f1d7;
+}
+
+html[data-theme="night"] body.tool-detail-page .prompt-box {
+  border-color: rgba(83, 255, 185, 0.14);
+  background: rgba(0, 0, 0, 0.26);
+}
+
+body.tool-detail-page .pixel-button,
+body.tool-detail-page .copy-button,
+body.tool-detail-page .like-button,
+body.tool-detail-page .tool-praise-button,
+body.tool-detail-page .resource-status,
+body.tool-detail-page .like-count {
+  border-width: 1px;
+  border-radius: 999px;
+  box-shadow: none;
+}
+
+body.tool-detail-page .resource-status {
+  border: 0;
+  background: rgba(68, 215, 168, 0.16);
+  color: #087f5b;
+}
+
+html[data-theme="night"] body.tool-detail-page .resource-status {
+  background: rgba(68, 215, 168, 0.14);
+  color: var(--mint);
+}
+
+body.tool-detail-page .tool-praise {
+  border-top: 0;
+  margin-top: clamp(28px, 3vw, 44px);
+  padding-top: 0;
+}
+
+body.tool-detail-page .tool-praise-button {
+  min-width: 112px;
+  background: rgba(255, 212, 71, 0.28);
+}
+
+body.tool-detail-page .detail-comment-panel h2 {
+  margin-bottom: 14px;
+}
+
+body.tool-detail-page .field input,
+body.tool-detail-page .field textarea,
+body.tool-detail-page .field select {
+  border-width: 1px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: none;
+}
+
+html[data-theme="night"] body.tool-detail-page .field input,
+html[data-theme="night"] body.tool-detail-page .field textarea,
+html[data-theme="night"] body.tool-detail-page .field select {
+  border-color: rgba(83, 255, 185, 0.14);
+  background: rgba(255, 255, 255, 0.055);
+}
+
 @media (max-width: 960px) {
   .dashboard-grid,
   .detail-layout,
@@ -1736,6 +2107,10 @@ html[data-theme="night"] body.home-page .gallery-hero__copy h1 {
   }
 
   .control-panel {
+    position: static;
+  }
+
+  body.tool-detail-page .detail-sidebar {
     position: static;
   }
 

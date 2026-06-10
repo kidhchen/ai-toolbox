@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260610v";
+const seedUrl = "./content/tools.seed.json?v=20260611a";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -728,7 +728,7 @@ function startSpaceBackground() {
 
 function render() {
   stopHomeStrands();
-  document.body.classList.remove("home-page");
+  document.body.classList.remove("home-page", "tool-detail-page");
   const hash = window.location.hash || "#/";
   if (hash.startsWith("#/tool/")) {
     setRouteActive("home");
@@ -1204,6 +1204,7 @@ function toolCard(tool) {
 }
 
 function renderTool(slug) {
+  document.body.classList.add("tool-detail-page");
   const tool = state.data.tools.find((item) => item.slug === slug);
   if (!tool) {
     app.innerHTML = emptyState("没有找到这个工具", "它可能被重命名或还没有上架。");
@@ -1213,8 +1214,8 @@ function renderTool(slug) {
   const comments = state.comments[tool.id] || [];
 
   app.innerHTML = `
-    <section class="screen">
-      <a class="pixel-button" href="#/">返回工具大厅</a>
+    <section class="screen tool-detail-screen">
+      <a class="pixel-button detail-back" href="#/">返回工具大厅</a>
       <div class="detail-layout">
         <article class="detail-band">
           <header class="detail-title">
@@ -1244,8 +1245,8 @@ function renderTool(slug) {
           ${resourcesSection(tool)}
         </article>
 
-        <aside class="detail-band">
-          <div class="section-block" style="margin-top:0;padding-top:0;border-top:0">
+        <aside class="detail-band detail-sidebar">
+          <div class="section-block detail-comment-panel" style="margin-top:0;padding-top:0;border-top:0">
             <h2>匿名评论</h2>
             <form class="comment-form" id="comment-form">
               <div class="form-grid">
