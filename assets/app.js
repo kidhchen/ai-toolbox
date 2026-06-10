@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260610o";
+const seedUrl = "./content/tools.seed.json?v=20260610q";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -7,7 +7,8 @@ const storageKeys = {
   data: "ai_toolbox_data_override",
   comments: "ai_toolbox_comments",
   wishes: "ai_toolbox_wishes",
-  toolLikes: "ai_toolbox_tool_likes"
+  toolLikes: "ai_toolbox_tool_likes",
+  theme: "ai_toolbox_theme"
 };
 
 const app = document.querySelector("#app");
@@ -23,6 +24,7 @@ const state = {
   query: "",
   category: "all",
   feedbackFilter: "all",
+  theme: readJson(storageKeys.theme, "day"),
   comments: readJson(storageKeys.comments, {}),
   wishes: readJson(storageKeys.wishes, []),
   toolLikes: readJson(storageKeys.toolLikes, {}),
@@ -534,7 +536,27 @@ function cleanSourceResources(resources) {
 }
 
 function bindChrome() {
+  bindThemeToggle();
   mountLocalMaintenance();
+}
+
+function bindThemeToggle() {
+  applyTheme(state.theme);
+  document.querySelector("#theme-toggle")?.addEventListener("click", () => {
+    state.theme = state.theme === "night" ? "day" : "night";
+    writeJson(storageKeys.theme, state.theme);
+    applyTheme(state.theme);
+  });
+}
+
+function applyTheme(theme) {
+  const nextTheme = theme === "night" ? "night" : "day";
+  state.theme = nextTheme;
+  document.documentElement.dataset.theme = nextTheme;
+  const button = document.querySelector("#theme-toggle");
+  if (!button) return;
+  button.textContent = nextTheme === "night" ? "白天版" : "夜晚版";
+  button.setAttribute("aria-pressed", String(nextTheme === "night"));
 }
 
 function render() {
@@ -571,50 +593,44 @@ function render() {
 function renderHome() {
   const tools = filteredTools();
   const categories = state.data.categories;
-  const publishedCount = state.data.tools.filter((tool) => tool.status === "published").length;
-  const pendingResources = state.data.tools
-    .flatMap((tool) => tool.resources || [])
-    .filter((resource) => resource.status === "pending_upload" && !resourceUrl(resource)).length;
 
   app.innerHTML = `
-    <section class="screen dashboard-grid">
-      <aside class="control-panel">
-        <div class="panel-head">
+    <section class="screen gallery-home">
+      <section class="gallery-hero">
+        <div class="gallery-hero__copy">
+          <p class="eyebrow">AI TOOLBOX</p>
+          <h1>把 AI 制作工具按任务找出来</h1>
+          <p>这里收集可直接进入的工具、插件、制作方法和工作流，按“视频、图片、提示词、自动化、教程排版”等真实制作场景整理。</p>
+        </div>
+        <div class="gallery-actions" aria-label="快捷入口">
+          <a class="pixel-button primary" href="#/submit">提交工具</a>
+          <a class="pixel-button" href="#/wishbox">许愿箱</a>
+          <a class="pixel-button" href="#/feedback">反馈评价</a>
+        </div>
+      </section>
+
+      <section class="home-discovery" aria-label="工具分类和搜索">
+        <div class="home-discovery__head">
           <div>
-            <p class="eyebrow">TOOL LOBBY</p>
-            <h1>${escapeHtml(state.data.site.name)}</h1>
+            <p class="eyebrow">CATEGORY</p>
+            <h2>先选你要解决的制作问题</h2>
           </div>
+          <label class="gallery-search" for="search-input">
+            <span>辅助搜索</span>
+            <input class="search-input" id="search-input" type="search" value="${escapeHtml(state.query)}" placeholder="工具名、用途或标签">
+          </label>
         </div>
 
-        <div class="stats-grid" aria-label="工具统计">
-          <div class="stat-box"><strong>${state.data.tools.length}</strong><span>工具入口</span></div>
-          <div class="stat-box"><strong>${publishedCount}</strong><span>已上线</span></div>
-          <div class="stat-box"><strong>${pendingResources}</strong><span>待上传资源</span></div>
+        <div class="category-rail">
+          ${categoryButton("all", "全部工具", state.data.tools.length, false)}
+          ${categories.map((category) => categoryButton(
+            category.id,
+            category.name,
+            state.data.tools.filter((tool) => toolInCategory(tool, category.id)).length,
+            false
+          )).join("")}
         </div>
-
-        <label class="field">
-          <span>搜索工具</span>
-          <input class="search-input" id="search-input" type="search" value="${escapeHtml(state.query)}" placeholder="输入工具名、标签或开发者">
-        </label>
-
-        <div class="field">
-          <label>分类</label>
-          <div class="category-list">
-            ${categoryButton("all", "全部工具", state.data.tools.length)}
-            ${categories.map((category) => categoryButton(
-              category.id,
-              category.name,
-              state.data.tools.filter((tool) => toolInCategory(tool, category.id)).length
-            )).join("")}
-          </div>
-        </div>
-
-        <div class="quick-list">
-          <a class="pixel-button primary" href="#/feedback">反馈评价集合</a>
-          <a class="pixel-button primary" href="#/wishbox">进入许愿箱</a>
-          <a class="pixel-button" href="#/submit">提交工具</a>
-        </div>
-      </aside>
+      </section>
 
       ${homeResultsPanel(tools)}
     </section>
@@ -634,14 +650,20 @@ function renderHome() {
 }
 
 function homeResultsPanel(tools = filteredTools()) {
+  const selectedCategory = state.data.categories.find((category) => category.id === state.category);
+  const title = selectedCategory?.name || "全部工具";
+  const description = selectedCategory?.description || "浏览全部工具入口，先看截图，再决定进入哪一个方法。";
+  const queryText = state.query.trim();
+
   return `
-    <section class="content-panel">
-      <div class="panel-head">
+    <section class="home-results">
+      <div class="home-results__head">
         <div>
-          <p class="eyebrow">SELECT A TOOL</p>
-          <h2>${state.category === "all" ? "全部工具" : escapeHtml(categoryName(state.category))}</h2>
+          <p class="eyebrow">TOOL GALLERY</p>
+          <h2>${escapeHtml(title)}</h2>
+          <p>${escapeHtml(queryText ? `正在搜索：${queryText}` : description)}</p>
         </div>
-        <span class="pixel-badge">${tools.length} 个入口</span>
+        <span class="result-hint">${tools.length ? "按截图进入工具详情" : "没有匹配结果"}</span>
       </div>
       ${tools.length ? `<div class="tool-grid">${tools.map(toolCard).join("")}</div>` : emptyState("没有匹配的工具", "换个关键词或分类再试一次。")}
     </section>
@@ -649,16 +671,16 @@ function homeResultsPanel(tools = filteredTools()) {
 }
 
 function renderHomeResults() {
-  const panel = document.querySelector(".content-panel");
+  const panel = document.querySelector(".home-results");
   if (!panel) return;
   panel.outerHTML = homeResultsPanel();
 }
 
-function categoryButton(id, label, count) {
+function categoryButton(id, label, count, showCount = true) {
   return `
     <button class="chip-button ${state.category === id ? "is-active" : ""}" type="button" data-category="${escapeHtml(id)}">
       <span>${escapeHtml(label)}</span>
-      <span class="chip-count">${count}</span>
+      ${showCount ? `<span class="chip-count">${count}</span>` : ""}
     </button>
   `;
 }
@@ -772,20 +794,17 @@ function feedbackFilterButton(id, count) {
 function toolCard(tool) {
   return `
     <article class="tool-card" onclick="location.hash='#/tool/${encodeURIComponent(tool.slug)}'">
-      <div class="tool-card__top">
-        <span class="status-badge" data-status="${escapeHtml(tool.status)}">${escapeHtml(statusLabel(tool.status))}</span>
-        <span class="pixel-badge">${escapeHtml(typeLabel(tool.type))}</span>
-      </div>
       ${toolThumbnail(tool)}
-      <h2>${escapeHtml(tool.name)}</h2>
-      <p>${escapeHtml(tool.summary)}</p>
-      <div>
-        <div class="meta-row">
-          <span class="meta-item">开发者 ${escapeHtml(tool.developer)}</span>
-          <span class="meta-item">${escapeHtml(tool.difficulty)}</span>
+      <div class="tool-card__body">
+        <div class="tool-card__top">
+          <span class="pixel-badge">${escapeHtml(typeLabel(tool.type))}</span>
+          <span class="status-badge" data-status="${escapeHtml(tool.status)}">${escapeHtml(statusLabel(tool.status))}</span>
         </div>
+        <h2>${escapeHtml(tool.name)}</h2>
+        <p>${escapeHtml(tool.summary)}</p>
         <div class="tag-row" aria-label="标签">
-          ${(tool.tags || []).slice(0, 3).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}
+          ${toolCategoryIds(tool).slice(0, 2).map((id) => `<span class="tag">${escapeHtml(categoryName(id))}</span>`).join("")}
+          ${(tool.tags || []).slice(0, 1).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}
         </div>
       </div>
     </article>
