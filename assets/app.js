@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260610r";
+const seedUrl = "./content/tools.seed.json?v=20260610s";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -17,6 +17,7 @@ let adminPanel = null;
 let dataEditor = null;
 let adminMessage = null;
 let lightboxKeyHandler = null;
+let homeStrandsAnimation = null;
 
 const state = {
   seed: null,
@@ -555,6 +556,8 @@ function applyTheme(theme) {
 }
 
 function render() {
+  stopHomeStrands();
+  document.body.classList.remove("home-page");
   const hash = window.location.hash || "#/";
   if (hash.startsWith("#/tool/")) {
     setRouteActive("home");
@@ -586,12 +589,14 @@ function render() {
 }
 
 function renderHome() {
+  document.body.classList.add("home-page");
   const tools = filteredTools();
   const categories = state.data.categories;
 
   app.innerHTML = `
     <section class="screen gallery-home">
       <section class="gallery-hero">
+        <canvas class="strands-canvas" id="strands-canvas" aria-hidden="true"></canvas>
         <div class="gallery-hero__copy">
           <p class="eyebrow">AI TOOLBOX</p>
           <h1>强大的 AI 制作工具箱</h1>
@@ -602,7 +607,6 @@ function renderHome() {
       <section class="home-discovery" aria-label="工具分类和搜索">
         <div class="home-discovery__head">
           <div>
-            <p class="eyebrow">CATEGORY</p>
             <h2>工具分类</h2>
           </div>
           <label class="gallery-search" for="search-input">
@@ -637,6 +641,97 @@ function renderHome() {
       renderHome();
     });
   });
+
+  startHomeStrands();
+}
+
+function stopHomeStrands() {
+  if (!homeStrandsAnimation) return;
+  homeStrandsAnimation();
+  homeStrandsAnimation = null;
+}
+
+function startHomeStrands() {
+  stopHomeStrands();
+  const canvas = document.querySelector("#strands-canvas");
+  if (!canvas) return;
+  const context = canvas.getContext("2d");
+  if (!context) return;
+
+  const palette = ["#f95b16", "#7c3aed", "#06b6d4", "#44d7a8"];
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  let frameId = 0;
+  let width = 0;
+  let height = 0;
+  let dpr = 1;
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = Math.max(1, Math.round(rect.width));
+    height = Math.max(1, Math.round(rect.height));
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    context.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function draw(timestamp = 0) {
+    context.clearRect(0, 0, width, height);
+    const time = timestamp * 0.00022;
+    const centerY = height * 0.54;
+    const reach = Math.max(80, height * 0.32);
+
+    palette.forEach((color, index) => {
+      const offset = (index - 1.5) * 26;
+      const amplitude = reach * (0.42 + index * 0.08);
+      const thickness = 18 - index * 2;
+      const gradient = context.createLinearGradient(width * 0.08, 0, width * 0.92, 0);
+      gradient.addColorStop(0, `${color}00`);
+      gradient.addColorStop(0.24, `${color}88`);
+      gradient.addColorStop(0.5, `${color}d8`);
+      gradient.addColorStop(0.76, `${color}88`);
+      gradient.addColorStop(1, `${color}00`);
+
+      context.beginPath();
+      for (let step = 0; step <= 180; step += 1) {
+        const progress = step / 180;
+        const x = progress * width;
+        const envelope = Math.sin(progress * Math.PI);
+        const wave = Math.sin(progress * Math.PI * (1.3 + index * 0.28) + time * (1.8 + index * 0.5) + index);
+        const waveTwo = Math.sin(progress * Math.PI * (2.2 + index * 0.34) - time * 1.2 + index * 1.7);
+        const y = centerY + offset + (wave * 0.7 + waveTwo * 0.3) * amplitude * envelope;
+        if (step === 0) context.moveTo(x, y);
+        else context.lineTo(x, y);
+      }
+
+      context.lineCap = "round";
+      context.lineJoin = "round";
+      context.shadowBlur = 28;
+      context.shadowColor = color;
+      context.strokeStyle = gradient;
+      context.globalAlpha = 0.58;
+      context.lineWidth = thickness;
+      context.stroke();
+
+      context.shadowBlur = 0;
+      context.globalAlpha = 0.9;
+      context.lineWidth = Math.max(1.5, thickness * 0.18);
+      context.stroke();
+    });
+
+    context.globalAlpha = 1;
+    if (!reducedMotion) {
+      frameId = requestAnimationFrame(draw);
+    }
+  }
+
+  resize();
+  draw();
+  window.addEventListener("resize", resize);
+  homeStrandsAnimation = () => {
+    cancelAnimationFrame(frameId);
+    window.removeEventListener("resize", resize);
+  };
 }
 
 function homeResultsPanel(tools = filteredTools()) {
@@ -653,7 +748,7 @@ function homeResultsPanel(tools = filteredTools()) {
           <h2>${escapeHtml(title)}</h2>
           <p>${escapeHtml(queryText ? `正在搜索：${queryText}` : description)}</p>
         </div>
-        <span class="result-hint">${tools.length ? "点击卡片查看详情" : "没有匹配结果"}</span>
+        ${tools.length ? "" : `<span class="result-hint">没有匹配结果</span>`}
       </div>
       ${tools.length ? `<div class="tool-grid">${tools.map(toolCard).join("")}</div>` : emptyState("没有匹配的工具", "换个关键词或分类再试一次。")}
     </section>
