@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260610q";
+const seedUrl = "./content/tools.seed.json?v=20260610r";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -37,34 +37,29 @@ const state = {
 
 const functionalCategories = [
   {
-    id: "storyboard-prompts",
-    name: "剧本分镜与提示词",
-    description: "从剧本拆分、起手式、场景视图到故事板生成的创作方法。"
+    id: "text-tools",
+    name: "文本工具",
+    description: "提示词、剧本拆分、文案整理和内容结构化方法。"
   },
   {
-    id: "video-audio",
-    name: "视频与音频制作",
-    description: "处理视频、音效、转场、XML、绿幕和ITV制作效率的工具。"
+    id: "video-processing",
+    name: "视频处理",
+    description: "处理视频剪辑、字幕、绿幕、标记、转场和软件联动。"
   },
   {
-    id: "visual-assets",
-    name: "图片与视觉素材",
-    description: "用于抠图、高清放大、换背景和视觉素材增强的工具。"
+    id: "image-processing",
+    name: "图片处理",
+    description: "用于抠图、高清放大、换背景和视觉素材增强。"
+  },
+  {
+    id: "audio-processing",
+    name: "音频处理",
+    description: "音效生成、配音整理、音频素材处理和声音工作流。"
   },
   {
     id: "workflow-automation",
-    name: "自动化与工作流",
-    description: "把重复操作交给Codex、脚本或跨软件工作流来完成。"
-  },
-  {
-    id: "creation-entry",
-    name: "工具入口与管理",
-    description: "集中管理常用AI网址、提示词入口和制作流程快捷方式。"
-  },
-  {
-    id: "course-layout",
-    name: "教程与积木排版",
-    description: "服务教程、课件、积木截图和说明素材整理的工具。"
+    name: "自动化工作流",
+    description: "把重复操作交给Codex、脚本或跨软件流程来完成。"
   }
 ];
 
@@ -77,24 +72,24 @@ const issueTypeLabels = {
 };
 
 const toolCategoryAssignments = {
-  "dianmao-prompt-assistant": ["creation-entry", "storyboard-prompts"],
-  "codex-sound-effect-method": ["video-audio", "workflow-automation"],
-  "auto-sound-html": ["video-audio"],
-  "batch-cutout-upscale": ["visual-assets"],
-  "greenscreen-video-cutout": ["visual-assets", "video-audio"],
-  "block-layout-tool": ["course-layout"],
-  "finalcut-motion-html-bridge": ["video-audio", "workflow-automation"],
+  "dianmao-prompt-assistant": ["text-tools", "workflow-automation"],
+  "codex-sound-effect-method": ["audio-processing", "workflow-automation"],
+  "auto-sound-html": ["audio-processing", "video-processing"],
+  "batch-cutout-upscale": ["image-processing"],
+  "greenscreen-video-cutout": ["video-processing", "image-processing"],
+  "block-layout-tool": ["text-tools", "image-processing"],
+  "finalcut-motion-html-bridge": ["video-processing", "workflow-automation"],
   "ai-screen-recording-skill": ["workflow-automation"],
-  "itv-auto-marker": ["video-audio", "workflow-automation"]
+  "itv-auto-marker": ["video-processing", "workflow-automation"]
 };
 
 const legacyCategoryMap = {
-  "prompt-workflows": ["storyboard-prompts"],
+  "prompt-workflows": ["text-tools"],
   "html-tools": ["workflow-automation"],
-  "browser-extensions": ["creation-entry"],
+  "browser-extensions": ["workflow-automation"],
   "codex-skills": ["workflow-automation"],
-  "editing-audio": ["video-audio"],
-  "asset-processing": ["visual-assets"],
+  "editing-audio": ["audio-processing"],
+  "asset-processing": ["image-processing"],
   automation: ["workflow-automation"]
 };
 
@@ -599,13 +594,8 @@ function renderHome() {
       <section class="gallery-hero">
         <div class="gallery-hero__copy">
           <p class="eyebrow">AI TOOLBOX</p>
-          <h1>把 AI 制作工具按任务找出来</h1>
-          <p>这里收集可直接进入的工具、插件、制作方法和工作流，按“视频、图片、提示词、自动化、教程排版”等真实制作场景整理。</p>
-        </div>
-        <div class="gallery-actions" aria-label="快捷入口">
-          <a class="pixel-button primary" href="#/submit">提交工具</a>
-          <a class="pixel-button" href="#/wishbox">许愿箱</a>
-          <a class="pixel-button" href="#/feedback">反馈评价</a>
+          <h1>强大的 AI 制作工具箱</h1>
+          <p>这里收集了实用的 AI 插件、制作方法和工作流，更懂你的需求场景。</p>
         </div>
       </section>
 
@@ -613,10 +603,10 @@ function renderHome() {
         <div class="home-discovery__head">
           <div>
             <p class="eyebrow">CATEGORY</p>
-            <h2>先选你要解决的制作问题</h2>
+            <h2>工具分类</h2>
           </div>
           <label class="gallery-search" for="search-input">
-            <span>辅助搜索</span>
+            <span>搜索</span>
             <input class="search-input" id="search-input" type="search" value="${escapeHtml(state.query)}" placeholder="工具名、用途或标签">
           </label>
         </div>
@@ -652,7 +642,7 @@ function renderHome() {
 function homeResultsPanel(tools = filteredTools()) {
   const selectedCategory = state.data.categories.find((category) => category.id === state.category);
   const title = selectedCategory?.name || "全部工具";
-  const description = selectedCategory?.description || "浏览全部工具入口，先看截图，再决定进入哪一个方法。";
+  const description = selectedCategory?.description || "从截图快速浏览工具，点击卡片进入详情。";
   const queryText = state.query.trim();
 
   return `
@@ -663,7 +653,7 @@ function homeResultsPanel(tools = filteredTools()) {
           <h2>${escapeHtml(title)}</h2>
           <p>${escapeHtml(queryText ? `正在搜索：${queryText}` : description)}</p>
         </div>
-        <span class="result-hint">${tools.length ? "按截图进入工具详情" : "没有匹配结果"}</span>
+        <span class="result-hint">${tools.length ? "点击卡片查看详情" : "没有匹配结果"}</span>
       </div>
       ${tools.length ? `<div class="tool-grid">${tools.map(toolCard).join("")}</div>` : emptyState("没有匹配的工具", "换个关键词或分类再试一次。")}
     </section>
