@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260610l";
+const seedUrl = "./content/tools.seed.json?v=20260610n";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -817,8 +817,8 @@ function renderTool(slug) {
           ${stepsSection(tool.usageSteps, tool.stepsTitle)}
           ${visualSupportSection(tool, "steps")}
           ${methodsSection(tool)}
-          ${resourcesSection(tool)}
           ${toolPraiseSection(tool)}
+          ${resourcesSection(tool)}
         </article>
 
         <aside class="detail-band">
@@ -1409,21 +1409,33 @@ function renderSubmissionPage() {
 资源链接
 安装包、源码、网页入口或补充文档链接。</pre>
 
-        <div class="empty-state submission-note">
-          <h3>提交建议</h3>
-          <p>图片和安装包可以先放在钉钉文档里；视频不建议直接投稿上传，可以在文档里先放演示说明或外部观看链接。</p>
-        </div>
-
-        <div class="review-steps">
-          <div><strong>01</strong><span>投稿人提交钉钉文档链接。</span></div>
-          <div><strong>02</strong><span>你审核文档内容、资源和展示方式。</span></div>
-          <div><strong>03</strong><span>审核通过后再整理进正式工具大厅。</span></div>
-        </div>
+        ${submissionTestHints()}
       </aside>
     </section>
   `;
 
   document.querySelector("#submission-form").addEventListener("submit", saveSubmission);
+}
+
+function submissionTestHints() {
+  if (!isTestEnvironment()) return "";
+  return `
+    <div class="empty-state submission-note" data-test-only>
+      <h3>提交建议</h3>
+      <p>图片和安装包可以先放在钉钉文档里；视频不建议直接投稿上传，可以在文档里先放演示说明或外部观看链接。</p>
+    </div>
+
+    <div class="review-steps" data-test-only>
+      <div><strong>01</strong><span>投稿人提交钉钉文档链接。</span></div>
+      <div><strong>02</strong><span>你审核文档内容、资源和展示方式。</span></div>
+      <div><strong>03</strong><span>审核通过后再整理进正式工具大厅。</span></div>
+    </div>
+  `;
+}
+
+function isTestEnvironment() {
+  const localHosts = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
+  return window.location.protocol === "file:" || localHosts.has(window.location.hostname);
 }
 
 function formText(form, name) {
