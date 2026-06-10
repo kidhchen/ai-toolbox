@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260610s";
+const seedUrl = "./content/tools.seed.json?v=20260610v";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -18,6 +18,7 @@ let dataEditor = null;
 let adminMessage = null;
 let lightboxKeyHandler = null;
 let homeStrandsAnimation = null;
+let spaceBackgroundAnimation = null;
 
 const state = {
   seed: null,
@@ -549,10 +550,180 @@ function applyTheme(theme) {
   const nextTheme = theme === "night" ? "night" : "day";
   state.theme = nextTheme;
   document.documentElement.dataset.theme = nextTheme;
+  syncSpaceBackground(nextTheme);
   const button = document.querySelector("#theme-toggle");
   if (!button) return;
   button.textContent = nextTheme === "night" ? "白天版" : "夜晚版";
   button.setAttribute("aria-pressed", String(nextTheme === "night"));
+}
+
+function syncSpaceBackground(theme) {
+  if (theme === "night") {
+    startSpaceBackground();
+    return;
+  }
+  stopSpaceBackground();
+}
+
+function stopSpaceBackground() {
+  if (!spaceBackgroundAnimation) return;
+  spaceBackgroundAnimation();
+  spaceBackgroundAnimation = null;
+}
+
+function startSpaceBackground() {
+  if (spaceBackgroundAnimation) return;
+  const canvas = document.querySelector("#space-canvas");
+  if (!canvas) return;
+  const gl = canvas.getContext("webgl", {
+    alpha: true,
+    antialias: true,
+    premultipliedAlpha: false
+  }) || canvas.getContext("experimental-webgl", {
+    alpha: true,
+    antialias: true,
+    premultipliedAlpha: false
+  });
+  if (!gl) return;
+
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  const pointer = { x: 0.35, y: 0.65 };
+  let frameId = 0;
+
+  const vertexSource = `
+    attribute vec2 aPosition;
+
+    void main() {
+      gl_Position = vec4(aPosition, 0.0, 1.0);
+    }
+  `;
+
+  const fragmentSource = `
+    precision highp float;
+
+    uniform float uTime;
+    uniform vec2 uResolution;
+    uniform vec2 uPointer;
+
+    float hash21(vec2 p) {
+      p = fract(p * vec2(213.21, 417.37));
+      p += dot(p, p + 42.23);
+      return fract(p.x * p.y);
+    }
+
+    float star(vec2 uv, float scale, float threshold, float size) {
+      vec2 cell = floor(uv * scale);
+      vec2 local = fract(uv * scale) - 0.5;
+      float seed = hash21(cell);
+      float pulse = 0.6 + 0.4 * sin(uTime * (1.0 + seed * 2.0) + seed * 6.2831);
+      return smoothstep(size, 0.0, length(local)) * step(threshold, seed) * pulse;
+    }
+
+    void main() {
+      vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution) / uResolution.y;
+      vec2 screen = gl_FragCoord.xy / uResolution;
+      vec2 drift = vec2(uTime * 0.006, -uTime * 0.004);
+      vec2 field = uv + drift;
+
+      vec3 color = vec3(0.010, 0.012, 0.030);
+      color += vec3(0.015, 0.030, 0.070) * smoothstep(1.35, 0.0, length(uv * vec2(0.72, 1.18)));
+      color += vec3(0.042, 0.006, 0.070) * smoothstep(1.05, 0.0, length(uv - vec2(-0.42, 0.10))) * 0.72;
+      color += vec3(0.000, 0.120, 0.095) * smoothstep(0.88, 0.0, length(uv - vec2(0.48, -0.18))) * 0.34;
+      color += vec3(0.015, 0.018, 0.032) * sin((uv.x + uv.y) * 1.7 + uTime * 0.08) * 0.08;
+
+      float stars = 0.0;
+      stars += star(field + vec2(0.0, uTime * 0.008), 48.0, 0.956, 0.040);
+      stars += star(field * 1.21 - vec2(uTime * 0.010, 0.0), 92.0, 0.976, 0.034) * 0.82;
+      stars += star(field * 0.68 + vec2(0.13, -0.21), 24.0, 0.938, 0.052) * 0.55;
+
+      float mouseGlow = exp(-pow(distance(screen, uPointer), 2.0) * 11.0);
+      color += vec3(0.00, 0.72, 0.54) * mouseGlow * 0.12;
+      color += vec3(0.44, 0.16, 0.88) * mouseGlow * 0.08;
+      color += vec3(0.76, 0.93, 1.00) * stars;
+
+      gl_FragColor = vec4(color, 1.0);
+    }
+  `;
+
+  function compileShader(type, source) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      console.warn(gl.getShaderInfoLog(shader));
+      gl.deleteShader(shader);
+      return null;
+    }
+    return shader;
+  }
+
+  const vertexShader = compileShader(gl.VERTEX_SHADER, vertexSource);
+  const fragmentShader = compileShader(gl.FRAGMENT_SHADER, fragmentSource);
+  if (!vertexShader || !fragmentShader) return;
+
+  const program = gl.createProgram();
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    console.warn(gl.getProgramInfoLog(program));
+    gl.deleteProgram(program);
+    return;
+  }
+
+  const buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+
+  const positionLocation = gl.getAttribLocation(program, "aPosition");
+  const uniforms = {
+    time: gl.getUniformLocation(program, "uTime"),
+    resolution: gl.getUniformLocation(program, "uResolution"),
+    pointer: gl.getUniformLocation(program, "uPointer")
+  };
+
+  gl.useProgram(program);
+  gl.enableVertexAttribArray(positionLocation);
+  gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+  gl.clearColor(0, 0, 0, 0);
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const width = Math.max(1, window.innerWidth);
+    const height = Math.max(1, window.innerHeight);
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+  }
+
+  function updatePointer(event) {
+    pointer.x = event.clientX / Math.max(1, window.innerWidth);
+    pointer.y = 1 - event.clientY / Math.max(1, window.innerHeight);
+  }
+
+  function draw(timestamp = 0) {
+    gl.useProgram(program);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform1f(uniforms.time, timestamp * 0.001);
+    gl.uniform2f(uniforms.resolution, canvas.width, canvas.height);
+    gl.uniform2f(uniforms.pointer, pointer.x, pointer.y);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    if (!reducedMotion) frameId = requestAnimationFrame(draw);
+  }
+
+  resize();
+  draw();
+  window.addEventListener("resize", resize);
+  window.addEventListener("pointermove", updatePointer);
+  spaceBackgroundAnimation = () => {
+    cancelAnimationFrame(frameId);
+    window.removeEventListener("resize", resize);
+    window.removeEventListener("pointermove", updatePointer);
+    gl.deleteBuffer(buffer);
+    gl.deleteProgram(program);
+    gl.deleteShader(vertexShader);
+    gl.deleteShader(fragmentShader);
+  };
 }
 
 function render() {
@@ -599,8 +770,8 @@ function renderHome() {
         <canvas class="strands-canvas" id="strands-canvas" aria-hidden="true"></canvas>
         <div class="gallery-hero__copy">
           <p class="eyebrow">AI TOOLBOX</p>
-          <h1>强大的 AI 制作工具箱</h1>
-          <p>这里收集了实用的 AI 插件、制作方法和工作流，更懂你的需求场景。</p>
+          <h1>猫厂AI制作工具箱</h1>
+          <p>这里收集了实用的AI工具，制作方法和工作流，助力各位每周少上半天班。</p>
         </div>
       </section>
 
@@ -655,71 +826,198 @@ function startHomeStrands() {
   stopHomeStrands();
   const canvas = document.querySelector("#strands-canvas");
   if (!canvas) return;
-  const context = canvas.getContext("2d");
-  if (!context) return;
+  const gl = canvas.getContext("webgl", {
+    alpha: true,
+    antialias: true,
+    premultipliedAlpha: false
+  }) || canvas.getContext("experimental-webgl", {
+    alpha: true,
+    antialias: true,
+    premultipliedAlpha: false
+  });
+  if (!gl) return;
 
-  const palette = ["#f95b16", "#7c3aed", "#06b6d4", "#44d7a8"];
   const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  const palette = new Float32Array([
+    0.976, 0.357, 0.086,
+    0.486, 0.227, 0.929,
+    0.024, 0.714, 0.831,
+    0.267, 0.843, 0.659
+  ]);
   let frameId = 0;
-  let width = 0;
-  let height = 0;
-  let dpr = 1;
+  let width = 1;
+  let height = 1;
+  const pointer = { x: 2, y: 2 };
+
+  const vertexSource = `
+    attribute vec2 aPosition;
+
+    void main() {
+      gl_Position = vec4(aPosition, 0.0, 1.0);
+    }
+  `;
+
+  const fragmentSource = `
+    precision highp float;
+
+    uniform float uTime;
+    uniform vec2 uResolution;
+    uniform vec2 uPointer;
+    uniform float uNight;
+    uniform vec3 uColors[4];
+
+    const float PI = 3.141592653589793;
+
+    float hash21(vec2 p) {
+      p = fract(p * vec2(123.34, 345.45));
+      p += dot(p, p + 34.345);
+      return fract(p.x * p.y);
+    }
+
+    vec3 palette(float t) {
+      t = fract(t);
+      if (t < 0.25) return mix(uColors[0], uColors[1], t / 0.25);
+      if (t < 0.50) return mix(uColors[1], uColors[2], (t - 0.25) / 0.25);
+      if (t < 0.75) return mix(uColors[2], uColors[3], (t - 0.50) / 0.25);
+      return mix(uColors[3], uColors[0], (t - 0.75) / 0.25);
+    }
+
+    float starLayer(vec2 uv, float scale, float threshold) {
+      vec2 cell = floor(uv * scale);
+      vec2 local = fract(uv * scale) - 0.5;
+      float seed = hash21(cell);
+      float radius = 0.035 + seed * 0.035;
+      float twinkle = 0.55 + 0.45 * sin(uTime * (1.4 + seed) + seed * 6.2831);
+      return smoothstep(radius, 0.0, length(local)) * step(threshold, seed) * twinkle;
+    }
+
+    float strand(vec2 uv, float index, float env) {
+      float t = uTime * (0.58 + index * 0.08);
+      float phase = index * 1.65;
+      float wave = sin(uv.x * (2.15 + index * 0.28) + t * 1.7 + phase) * 0.62;
+      wave += sin(uv.x * (3.85 + index * 0.22) - t * 1.1 + phase * 1.7) * 0.38;
+      float amplitude = mix(0.115, 0.16, uNight) * env;
+      float y = wave * amplitude + (index - 1.5) * 0.018 * (0.8 + env);
+      float d = abs(uv.y - y);
+      float thickness = (0.006 + 0.013 * env) * mix(0.95, 1.14, uNight);
+      float core = thickness / (d + thickness * 0.46);
+      float halo = exp(-d * d / (thickness * 0.52)) * 0.16;
+      return core * core * env + halo * env;
+    }
+
+    void main() {
+      vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution) / uResolution.y;
+      float heroAspect = uResolution.x / uResolution.y;
+      vec2 beamUv = uv - vec2(heroAspect * 0.22, -0.015);
+
+      float env = pow(max(cos(beamUv.x * PI * 0.86), 0.0), 3.4);
+      env *= smoothstep(-heroAspect * 0.18, heroAspect * 0.10, uv.x);
+      vec3 beam = vec3(0.0);
+
+      for (int i = 0; i < 4; i++) {
+        float fi = float(i);
+        float energy = strand(beamUv, fi, env);
+        vec3 color = palette(fi * 0.19 + beamUv.x * 0.18 + uTime * 0.035);
+        beam += color * energy * (0.55 + env * 0.74);
+      }
+
+      beam = 1.0 - exp(-beam * mix(1.45, 2.45, uNight));
+
+      float pointerGlow = exp(-pow(distance(uv, uPointer), 2.0) * 8.0);
+      beam += vec3(0.00, 0.94, 0.66) * pointerGlow * 0.08 * uNight;
+      beam += vec3(0.45, 0.18, 0.95) * pointerGlow * 0.04 * uNight;
+
+      vec3 color = beam * mix(0.94, 1.12, uNight);
+      float lum = max(max(beam.r, beam.g), beam.b);
+      float alpha = clamp(lum * mix(0.78, 1.06, uNight), 0.0, 0.96);
+
+      gl_FragColor = vec4(color, alpha);
+    }
+  `;
+
+  function compileShader(type, source) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      console.warn(gl.getShaderInfoLog(shader));
+      gl.deleteShader(shader);
+      return null;
+    }
+    return shader;
+  }
+
+  const vertexShader = compileShader(gl.VERTEX_SHADER, vertexSource);
+  const fragmentShader = compileShader(gl.FRAGMENT_SHADER, fragmentSource);
+  if (!vertexShader || !fragmentShader) return;
+
+  const program = gl.createProgram();
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    console.warn(gl.getProgramInfoLog(program));
+    gl.deleteProgram(program);
+    return;
+  }
+
+  const buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+    -1, -1,
+    3, -1,
+    -1, 3
+  ]), gl.STATIC_DRAW);
+
+  const positionLocation = gl.getAttribLocation(program, "aPosition");
+  const uniforms = {
+    time: gl.getUniformLocation(program, "uTime"),
+    resolution: gl.getUniformLocation(program, "uResolution"),
+    pointer: gl.getUniformLocation(program, "uPointer"),
+    night: gl.getUniformLocation(program, "uNight"),
+    colors: gl.getUniformLocation(program, "uColors[0]")
+  };
+
+  gl.useProgram(program);
+  gl.enableVertexAttribArray(positionLocation);
+  gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+  gl.uniform3fv(uniforms.colors, palette);
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+  gl.clearColor(0, 0, 0, 0);
 
   function resize() {
     const rect = canvas.getBoundingClientRect();
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    width = Math.max(1, Math.round(rect.width));
-    height = Math.max(1, Math.round(rect.height));
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = Math.max(1, rect.width);
+    height = Math.max(1, rect.height);
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
-    context.setTransform(dpr, 0, 0, dpr, 0, 0);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+  }
+
+  function updatePointer(event) {
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    pointer.x = (x - rect.width * 0.5) / rect.height;
+    pointer.y = (rect.height * 0.5 - y) / rect.height;
+  }
+
+  function resetPointer() {
+    pointer.x = 2;
+    pointer.y = 2;
   }
 
   function draw(timestamp = 0) {
-    context.clearRect(0, 0, width, height);
-    const time = timestamp * 0.00022;
-    const centerY = height * 0.54;
-    const reach = Math.max(80, height * 0.32);
+    gl.useProgram(program);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform1f(uniforms.time, timestamp * 0.001);
+    gl.uniform2f(uniforms.resolution, canvas.width, canvas.height);
+    gl.uniform2f(uniforms.pointer, pointer.x, pointer.y);
+    gl.uniform1f(uniforms.night, document.documentElement.dataset.theme === "night" ? 1 : 0);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
 
-    palette.forEach((color, index) => {
-      const offset = (index - 1.5) * 26;
-      const amplitude = reach * (0.42 + index * 0.08);
-      const thickness = 18 - index * 2;
-      const gradient = context.createLinearGradient(width * 0.08, 0, width * 0.92, 0);
-      gradient.addColorStop(0, `${color}00`);
-      gradient.addColorStop(0.24, `${color}88`);
-      gradient.addColorStop(0.5, `${color}d8`);
-      gradient.addColorStop(0.76, `${color}88`);
-      gradient.addColorStop(1, `${color}00`);
-
-      context.beginPath();
-      for (let step = 0; step <= 180; step += 1) {
-        const progress = step / 180;
-        const x = progress * width;
-        const envelope = Math.sin(progress * Math.PI);
-        const wave = Math.sin(progress * Math.PI * (1.3 + index * 0.28) + time * (1.8 + index * 0.5) + index);
-        const waveTwo = Math.sin(progress * Math.PI * (2.2 + index * 0.34) - time * 1.2 + index * 1.7);
-        const y = centerY + offset + (wave * 0.7 + waveTwo * 0.3) * amplitude * envelope;
-        if (step === 0) context.moveTo(x, y);
-        else context.lineTo(x, y);
-      }
-
-      context.lineCap = "round";
-      context.lineJoin = "round";
-      context.shadowBlur = 28;
-      context.shadowColor = color;
-      context.strokeStyle = gradient;
-      context.globalAlpha = 0.58;
-      context.lineWidth = thickness;
-      context.stroke();
-
-      context.shadowBlur = 0;
-      context.globalAlpha = 0.9;
-      context.lineWidth = Math.max(1.5, thickness * 0.18);
-      context.stroke();
-    });
-
-    context.globalAlpha = 1;
     if (!reducedMotion) {
       frameId = requestAnimationFrame(draw);
     }
@@ -728,9 +1026,17 @@ function startHomeStrands() {
   resize();
   draw();
   window.addEventListener("resize", resize);
+  canvas.addEventListener("pointermove", updatePointer);
+  canvas.addEventListener("pointerleave", resetPointer);
   homeStrandsAnimation = () => {
     cancelAnimationFrame(frameId);
     window.removeEventListener("resize", resize);
+    canvas.removeEventListener("pointermove", updatePointer);
+    canvas.removeEventListener("pointerleave", resetPointer);
+    gl.deleteBuffer(buffer);
+    gl.deleteProgram(program);
+    gl.deleteShader(vertexShader);
+    gl.deleteShader(fragmentShader);
   };
 }
 
@@ -888,6 +1194,7 @@ function toolCard(tool) {
         <h2>${escapeHtml(tool.name)}</h2>
         <p>${escapeHtml(tool.summary)}</p>
         <div class="tag-row" aria-label="标签">
+          ${tool.developer ? `<span class="tag developer-tag">${escapeHtml(tool.developer)}</span>` : ""}
           ${toolCategoryIds(tool).slice(0, 2).map((id) => `<span class="tag">${escapeHtml(categoryName(id))}</span>`).join("")}
           ${(tool.tags || []).slice(0, 1).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}
         </div>

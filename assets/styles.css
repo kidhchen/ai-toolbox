@@ -41,20 +41,47 @@ html[data-theme="night"] {
 
 html {
   min-height: 100%;
-  background:
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
-    var(--page-bg);
-  background-size: 18px 18px;
+  background: var(--page-bg);
 }
 
 body {
+  position: relative;
   min-height: 100%;
   margin: 0;
   color: var(--ink);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Noto Sans SC", monospace;
   font-size: 15px;
   letter-spacing: 0;
+}
+
+body::before {
+  content: none;
+}
+
+html[data-theme="night"] body::before {
+  opacity: 0;
+}
+
+.space-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 260ms ease;
+}
+
+html[data-theme="night"] .space-canvas {
+  opacity: 1;
+}
+
+.topbar,
+.app-shell,
+.toast {
+  position: relative;
+  z-index: 1;
 }
 
 body.home-page {
@@ -65,10 +92,7 @@ body.home-page {
 }
 
 html[data-theme="night"] body.home-page {
-  background:
-    radial-gradient(circle at 12% 0%, rgba(124, 58, 237, 0.20), transparent 28%),
-    radial-gradient(circle at 88% 8%, rgba(6, 182, 212, 0.18), transparent 24%),
-    #05070d;
+  background: transparent;
 }
 
 html[data-theme="night"] body.home-page .topbar {
@@ -275,17 +299,17 @@ body.home-page .gallery-hero {
 
 .strands-canvas {
   position: absolute;
-  inset: -2% -4% auto auto;
-  width: min(1060px, 68vw);
-  height: min(520px, 38vw);
-  opacity: 0.66;
-  pointer-events: none;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.76;
+  pointer-events: auto;
   filter: saturate(1.12);
 }
 
 html[data-theme="night"] .strands-canvas {
-  opacity: 0.86;
-  filter: saturate(1.35);
+  opacity: 1;
+  filter: saturate(1.38);
 }
 
 .gallery-hero__copy {
@@ -973,6 +997,16 @@ html[data-theme="night"] body.home-page .tool-card .tag {
 body.home-page .tool-card .status-badge[data-status="published"] {
   background: rgba(68, 215, 168, 0.16);
   color: #087f5b;
+}
+
+body.home-page .tool-card .developer-tag {
+  background: rgba(68, 215, 168, 0.14);
+  color: #087f5b;
+}
+
+html[data-theme="night"] body.home-page .tool-card .developer-tag {
+  background: rgba(68, 215, 168, 0.14);
+  color: var(--mint);
 }
 
 .meta-row,
