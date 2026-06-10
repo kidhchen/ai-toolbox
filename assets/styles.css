@@ -1027,6 +1027,17 @@ body.has-lightbox {
   line-height: 1.7;
 }
 
+.doc-template {
+  margin: 12px 0 0;
+  padding: 12px;
+  border: 2px solid var(--line);
+  background: #1d1b21;
+  color: #f8f1d7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+}
+
 .admin-panel {
   position: fixed;
   inset: 0 0 0 auto;

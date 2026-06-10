@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260610k";
+const seedUrl = "./content/tools.seed.json?v=20260610l";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -1342,12 +1342,12 @@ function renderSubmissionPage() {
           </div>
           <span class="pixel-badge">待审核</span>
         </div>
-        <p class="muted">提交后会进入审核收件箱，通过后才会加入正式工具大厅。当前只接收图片、文档和安装包链接，暂不接收视频上传。</p>
+        <p class="muted">把工具说明整理到钉钉文档里，再把文档链接提交过来。内容会先进入审核收件箱，通过后才会加入正式工具大厅。</p>
         <form class="wish-form" id="submission-form">
           <div class="form-grid">
             <label class="field">
-              <span>昵称</span>
-              <input name="nickname" maxlength="24" placeholder="例如：工具玩家07" required>
+              <span>昵称，可选</span>
+              <input name="nickname" maxlength="24" placeholder="例如：工具玩家07">
             </label>
             <label class="field">
               <span>联系方式，可选</span>
@@ -1355,71 +1355,14 @@ function renderSubmissionPage() {
             </label>
           </div>
 
-          <div class="form-grid">
-            <label class="field">
-              <span>工具名称</span>
-              <input name="toolName" maxlength="80" placeholder="这个工具叫什么" required>
-            </label>
-            <label class="field">
-              <span>功能分类</span>
-              <select name="categoryId">
-                ${state.data.categories.map((category) => `<option value="${escapeHtml(category.id)}">${escapeHtml(category.name)}</option>`).join("")}
-              </select>
-            </label>
-          </div>
-
-          <div class="form-grid">
-            <label class="field">
-              <span>工具类型</span>
-              <select name="toolType">
-                <option value="web_tool">网页工具</option>
-                <option value="html_tool">HTML工具</option>
-                <option value="chrome_extension">Chrome插件</option>
-                <option value="codex_skill">Codex Skill</option>
-                <option value="workflow_package">工作流包</option>
-                <option value="method">制作方法</option>
-              </select>
-            </label>
-            <label class="field">
-              <span>工具入口链接，可选</span>
-              <input name="toolUrl" type="url" maxlength="500" placeholder="https://...">
-            </label>
-          </div>
-
           <label class="field">
-            <span>一句话简介</span>
-            <textarea name="summary" maxlength="300" required placeholder="它能帮助别人在哪个制作环节省时间"></textarea>
-          </label>
-
-          <label class="field">
-            <span>解决的痛点</span>
-            <textarea name="painPoint" maxlength="800" required placeholder="说明原本最麻烦、最重复、最容易出错的地方"></textarea>
-          </label>
-
-          <label class="field">
-            <span>使用步骤</span>
-            <textarea name="usageSteps" maxlength="1200" placeholder="按 1、2、3 写清楚使用流程"></textarea>
-          </label>
-
-          <div class="form-grid">
-            <label class="field">
-              <span>文档说明链接，可选</span>
-              <input name="docUrl" type="url" maxlength="500" placeholder="钉钉文档、Notion、GitHub 文档等">
-            </label>
-            <label class="field">
-              <span>安装包 / 源码链接，可选</span>
-              <input name="packageUrl" type="url" maxlength="500" placeholder="网盘、GitHub Release、下载页等">
-            </label>
-          </div>
-
-          <label class="field">
-            <span>配图链接，可多行</span>
-            <textarea name="imageUrls" maxlength="1200" placeholder="每行一个图片链接，最多 6 张。请不要填写视频链接。"></textarea>
+            <span>钉钉文档链接</span>
+            <input name="docUrl" type="url" maxlength="500" placeholder="https://alidocs.dingtalk.com/i/nodes/..." required>
           </label>
 
           <label class="field">
             <span>补充说明，可选</span>
-            <textarea name="notes" maxlength="800" placeholder="例如版本信息、适用软件、授权说明、希望如何展示"></textarea>
+            <textarea name="notes" maxlength="800" placeholder="例如希望优先上架的原因、版本信息、特殊授权说明、是否已有安装包链接"></textarea>
           </label>
 
           <div class="submit-actions">
@@ -1432,18 +1375,49 @@ function renderSubmissionPage() {
       <aside class="wish-panel">
         <div class="panel-head">
           <div>
-            <p class="eyebrow">REVIEW FLOW</p>
-            <h2>发布规则</h2>
+            <p class="eyebrow">DOC FORMAT</p>
+            <h2>推荐文档格式</h2>
           </div>
         </div>
-        <div class="review-steps">
-          <div><strong>01</strong><span>投稿先进入 Supabase 待审核表。</span></div>
-          <div><strong>02</strong><span>你确认内容、链接和展示素材。</span></div>
-          <div><strong>03</strong><span>审核通过后再加入正式工具大厅。</span></div>
-        </div>
+        <p class="muted">建议投稿文档按下面的基础格式整理，越完整越容易被快速抓取、改写和发布。</p>
+        <pre class="doc-template">工具名称
+
+一句话介绍
+用一句话说明它能帮大家在哪个制作环节省时间。
+
+适合谁使用
+- 适合的人群 1
+- 适合的人群 2
+
+解决的痛点
+- 原本最麻烦的地方
+- 容易出错或重复操作的地方
+
+软件功能
+- 功能 1
+- 功能 2
+- 功能 3
+
+核心功能图示
+插入工具界面图、效果图或前后对比图。
+
+安装/使用方法
+1. 第一步
+2. 第二步
+3. 第三步
+
+资源链接
+安装包、源码、网页入口或补充文档链接。</pre>
+
         <div class="empty-state submission-note">
-          <h3>资源策略</h3>
-          <p>图片、文档和安装包先以链接形式提交；视频资源暂不开放投稿上传，避免占用站点存储空间。</p>
+          <h3>提交建议</h3>
+          <p>图片和安装包可以先放在钉钉文档里；视频不建议直接投稿上传，可以在文档里先放演示说明或外部观看链接。</p>
+        </div>
+
+        <div class="review-steps">
+          <div><strong>01</strong><span>投稿人提交钉钉文档链接。</span></div>
+          <div><strong>02</strong><span>你审核文档内容、资源和展示方式。</span></div>
+          <div><strong>03</strong><span>审核通过后再整理进正式工具大厅。</span></div>
         </div>
       </aside>
     </section>
@@ -1456,14 +1430,6 @@ function formText(form, name) {
   return String(form.get(name) || "").trim();
 }
 
-function parseLinkLines(value) {
-  return String(value || "")
-    .split(/\r?\n/)
-    .map((item) => item.trim())
-    .filter(Boolean)
-    .slice(0, 6);
-}
-
 function isHttpUrl(value) {
   try {
     const url = new URL(value);
@@ -1473,8 +1439,13 @@ function isHttpUrl(value) {
   }
 }
 
-function hasVideoResource(values) {
-  return values.some((value) => /\.(mp4|mov|m4v|webm)([?#].*)?$/i.test(value));
+function isDingTalkDocUrl(value) {
+  try {
+    const hostname = new URL(value).hostname;
+    return hostname.endsWith("dingtalk.com");
+  } catch {
+    return false;
+  }
 }
 
 async function saveSubmission(event) {
@@ -1483,41 +1454,35 @@ async function saveSubmission(event) {
   const form = new FormData(formElement);
   const message = document.querySelector("#submission-message");
   const button = formElement.querySelector("button[type='submit']");
-  const imageUrls = parseLinkLines(form.get("imageUrls"));
-  const singleLinks = ["toolUrl", "docUrl", "packageUrl"].map((name) => formText(form, name)).filter(Boolean);
-  const allLinks = [...singleLinks, ...imageUrls];
+  const docUrl = formText(form, "docUrl");
 
-  const invalidLinks = allLinks.filter((link) => !isHttpUrl(link));
-  if (invalidLinks.length) {
-    message.textContent = "请填写有效的 http/https 链接。";
+  if (!isHttpUrl(docUrl)) {
+    message.textContent = "请填写有效的钉钉文档链接。";
     return;
   }
 
-  if (hasVideoResource(allLinks)) {
-    message.textContent = "当前投稿不接收视频链接，请先移除视频资源。";
+  if (!isDingTalkDocUrl(docUrl)) {
+    message.textContent = "目前请提交钉钉文档链接，便于后续抓取整理。";
     return;
   }
 
+  const nickname = formText(form, "nickname") || "匿名投稿";
+  const notes = formText(form, "notes");
   const submission = {
-    nickname: formText(form, "nickname"),
+    nickname,
     contact: formText(form, "contact"),
-    toolName: formText(form, "toolName"),
-    categoryId: formText(form, "categoryId"),
-    toolType: formText(form, "toolType"),
-    summary: formText(form, "summary"),
-    painPoint: formText(form, "painPoint"),
-    usageSteps: formText(form, "usageSteps"),
-    toolUrl: formText(form, "toolUrl"),
-    docUrl: formText(form, "docUrl"),
-    packageUrl: formText(form, "packageUrl"),
-    imageUrls,
-    notes: formText(form, "notes")
+    toolName: "待抓取工具",
+    categoryId: "workflow-automation",
+    toolType: "method",
+    summary: "待从钉钉文档抓取整理",
+    painPoint: "待从钉钉文档抓取整理",
+    usageSteps: "待从钉钉文档抓取整理",
+    toolUrl: "",
+    docUrl,
+    packageUrl: "",
+    imageUrls: [],
+    notes: notes ? `投稿备注：${notes}` : "投稿备注：仅提交钉钉文档链接，等待审核抓取。"
   };
-
-  if (!submission.nickname || !submission.toolName || !submission.summary || !submission.painPoint) {
-    message.textContent = "请补齐昵称、工具名称、简介和痛点。";
-    return;
-  }
 
   if (!supabaseApi) {
     message.textContent = "投稿后台暂未连接，请稍后再试。";
