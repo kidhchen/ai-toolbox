@@ -142,6 +142,7 @@ a {
 .chip-button:hover,
 .copy-button:hover,
 .like-button:hover,
+.tool-praise-button:hover,
 .tool-card:hover {
   transform: translate(-1px, -1px);
   box-shadow: 4px 4px 0 var(--line);
@@ -164,7 +165,8 @@ a {
   gap: 18px;
 }
 
-.dashboard-grid {
+.dashboard-grid,
+.feedback-layout {
   display: grid;
   grid-template-columns: minmax(230px, 320px) minmax(0, 1fr);
   gap: 18px;
@@ -325,7 +327,7 @@ a {
 
 .tool-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 14px;
 }
 
@@ -333,7 +335,7 @@ a {
   display: grid;
   grid-template-rows: auto auto auto 1fr auto;
   gap: 12px;
-  min-height: 335px;
+  min-height: 390px;
   padding: 14px;
   border: 3px solid var(--line);
   border-radius: var(--radius);
@@ -352,29 +354,30 @@ a {
 }
 
 .tool-thumb {
-  display: grid;
-  grid-template-columns: 74px minmax(0, 1fr);
+  display: flex;
   align-items: center;
-  gap: 10px;
-  min-height: 78px;
-  padding: 8px;
+  justify-content: center;
+  min-height: 148px;
+  aspect-ratio: 16 / 9;
+  padding: 0;
   border: 2px solid var(--line);
-  background: #fff;
-}
-
-.tool-thumb span {
-  color: var(--muted);
-  font-size: 12px;
-  overflow-wrap: anywhere;
+  background: #1d1b21;
+  overflow: hidden;
 }
 
 .tool-thumb.has-image img {
-  width: 58px;
-  height: 46px;
-  border: 2px solid var(--line);
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
   object-fit: cover;
   background: #1d1b21;
   image-rendering: auto;
+}
+
+.tool-thumb .pixel-scene {
+  width: 100%;
+  height: 100%;
 }
 
 .pixel-scene {
@@ -605,6 +608,7 @@ a {
 .method-list,
 .comment-list,
 .wish-list,
+.feedback-list,
 .visual-grid {
   display: grid;
   gap: 10px;
@@ -677,7 +681,17 @@ a {
   background: var(--paper);
 }
 
-.media-slot img,
+.media-zoom {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: #fff;
+  cursor: zoom-in;
+}
+
 .media-slot video,
 .media-placeholder {
   display: block;
@@ -686,6 +700,18 @@ a {
   border-bottom: 2px solid var(--line);
   object-fit: cover;
   background: #1d1b21;
+}
+
+.media-slot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 620px;
+  margin: 0 auto;
+  border-bottom: 2px solid var(--line);
+  object-fit: contain;
+  background: #fff;
+  image-rendering: auto;
 }
 
 .media-placeholder {
@@ -861,6 +887,88 @@ a {
   text-align: center;
 }
 
+.tool-praise {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.tool-praise-button {
+  background: var(--sun);
+}
+
+body.has-lightbox {
+  overflow: hidden;
+}
+
+.image-lightbox[hidden] {
+  display: none;
+}
+
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  place-items: center;
+  gap: 12px;
+  padding: 54px 18px 22px;
+  background: rgba(18, 18, 22, 0.88);
+}
+
+.image-lightbox img {
+  display: block;
+  max-width: min(1180px, 96vw);
+  max-height: 82vh;
+  border: 3px solid var(--line);
+  background: #111;
+  box-shadow: var(--shadow);
+  object-fit: contain;
+}
+
+.image-lightbox p {
+  max-width: min(780px, calc(100vw - 36px));
+  margin: 0;
+  padding: 8px 10px;
+  border: 2px solid var(--line);
+  background: var(--paper);
+  font-weight: 700;
+  text-align: center;
+}
+
+.image-lightbox__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  background: var(--coral);
+}
+
+.feedback-item__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.feedback-tool-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 4px 8px;
+  border: 2px solid var(--line);
+  background: var(--aqua);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
 .wish-layout {
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
@@ -993,6 +1101,7 @@ a {
 @media (max-width: 960px) {
   .dashboard-grid,
   .detail-layout,
+  .feedback-layout,
   .wish-layout,
   .submit-layout {
     grid-template-columns: 1fr;
@@ -1029,5 +1138,10 @@ a {
 
   .detail-title h1 {
     font-size: 24px;
+  }
+
+  .feedback-item__head {
+    align-items: stretch;
+    flex-direction: column;
   }
 }

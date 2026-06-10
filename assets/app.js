@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260610a";
+const seedUrl = "./content/tools.seed.json?v=20260610k";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -6,7 +6,8 @@ const wishSelectColumns = "id,nickname,pain_point,preferred_format,current_worka
 const storageKeys = {
   data: "ai_toolbox_data_override",
   comments: "ai_toolbox_comments",
-  wishes: "ai_toolbox_wishes"
+  wishes: "ai_toolbox_wishes",
+  toolLikes: "ai_toolbox_tool_likes"
 };
 
 const app = document.querySelector("#app");
@@ -14,14 +15,17 @@ const toast = document.querySelector("#toast");
 let adminPanel = null;
 let dataEditor = null;
 let adminMessage = null;
+let lightboxKeyHandler = null;
 
 const state = {
   seed: null,
   data: null,
   query: "",
   category: "all",
+  feedbackFilter: "all",
   comments: readJson(storageKeys.comments, {}),
   wishes: readJson(storageKeys.wishes, []),
+  toolLikes: readJson(storageKeys.toolLikes, {}),
   backend: {
     mode: "local",
     label: "本地浏览器",
@@ -62,6 +66,14 @@ const functionalCategories = [
   }
 ];
 
+const issueTypeLabels = {
+  all: "全部反馈",
+  none: "使用反馈",
+  bug: "问题报告",
+  improvement: "改进建议",
+  question: "使用疑问"
+};
+
 const toolCategoryAssignments = {
   "dianmao-prompt-assistant": ["creation-entry", "storyboard-prompts"],
   "codex-sound-effect-method": ["video-audio", "workflow-automation"],
@@ -91,6 +103,7 @@ const sourceDocumentLinks = {
   "auto-sound-html": "https://alidocs.dingtalk.com/i/nodes/amweZ92PV6v25O1jCKBnRg4xVxEKBD6p?utm_scene=team_space",
   "batch-cutout-upscale": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHZrRyAjpJxkXOEP2?utm_scene=team_space"
 };
+const authoritativeSeedTools = new Set(["dianmao-prompt-assistant"]);
 
 function readJson(key, fallback) {
   try {
@@ -428,6 +441,36 @@ function mergeSeedUpdates(data) {
     const seedTool = seedTools.get(tool.id || tool.slug);
     if (!seedTool) return;
 
+    if (authoritativeSeedTools.has(seedTool.id)) {
+      [
+        "name",
+        "summary",
+        "developer",
+        "difficulty",
+        "status",
+        "type",
+        "targetUsers",
+        "painPoints",
+        "features",
+        "usageSteps",
+        "coverImage",
+        "featureMedia",
+        "featuresTitle",
+        "stepsTitle",
+        "stepMediaTitle",
+        "methodsTitle",
+        "methods",
+        "stepMedia",
+        "resources",
+        "tags",
+        "version"
+      ].forEach((key) => {
+        if (seedTool[key] !== undefined) {
+          tool[key] = cloneValue(seedTool[key]);
+        }
+      });
+    }
+
     ["coverImage", "featureMedia", "stepMedia"].forEach((key) => {
       if (seedTool[key] && shouldUseSeedMedia(tool[key])) {
         tool[key] = cloneValue(seedTool[key]);
@@ -509,6 +552,12 @@ function render() {
     return;
   }
 
+  if (hash.startsWith("#/feedback")) {
+    setRouteActive("feedback");
+    renderFeedbackBoard();
+    return;
+  }
+
   if (hash.startsWith("#/wishbox")) {
     setRouteActive("wishbox");
     renderWishbox();
@@ -561,6 +610,7 @@ function renderHome() {
         </div>
 
         <div class="quick-list">
+          <a class="pixel-button primary" href="#/feedback">反馈评价集合</a>
           <a class="pixel-button primary" href="#/wishbox">进入许愿箱</a>
           <a class="pixel-button" href="#/submit">提交工具</a>
         </div>
@@ -615,6 +665,96 @@ function filteredTools() {
     ].join(" ").toLowerCase();
     return inCategory && (!q || haystack.includes(q));
   });
+}
+
+function renderFeedbackBoard() {
+  const allItems = feedbackItems();
+  const filteredItems = state.feedbackFilter === "all"
+    ? allItems
+    : allItems.filter(({ comment }) => comment.issueType === state.feedbackFilter);
+  const toolsWithFeedback = new Set(allItems.map(({ tool }) => tool.id)).size;
+  const usefulMarks = allItems.reduce((total, { comment }) => total + Number(comment.likes || 0), 0);
+
+  app.innerHTML = `
+    <section class="screen feedback-layout">
+      <aside class="control-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">FEEDBACK BOARD</p>
+            <h1>反馈评价集合</h1>
+          </div>
+        </div>
+
+        <div class="stats-grid" aria-label="反馈统计">
+          <div class="stat-box"><strong>${allItems.length}</strong><span>反馈评价</span></div>
+          <div class="stat-box"><strong>${toolsWithFeedback}</strong><span>涉及工具</span></div>
+          <div class="stat-box"><strong>${usefulMarks}</strong><span>同意标记</span></div>
+        </div>
+
+        <div class="field">
+          <label>反馈类型</label>
+          <div class="category-list">
+            ${feedbackFilterButton("all", allItems.length)}
+            ${Object.keys(issueTypeLabels).filter((id) => id !== "all").map((id) => feedbackFilterButton(
+              id,
+              allItems.filter(({ comment }) => comment.issueType === id).length
+            )).join("")}
+          </div>
+        </div>
+
+        <div class="quick-list">
+          <a class="pixel-button primary" href="#/">返回工具大厅</a>
+          <a class="pixel-button" href="#/wishbox">去许愿箱</a>
+        </div>
+      </aside>
+
+      <section class="content-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">ALL REVIEWS</p>
+            <h2>${escapeHtml(issueTypeLabels[state.feedbackFilter] || "反馈评价")}</h2>
+          </div>
+          <span class="pixel-badge">${filteredItems.length} 条</span>
+        </div>
+        ${filteredItems.length ? `<div class="feedback-list">${filteredItems.map(feedbackItem).join("")}</div>` : emptyState("还没有这类反馈", "可以先进入某个工具详情页留下第一条。")}
+      </section>
+    </section>
+  `;
+
+  document.querySelectorAll("[data-feedback-filter]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.feedbackFilter = button.dataset.feedbackFilter;
+      renderFeedbackBoard();
+    });
+  });
+
+  document.querySelectorAll("[data-like-feedback]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const tool = state.data.tools.find((item) => item.id === button.dataset.toolId);
+      const index = Number(button.dataset.commentIndex);
+      if (!tool || !state.comments[tool.id]?.[index]) return;
+      await likeComment(tool, index, renderFeedbackBoard);
+    });
+  });
+}
+
+function feedbackItems() {
+  return state.data.tools
+    .flatMap((tool) => (state.comments[tool.id] || []).map((comment, index) => ({
+      tool,
+      comment,
+      index
+    })))
+    .sort((a, b) => new Date(b.comment.createdAt) - new Date(a.comment.createdAt));
+}
+
+function feedbackFilterButton(id, count) {
+  return `
+    <button class="chip-button ${state.feedbackFilter === id ? "is-active" : ""}" type="button" data-feedback-filter="${escapeHtml(id)}">
+      <span>${escapeHtml(issueTypeLabels[id] || id)}</span>
+      <span class="chip-count">${count}</span>
+    </button>
+  `;
 }
 
 function toolCard(tool) {
@@ -672,12 +812,13 @@ function renderTool(slug) {
           ${heroMediaSection(tool)}
           ${listSection("适合谁使用", tool.targetUsers)}
           ${listSection("解决的痛点", tool.painPoints)}
-          ${listSection("核心功能", tool.features)}
+          ${listSection(tool.featuresTitle || "核心功能", tool.features)}
           ${visualSupportSection(tool, "features")}
-          ${stepsSection(tool.usageSteps)}
+          ${stepsSection(tool.usageSteps, tool.stepsTitle)}
           ${visualSupportSection(tool, "steps")}
           ${methodsSection(tool)}
           ${resourcesSection(tool)}
+          ${toolPraiseSection(tool)}
         </article>
 
         <aside class="detail-band">
@@ -749,9 +890,15 @@ function renderTool(slug) {
       const index = Number(button.dataset.likeComment);
       const target = state.comments[tool.id]?.[index];
       if (!target) return;
-      await likeComment(tool, slug, index);
+      await likeComment(tool, index, () => renderTool(slug));
     });
   });
+
+  document.querySelector("[data-tool-praise]")?.addEventListener("click", () => {
+    praiseTool(tool, slug);
+  });
+
+  bindMediaLightbox();
 }
 
 async function saveComment(tool, slug, comment) {
@@ -775,7 +922,7 @@ async function saveComment(tool, slug, comment) {
   renderTool(slug);
 }
 
-async function likeComment(tool, slug, index) {
+async function likeComment(tool, index, renderAfter = render) {
   const target = state.comments[tool.id]?.[index];
   if (!target) return;
 
@@ -783,8 +930,8 @@ async function likeComment(tool, slug, index) {
     try {
       state.comments[tool.id][index] = await supabaseApi.likeComment(target.id);
       writeJson(storageKeys.comments, state.comments);
-      showToast("已标记好用");
-      renderTool(slug);
+      showToast("已同意");
+      renderAfter();
       return;
     } catch (error) {
       state.backend = { mode: "local", label: "本地浏览器", error: error.message };
@@ -794,8 +941,8 @@ async function likeComment(tool, slug, index) {
 
   target.likes = Number(target.likes || 0) + 1;
   writeJson(storageKeys.comments, state.comments);
-  showToast("已标记好用");
-  renderTool(slug);
+  showToast("已同意");
+  renderAfter();
 }
 
 function toolThumbnail(tool) {
@@ -803,7 +950,6 @@ function toolThumbnail(tool) {
     return `
       <div class="tool-thumb has-image" aria-label="${escapeHtml(tool.coverImage.label || `${tool.name}封面图`)}">
         <img src="${escapeHtml(tool.coverImage.src)}" alt="${escapeHtml(tool.coverImage.label || tool.name)}">
-        <span>${escapeHtml(tool.coverImage.label || "文档图片已接入")}</span>
       </div>
     `;
   }
@@ -812,7 +958,6 @@ function toolThumbnail(tool) {
       <div class="pixel-scene" data-category="${escapeHtml(toolCategoryIds(tool)[0] || tool.categoryId)}">
         <span></span><span></span><span></span><span></span>
       </div>
-      <span>封面图待上传</span>
     </div>
   `;
 }
@@ -851,7 +996,7 @@ function visualSupportSection(tool, slotType) {
       ]
     },
     steps: {
-      title: "使用步骤图文 / 视频",
+      title: tool.stepMediaTitle || "使用步骤图文 / 视频",
       slots: [
         {
           kind: "image",
@@ -893,11 +1038,11 @@ function listSection(title, items = []) {
   `;
 }
 
-function stepsSection(items = []) {
+function stepsSection(items = [], title = "使用步骤") {
   if (!items.length) return "";
   return `
     <section class="section-block">
-      <h2>使用步骤</h2>
+      <h2>${escapeHtml(title || "使用步骤")}</h2>
       <ol class="step-list">
         ${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
       </ol>
@@ -909,7 +1054,7 @@ function methodsSection(tool) {
   if (!tool.methods?.length) return "";
   return `
     <section class="section-block">
-      <h2>方法入口</h2>
+      <h2>${escapeHtml(tool.methodsTitle || "方法入口")}</h2>
       <div class="method-list">
         ${tool.methods.map((method) => `
           <article class="method-item" id="${escapeHtml(method.id)}">
@@ -952,27 +1097,51 @@ function resourcesSection(tool) {
   `;
 }
 
+function toolPraiseSection(tool) {
+  const count = Number(state.toolLikes[tool.id] || 0);
+  return `
+    <section class="section-block tool-praise">
+      <button class="like-button tool-praise-button" type="button" data-tool-praise aria-label="夯一下这个工具">
+        <span aria-hidden="true">👍</span>
+        <span>夯</span>
+        <span class="like-count">${count}</span>
+      </button>
+    </section>
+  `;
+}
+
+function praiseTool(tool, slug) {
+  state.toolLikes[tool.id] = Number(state.toolLikes[tool.id] || 0) + 1;
+  writeJson(storageKeys.toolLikes, state.toolLikes);
+  showToast("已夯一下");
+  renderTool(slug);
+}
+
 function mediaSlot(item) {
   const isVideo = item.kind === "video";
   const externalUrl = item.url || item.href || item.previewUrl;
   if (item.src && isVideo) {
+    const caption = publicMediaCaption(item, "资源已接入，可直接播放。");
     return `
       <figure class="media-slot">
         <video src="${escapeHtml(item.src)}" controls preload="metadata"></video>
         <figcaption>
           <strong>${escapeHtml(item.label)}</strong>
-          <span>资源已接入，可直接播放。</span>
+          ${caption ? `<span>${escapeHtml(caption)}</span>` : ""}
         </figcaption>
       </figure>
     `;
   }
   if (item.src) {
+    const caption = publicMediaCaption(item, item.status === "external_link" ? "点击打开查看。" : "");
     return `
       <figure class="media-slot">
-        <img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.label)}">
+        <button class="media-zoom" type="button" data-lightbox-src="${escapeHtml(item.src)}" data-lightbox-title="${escapeHtml(item.label)}" aria-label="放大查看 ${escapeHtml(item.label)}">
+          <img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.label)}">
+        </button>
         <figcaption>
           <strong>${escapeHtml(item.label)}</strong>
-          <span>资源已接入，可直接查看。</span>
+          ${caption ? `<span>${escapeHtml(caption)}</span>` : ""}
         </figcaption>
       </figure>
     `;
@@ -988,7 +1157,7 @@ function mediaSlot(item) {
         </div>
         <figcaption>
           <strong>${escapeHtml(item.label)}</strong>
-          <span>${escapeHtml(item.description || "当前使用外部链接，点击打开查看。")}</span>
+          <span>${escapeHtml(item.description || "点击打开查看。")}</span>
           <a class="pixel-button primary" href="${escapeHtml(externalUrl)}" target="_blank" rel="noopener noreferrer">打开外链</a>
         </figcaption>
       </figure>
@@ -1008,6 +1177,71 @@ function mediaSlot(item) {
       </figcaption>
     </figure>
   `;
+}
+
+function bindMediaLightbox() {
+  document.querySelectorAll("[data-lightbox-src]").forEach((button) => {
+    button.addEventListener("click", () => {
+      openMediaLightbox(button.dataset.lightboxSrc, button.dataset.lightboxTitle || "图片预览");
+    });
+  });
+}
+
+function ensureMediaLightbox() {
+  let lightbox = document.querySelector("#image-lightbox");
+  if (lightbox) return lightbox;
+
+  document.body.insertAdjacentHTML("beforeend", `
+    <div class="image-lightbox" id="image-lightbox" hidden>
+      <button class="image-lightbox__close" type="button" data-lightbox-close aria-label="关闭大图">X</button>
+      <img alt="">
+      <p></p>
+    </div>
+  `);
+  lightbox = document.querySelector("#image-lightbox");
+  lightbox.querySelector("[data-lightbox-close]").addEventListener("click", closeMediaLightbox);
+  lightbox.addEventListener("click", (event) => {
+    if (event.target === lightbox) closeMediaLightbox();
+  });
+
+  if (!lightboxKeyHandler) {
+    lightboxKeyHandler = (event) => {
+      if (event.key === "Escape") closeMediaLightbox();
+    };
+    document.addEventListener("keydown", lightboxKeyHandler);
+  }
+
+  return lightbox;
+}
+
+function openMediaLightbox(src, title) {
+  if (!src) return;
+  const lightbox = ensureMediaLightbox();
+  const image = lightbox.querySelector("img");
+  const caption = lightbox.querySelector("p");
+  image.src = src;
+  image.alt = title || "图片预览";
+  caption.textContent = title || "";
+  lightbox.hidden = false;
+  lightbox.classList.add("is-open");
+  document.body.classList.add("has-lightbox");
+}
+
+function closeMediaLightbox() {
+  const lightbox = document.querySelector("#image-lightbox");
+  if (!lightbox) return;
+  lightbox.hidden = true;
+  lightbox.classList.remove("is-open");
+  lightbox.querySelector("img").removeAttribute("src");
+  document.body.classList.remove("has-lightbox");
+}
+
+function publicMediaCaption(item, fallback = "") {
+  const description = String(item.description || "").trim();
+  if (/Supabase|Storage|GitHub Pages|网站部署|存储/i.test(description)) {
+    return fallback;
+  }
+  return description || fallback;
 }
 
 function resourceItem(resource) {
@@ -1039,6 +1273,7 @@ function resourceUrl(resource) {
 }
 
 function resourceActionLabel(resource) {
+  if (resource.actionLabel) return resource.actionLabel;
   if (resource.downloadUrl || ["package", "skill"].includes(resource.kind)) return "下载资源";
   if (["html", "html_tool", "web_tool"].includes(resource.kind)) return "打开工具";
   if (resource.previewUrl) return "查看预览";
@@ -1046,32 +1281,50 @@ function resourceActionLabel(resource) {
 }
 
 function resourceNote(resource) {
+  if (resource.note) return resource.note;
   if (resource.status === "uploaded") {
     if (["html", "html_tool"].includes(resource.kind)) return "资源已接入，点击即可打开工具。";
     if (resource.downloadUrl || ["package", "skill"].includes(resource.kind)) return "资源已接入，点击即可下载。";
     return "资源已接入，点击即可查看。";
   }
-  return "当前资源使用外部链接，后续可替换为网站存储地址。";
+  return "";
 }
 
 function commentItem(comment, index) {
-  const issueMap = {
-    none: "使用反馈",
-    bug: "问题报告",
-    improvement: "改进建议",
-    question: "使用疑问"
-  };
   return `
     <article class="comment-item">
       <strong>${escapeHtml(comment.nickname)}</strong>
       <div class="comment-meta">
-        <span>${escapeHtml(issueMap[comment.issueType] || comment.issueType)}</span>
+        <span>${escapeHtml(issueTypeLabels[comment.issueType] || comment.issueType)}</span>
         <span>${new Date(comment.createdAt).toLocaleString("zh-CN")}</span>
       </div>
       <p>${escapeHtml(comment.content)}</p>
-      <button class="like-button" type="button" data-like-comment="${index}" aria-label="标记这条反馈好用">
+      <button class="like-button" type="button" data-like-comment="${index}" aria-label="同意这条反馈">
         <span class="pixel-like-icon" aria-hidden="true"></span>
-        <span>好用</span>
+        <span>同意</span>
+        <span class="like-count">${Number(comment.likes || 0)}</span>
+      </button>
+    </article>
+  `;
+}
+
+function feedbackItem({ tool, comment, index }) {
+  return `
+    <article class="comment-item feedback-item">
+      <div class="feedback-item__head">
+        <div>
+          <strong>${escapeHtml(comment.nickname)}</strong>
+          <div class="comment-meta">
+            <span>${escapeHtml(issueTypeLabels[comment.issueType] || comment.issueType)}</span>
+            <span>${new Date(comment.createdAt).toLocaleString("zh-CN")}</span>
+          </div>
+        </div>
+        <a class="feedback-tool-link" href="#/tool/${encodeURIComponent(tool.slug)}">${escapeHtml(tool.name)}</a>
+      </div>
+      <p>${escapeHtml(comment.content)}</p>
+      <button class="like-button" type="button" data-like-feedback data-tool-id="${escapeHtml(tool.id)}" data-comment-index="${index}" aria-label="同意这条反馈">
+        <span class="pixel-like-icon" aria-hidden="true"></span>
+        <span>同意</span>
         <span class="like-count">${Number(comment.likes || 0)}</span>
       </button>
     </article>

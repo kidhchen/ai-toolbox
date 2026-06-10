@@ -52,78 +52,163 @@
       "developer": "跃鹏",
       "status": "published",
       "difficulty": "入门",
-      "summary": "把常用AI网站、提示词模板、常用提示词公式和一键打开入口整合到浏览器里，减少找网址、复制提示词和切换页面的时间。",
+      "summary": "把常用 AI 网站、提示词模板、常用公式和一键打开入口整合到浏览器插件里，让找网址、召唤工具、插入提示词和生成视频提示词这几件事都能在同一个入口完成。",
       "targetUsers": [
-        "经常使用多个AI网站的制作同学",
-        "需要频繁复制提示词和打开工具页面的人",
-        "希望把提示词流程固定下来的团队成员",
-        "需要用到图片、视频、多风格等多种 AI 生成提示词的人"
+        "经常使用豆包、DeepSeek、Oii、即梦等多个 AI 网站的制作同学",
+        "需要频繁复制提示词、打开工具页面、调用固定提示词模板的人",
+        "希望团队成员使用同一套提示词公式和生成格式的人",
+        "需要制作图片、视频、多风格内容，并经常拆分剧本、生成故事板的人"
       ],
       "painPoints": [
-        "常用AI网站分散，打开效率低。",
-        "提示词需要反复查找和复制。",
-        "需要用到多种类型的 AI 生成提示词，临时组织容易漏信息。",
-        "分镜、场景四视图和故事板提示词格式不统一。"
+        "常用 AI 网站分散，每次制作都要重新找入口、开页面、切换窗口。",
+        "提示词需要反复查找和复制，复制错、漏复制、格式不统一都会影响生成结果。",
+        "网站改版后，自动插入提示词可能失效，需要有复制兜底。",
+        "视频生成、分镜拆分、场景四视图、Image2 故事板等流程缺少固定公式，团队产出容易不一致。"
       ],
       "features": [
-        "收录常用AI制作网址。",
-        "智能工人按钮可一键召唤豆包、DeepSeek、Oii、即梦等网站。",
-        "自动识别当前网页并尝试插入提示词。",
-        "插入失败时自动复制提示词，用户可手动粘贴。",
-        "内置常用提示词公式库，覆盖视频生成起手式、分镜拆分、场景四视图和 Image2 故事板。"
+        "网址收录：集中收录常用 AI 制作网站，减少重复找网址的时间。",
+        "智能工人：一键打开配置好的 AI 网站，包括豆包、DeepSeek、Oii、即梦等。",
+        "自动插入提示词：识别当前网页输入框，把提示词追加进去。",
+        "复制兜底：如果网站改版导致插入失败，提示词会自动复制，手动粘贴即可继续。",
+        "常用公式：内置视频起手式、分镜拆分、场景四视图、Image2 故事板等提示词公式。",
+        "安装后固定到浏览器工具栏，日常制作时从右上角插件入口直接使用。"
       ],
       "usageSteps": [
-        "下载插件压缩包并解压。",
-        "打开浏览器扩展程序页面，进入管理扩展程序。",
-        "开启开发者模式。",
-        "将解压后的插件文件夹拖入扩展页面。",
-        "看到点猫提示词助手后，将插件固定到浏览器工具栏。",
-        "按制作需求使用网址入口、智能工人和提示词公式。"
+        "下载点猫提示词助手压缩包，并在磁盘任意目录解压成文件夹。",
+        "检查解压后的文件夹内容，确认插件文件完整。",
+        "打开 Chrome 或同类浏览器的扩展程序页面，进入“管理扩展程序”。",
+        "将解压后的整个插件文件夹拖入扩展页面。",
+        "出现点猫提示词助手后，表示安装成功。",
+        "将点猫提示词助手固定到浏览器工具栏，以后点击右上角插件入口使用。"
       ],
       "coverImage": {
         "kind": "image",
         "label": "点猫提示词助手界面",
-        "src": "assets/doc-images/doc-image-01.png",
-        "status": "imported_from_docs"
+        "description": "插件主界面，展示 AI 网站、提示词分类和智能工人入口。",
+        "src": "assets/doc-images/dianmao/dianmao-cover.png",
+        "status": "site_asset"
       },
       "featureMedia": [
         {
           "kind": "image",
-          "label": "网址收录与智能入口",
-          "src": "assets/doc-images/doc-image-02.png",
-          "status": "imported_from_docs"
+          "label": "AI 网站入口",
+          "description": "把常用 AI 网站按推理、出图、视频、画布、配音等类型集中到一个面板。",
+          "src": "assets/doc-images/dianmao/dianmao-ai-websites.png",
+          "status": "site_asset"
         },
         {
           "kind": "image",
-          "label": "提示词插入效果",
-          "src": "assets/doc-images/doc-image-03.png",
-          "status": "imported_from_docs"
+          "label": "智能工人入口",
+          "description": "点击智能工人后，可以进入预设好的制作网站和工作流入口。",
+          "src": "assets/doc-images/dianmao/dianmao-smart-worker-video.png",
+          "status": "site_asset"
         },
         {
           "kind": "image",
-          "label": "场景四视图效果",
-          "src": "assets/doc-images/doc-image-33.png",
-          "status": "imported_from_docs"
+          "label": "自动插入提示词",
+          "description": "从插件里选择提示词后，可把内容插入到当前网页输入区域。",
+          "src": "assets/doc-images/dianmao/dianmao-auto-insert.png",
+          "status": "site_asset"
         },
         {
           "kind": "image",
-          "label": "故事板生成效果",
-          "src": "assets/doc-images/doc-image-39.png",
-          "status": "imported_from_docs"
+          "label": "起手式公式",
+          "description": "常用视频起手式公式，用来统一画质、镜头、字幕、音乐和角色一致性要求。",
+          "src": "assets/doc-images/dianmao/dianmao-formula-start.png",
+          "status": "site_asset"
+        },
+        {
+          "kind": "image",
+          "label": "起手式公式扩展",
+          "description": "预设中的风格提示词可直接插入，也可以作为团队统一模板继续迭代。",
+          "src": "assets/doc-images/dianmao/dianmao-formula-start-2.png",
+          "status": "site_asset"
+        },
+        {
+          "kind": "image",
+          "label": "分镜拆分结果",
+          "description": "把剧本拆分成连续分段后，输出剧情描述、故事板、对白时间点和音效说明。",
+          "src": "assets/doc-images/dianmao/dianmao-segmentation-output.png",
+          "status": "site_asset"
+        },
+        {
+          "kind": "image",
+          "label": "总时长计算",
+          "description": "用于检查各分段时长和视频总时长，方便控制生成节奏。",
+          "src": "assets/doc-images/dianmao/dianmao-duration-check.png",
+          "status": "site_asset"
+        },
+        {
+          "kind": "image",
+          "label": "环境四视图提示",
+          "description": "环境四视图公式可生成高角度、低角度、侧面和反面视角，方便作为场景参考。",
+          "src": "assets/doc-images/dianmao/dianmao-environment-four-view.png",
+          "status": "site_asset"
+        },
+        {
+          "kind": "image",
+          "label": "场景四视图效果 A",
+          "description": "四宫格场景参考图，可用于后续视频生成的空间一致性控制。",
+          "src": "assets/doc-images/dianmao/dianmao-scene-four-view-a.png",
+          "status": "site_asset"
+        },
+        {
+          "kind": "image",
+          "label": "场景四视图效果 B",
+          "description": "另一组场景四视图效果，展示同一场景在不同角度下的参考画面。",
+          "src": "assets/doc-images/dianmao/dianmao-scene-four-view-b.png",
+          "status": "site_asset"
+        },
+        {
+          "kind": "image",
+          "label": "故事板成品效果",
+          "description": "根据角色、场景和剧本生成的故事板示例，适合交给视频生成工具继续制作。",
+          "src": "assets/doc-images/dianmao/dianmao-storyboard-result.jpeg",
+          "status": "site_asset"
         }
       ],
       "stepMedia": [
         {
           "kind": "image",
-          "label": "插件解压与安装步骤",
-          "src": "assets/doc-images/doc-image-08.png",
-          "status": "imported_from_docs"
+          "label": "解压后检查插件文件夹",
+          "description": "下载压缩包后先解压，确认文件夹内包含插件所需文件。",
+          "src": "assets/doc-images/dianmao/dianmao-install-unzip.png",
+          "status": "site_asset"
         },
         {
           "kind": "image",
-          "label": "浏览器扩展固定步骤",
-          "src": "assets/doc-images/doc-image-17.png",
-          "status": "imported_from_docs"
+          "label": "进入浏览器扩展管理",
+          "description": "在浏览器扩展菜单里进入管理扩展程序页面。",
+          "src": "assets/doc-images/dianmao/dianmao-install-manage-extension.png",
+          "status": "site_asset"
+        },
+        {
+          "kind": "image",
+          "label": "扩展管理页面状态",
+          "description": "进入扩展管理页面后，准备把解压后的插件文件夹拖入页面。",
+          "src": "assets/doc-images/dianmao/dianmao-install-extension-list.png",
+          "status": "site_asset"
+        },
+        {
+          "kind": "image",
+          "label": "拖入插件文件夹",
+          "description": "把解压后的点猫提示词助手文件夹拖入扩展管理页面，完成安装。",
+          "src": "assets/doc-images/dianmao/dianmao-install-drop-folder.png",
+          "status": "site_asset"
+        },
+        {
+          "kind": "image",
+          "label": "固定到浏览器工具栏",
+          "description": "在扩展列表里点击固定按钮，让点猫提示词助手显示在浏览器右上角。",
+          "src": "assets/doc-images/dianmao/dianmao-install-pin.png",
+          "status": "site_asset"
+        },
+        {
+          "kind": "image",
+          "label": "右上角插件入口",
+          "description": "固定后点击浏览器右上角的点猫提示词助手图标，即可打开插件面板。",
+          "src": "assets/doc-images/dianmao/dianmao-install-toolbar.png",
+          "status": "site_asset"
         }
       ],
       "resources": [
@@ -135,9 +220,11 @@
         },
         {
           "kind": "package",
-          "label": "点猫提示词助手下载.zip",
-          "storageKey": "pending/dianmao-prompt-assistant.zip",
-          "status": "pending_upload"
+          "label": "点猫提示词助手安装包",
+          "url": "https://alidocs.dingtalk.com/i/nodes/ZX6GRezwJl7ZrYdQHr4AjmNrVdqbropQ?utm_scene=team_space",
+          "actionLabel": "打开下载页",
+          "note": "安装包位于钉钉文档底部“软件下载”区域，点击后在文档中下载。",
+          "status": "external_link"
         }
       ],
       "media": [],
@@ -145,44 +232,48 @@
         "提示词",
         "Chrome插件",
         "AI网站入口",
-        "效率工具",
-        "提示词模板",
+        "智能工人",
+        "自动插入提示词",
+        "提示词公式",
         "分镜",
         "故事板",
-        "AI视频",
-        "提示词公式库"
+        "AI视频"
       ],
       "version": "1.0",
       "methods": [
         {
           "id": "video-starting-prompt",
-          "name": "视频生成起手式",
+          "name": "起手式",
           "sourceCredit": "侠在 & 毛毛",
-          "summary": "用于快速声明画质、镜头运动、角色一致性和禁止字幕/背景音乐等基础要求。",
-          "optimizedPrompt": "请生成电影级质感的高完成度动画画面，保持角色形象与参考图一致。镜头可以使用推拉、旋转、俯拍、仰拍等动态运动，构图要有叙事信息。不要生成字幕、水印或背景音乐；角色配音需自然收尾，动作要配合台词并保持生动。"
+          "summary": "用于视频生成前置约束，适合小火箭、PY 风格、低龄 3D 风格、Seedance 等视频生成流程。",
+          "optimizedPrompt": "电影级画质，高细节、高完成度的2D动画。\n动态镜头运动感(推镜/拉镜/旋转镜)，非常规视角(低角度仰拍、高角度俯拍)，叙事性构图(单帧藏剧情线索)；不要背景音乐；一定不要字幕；角色配音不要戛然而止，要留自然的尾音。角色动作配合台词活力且丰富；禁止给角色生成斗篷、尾巴，角色形象要和参考图保持一致。\n\n皮克斯3D Q版风格\n分镜顺畅，禁止给角色生成斗篷、尾巴，角色形象要和参考图保持一致。禁止生成背景音乐、字幕。"
         },
         {
           "id": "script-segmentation",
           "name": "分镜拆分",
           "sourceCredit": "Ame",
-          "summary": "把剧本拆成连续分段，每段约15秒，并输出剧情描述、故事板、声音风格、对白时间点和音效说明。",
-          "optimizedPrompt": "请将我提供的剧本拆分为连续视频段落，每段控制在约15秒内。每段输出剧情概述、0到15秒故事板、角色声音风格、对白出现时间段、环境声和动作音效说明。请保留原剧本对白，不添加字幕、水印或背景音乐，角色和场景需与参考保持一致。"
+          "summary": "把剧本拆成不超过 15 秒的连续分段，输出剧情描述、故事板、声音风格、对白时间点和音效说明。",
+          "optimizedPrompt": "# 任务：将以下剧本拆分成若干段，每段时长不超过15秒，并按指定格式输出。\n\n## 输入剧本：\n[在此粘贴新剧本]\n\n## 输出要求：\n请将剧本拆分成连续的分段（编号从01开始），每段需包含以下内容：\n\n### 分段XX：\n- **剧情描述**：简要概括本段发生的场景、角色动作和关键情节，保留原剧本中的【场景】【动作】【对话】核心信息。\n- **故事板**：按0~15秒的时间线，用文字描述每一秒或每几秒的镜头、角色动作、视角变化（训练师第一人称视角需保持一致），确保流畅自然、符合物理规律，无静态平移，无水印和字幕。\n- **Voicestyle**：列出本段中所有说话角色的语音风格JSON，格式如：`{\"character\":\"角色外观特征\",\"voice style\":\"male/female voice, child voice, pitch, timbre, etc.\"}`，每个角色一条。\n- **Storyboard Dialogue**：给出对话出现的精确时间段（如“0.8～2.6s”）和角色说的话，不可修改或增删原文。\n- **Storyboard Audio Description**：描述背景音效、环境声、动作音等（不生成背景音乐），标注时间段。\n\n## 额外约束：\n- 视频中不能出现水印和字幕。\n- 不要生成背景音乐。\n- 角色形象、场景设定和风格必须与输入图保持一致（输入图由其他模块提供，此处仅作文字描述）。\n- 保证动态化效果流畅、自然，符合物理规律，不能出现静态平移的动作。\n- 所有对话必须使用中文，严格按剧本原文。\n\n请开始拆分。"
         },
         {
           "id": "scene-four-views",
           "name": "场景四视图",
-          "sourceCredit": "未标注",
-          "summary": "为单个场景生成高角度俯瞰、低角度仰视、侧面和反面四宫格视图。",
-          "optimizedPrompt": "请基于这个场景生成四宫格视图：高角度俯瞰、低角度仰视、侧面视角、反面视角。四个视图需要保持同一场景设定和空间关系，并在图中标注每个视角名称。"
+          "sourceCredit": "点猫提示词助手",
+          "summary": "用于生成单个场景的四宫格视图，在动画生成中作为场景参考很实用。",
+          "optimizedPrompt": "给我此场景的四视图，包括高角度航拍俯瞰，低角度仰视，侧面视角，反面视角。同一张图四宫格就可以，有文字描述视图角度。"
         },
         {
           "id": "image2-storyboard",
           "name": "Image2 故事板",
           "sourceCredit": "Ame",
-          "summary": "根据角色三视图、场景参考和剧本生成故事板，用于衔接即梦等视频生成工具。",
-          "optimizedPrompt": "请根据角色三视图、场景参考和剧本内容生成故事板。故事板需包含角色展示、场景展示、必要的场景四视图，以及九宫格剧情画面。每格请补充情节要点、人物动作、台词、景别、镜头类型、运镜和镜头参数建议。"
+          "summary": "根据角色三视图、场景参考和剧本生成故事板，再配合即梦等视频生成工具使用。",
+          "optimizedPrompt": "根据（角色[在此粘贴角色三视图]）（场景[在此粘贴场景]）帮我出一个故事板。内容包括人物三视图展示、场景展示，场景如果有参考，根据参考生成四视图，包括高角度航拍俯瞰，低角度仰视，侧面视角，反面视角。\n主体部分通过（9）宫格描述剧本内容，要求有表达内容的宫格图，每个宫格图下面包含以下解析：情节要点，人物动作描述，台词，景别，镜头类型，运镜，焦距区间与镜头参数等，根据剧本类型，如有需要，酌情增加删减要素。\n输出主体后，下面内容选择性输出：调色板，美术，风格，摄影笔记，情绪关键词等。\n以下是剧本内容：[在此粘贴新剧本]\n\n成品使用建议：把故事板和角色参考给到视频生成工具后，可补充说明：这是角色@xx，这是故事板@xx，请严格按照故事板生成视频，不要出现文字和字幕，不要出现箭头，里面的箭头只表示运动路径和指示方向。"
         }
-      ]
+      ],
+      "featuresTitle": "软件功能",
+      "stepsTitle": "安装方法",
+      "stepMediaTitle": "安装方法",
+      "methodsTitle": "常用公式"
     },
     {
       "id": "codex-sound-effect-method",
