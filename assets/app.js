@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260610n";
+const seedUrl = "./content/tools.seed.json?v=20260610o";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -616,22 +616,13 @@ function renderHome() {
         </div>
       </aside>
 
-      <section class="content-panel">
-        <div class="panel-head">
-          <div>
-            <p class="eyebrow">SELECT A TOOL</p>
-            <h2>${state.category === "all" ? "全部工具" : escapeHtml(categoryName(state.category))}</h2>
-          </div>
-          <span class="pixel-badge">${tools.length} 个入口</span>
-        </div>
-        ${tools.length ? `<div class="tool-grid">${tools.map(toolCard).join("")}</div>` : emptyState("没有匹配的工具", "换个关键词或分类再试一次。")}
-      </section>
+      ${homeResultsPanel(tools)}
     </section>
   `;
 
   document.querySelector("#search-input").addEventListener("input", (event) => {
-    state.query = event.target.value.trim();
-    renderHome();
+    state.query = event.target.value;
+    renderHomeResults();
   });
 
   document.querySelectorAll("[data-category]").forEach((button) => {
@@ -640,6 +631,27 @@ function renderHome() {
       renderHome();
     });
   });
+}
+
+function homeResultsPanel(tools = filteredTools()) {
+  return `
+    <section class="content-panel">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">SELECT A TOOL</p>
+          <h2>${state.category === "all" ? "全部工具" : escapeHtml(categoryName(state.category))}</h2>
+        </div>
+        <span class="pixel-badge">${tools.length} 个入口</span>
+      </div>
+      ${tools.length ? `<div class="tool-grid">${tools.map(toolCard).join("")}</div>` : emptyState("没有匹配的工具", "换个关键词或分类再试一次。")}
+    </section>
+  `;
+}
+
+function renderHomeResults() {
+  const panel = document.querySelector(".content-panel");
+  if (!panel) return;
+  panel.outerHTML = homeResultsPanel();
 }
 
 function categoryButton(id, label, count) {
@@ -652,7 +664,7 @@ function categoryButton(id, label, count) {
 }
 
 function filteredTools() {
-  const q = state.query.toLowerCase();
+  const q = state.query.trim().toLowerCase();
   return state.data.tools.filter((tool) => {
     const inCategory = state.category === "all" || toolInCategory(tool, state.category);
     const haystack = [
