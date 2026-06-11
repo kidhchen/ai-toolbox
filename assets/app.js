@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260611e";
+const seedUrl = "./content/tools.seed.json?v=20260611f";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -640,12 +640,9 @@ function startBrandLogo() {
 
       float z = sqrt(max(radius * radius - d * d, 0.0)) / radius;
       float fresnel = pow(1.0 - z, 3.0);
-      float spec = pow(max(dot(normalize(vec2(-0.55, 0.6)), p / max(radius, 0.0001)), 0.0), 8.0);
-      spec *= smoothstep(radius, radius * 0.48, d);
       vec3 rim = mix(vec3(1.0), vec3(0.84, 1.0, 0.96), uNight) * fresnel * 0.24;
-      vec3 highlight = vec3(1.0) * spec * 0.55;
       vec3 body = mix(vec3(0.95, 0.98, 1.0), vec3(0.05, 0.08, 0.12), uNight) * (0.05 + fresnel * 0.08);
-      vec3 color = light + rim + highlight + body;
+      vec3 color = light + rim + body;
       float alpha = mask * clamp(max(max(color.r, color.g), color.b) * 0.86 + 0.12 + fresnel * 0.12, 0.0, 0.96);
 
       gl_FragColor = vec4(color * mask, alpha);
@@ -1093,13 +1090,13 @@ function startHomeStrands() {
       float phase = index * 1.65;
       float wave = sin(uv.x * (2.15 + index * 0.28) + t * 1.7 + phase) * 0.62;
       wave += sin(uv.x * (3.85 + index * 0.22) - t * 1.1 + phase * 1.7) * 0.38;
-      float amplitude = mix(0.088, 0.16, uNight) * env;
+      float amplitude = mix(0.108, 0.16, uNight) * env;
       float y = wave * amplitude + (index - 1.5) * 0.018 * (0.8 + env);
       float d = abs(uv.y - y);
-      float thickness = (0.006 + 0.013 * env) * mix(0.58, 1.14, uNight);
+      float thickness = (0.006 + 0.013 * env) * mix(0.78, 1.14, uNight);
       float core = thickness / (d + thickness * 0.46);
-      float halo = exp(-d * d / (thickness * 0.42)) * mix(0.018, 0.16, uNight);
-      return core * core * env * mix(0.58, 1.0, uNight) + halo * env;
+      float halo = exp(-d * d / (thickness * 0.40)) * mix(0.032, 0.16, uNight);
+      return core * core * env * mix(0.82, 1.0, uNight) + halo * env;
     }
 
     void main() {
@@ -1115,18 +1112,18 @@ function startHomeStrands() {
         float fi = float(i);
         float energy = strand(beamUv, fi, env);
         vec3 color = palette(fi * 0.19 + beamUv.x * 0.18 + uTime * 0.035);
-        beam += color * energy * mix(0.34 + env * 0.34, 0.55 + env * 0.74, uNight);
+        beam += color * energy * mix(0.50 + env * 0.56, 0.55 + env * 0.74, uNight);
       }
 
-      beam = 1.0 - exp(-beam * mix(0.82, 2.45, uNight));
+      beam = 1.0 - exp(-beam * mix(1.36, 2.45, uNight));
 
       float pointerGlow = exp(-pow(distance(uv, uPointer), 2.0) * 8.0);
       beam += vec3(0.00, 0.94, 0.66) * pointerGlow * 0.08 * uNight;
       beam += vec3(0.45, 0.18, 0.95) * pointerGlow * 0.04 * uNight;
 
-      vec3 color = beam * mix(0.62, 1.12, uNight);
+      vec3 color = beam * mix(1.02, 1.12, uNight);
       float lum = max(max(beam.r, beam.g), beam.b);
-      float alpha = clamp(lum * mix(0.34, 1.06, uNight), 0.0, 0.96);
+      float alpha = clamp(lum * mix(0.62, 1.06, uNight), 0.0, 0.96);
 
       gl_FragColor = vec4(color, alpha);
     }
