@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260611c";
+const seedUrl = "./content/tools.seed.json?v=20260611d";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -728,7 +728,7 @@ function startSpaceBackground() {
 
 function render() {
   stopHomeStrands();
-  document.body.classList.remove("home-page", "tool-detail-page");
+  document.body.classList.remove("home-page", "tool-detail-page", "app-page", "feedback-page", "submit-page", "wishbox-page");
   const hash = window.location.hash || "#/";
   if (hash.startsWith("#/tool/")) {
     setRouteActive("home");
@@ -896,13 +896,13 @@ function startHomeStrands() {
       float phase = index * 1.65;
       float wave = sin(uv.x * (2.15 + index * 0.28) + t * 1.7 + phase) * 0.62;
       wave += sin(uv.x * (3.85 + index * 0.22) - t * 1.1 + phase * 1.7) * 0.38;
-      float amplitude = mix(0.115, 0.16, uNight) * env;
+      float amplitude = mix(0.088, 0.16, uNight) * env;
       float y = wave * amplitude + (index - 1.5) * 0.018 * (0.8 + env);
       float d = abs(uv.y - y);
-      float thickness = (0.006 + 0.013 * env) * mix(0.95, 1.14, uNight);
+      float thickness = (0.006 + 0.013 * env) * mix(0.58, 1.14, uNight);
       float core = thickness / (d + thickness * 0.46);
-      float halo = exp(-d * d / (thickness * 0.52)) * 0.16;
-      return core * core * env + halo * env;
+      float halo = exp(-d * d / (thickness * 0.42)) * mix(0.018, 0.16, uNight);
+      return core * core * env * mix(0.58, 1.0, uNight) + halo * env;
     }
 
     void main() {
@@ -918,18 +918,18 @@ function startHomeStrands() {
         float fi = float(i);
         float energy = strand(beamUv, fi, env);
         vec3 color = palette(fi * 0.19 + beamUv.x * 0.18 + uTime * 0.035);
-        beam += color * energy * (0.55 + env * 0.74);
+        beam += color * energy * mix(0.34 + env * 0.34, 0.55 + env * 0.74, uNight);
       }
 
-      beam = 1.0 - exp(-beam * mix(1.45, 2.45, uNight));
+      beam = 1.0 - exp(-beam * mix(0.82, 2.45, uNight));
 
       float pointerGlow = exp(-pow(distance(uv, uPointer), 2.0) * 8.0);
       beam += vec3(0.00, 0.94, 0.66) * pointerGlow * 0.08 * uNight;
       beam += vec3(0.45, 0.18, 0.95) * pointerGlow * 0.04 * uNight;
 
-      vec3 color = beam * mix(0.94, 1.12, uNight);
+      vec3 color = beam * mix(0.62, 1.12, uNight);
       float lum = max(max(beam.r, beam.g), beam.b);
-      float alpha = clamp(lum * mix(0.78, 1.06, uNight), 0.0, 0.96);
+      float alpha = clamp(lum * mix(0.34, 1.06, uNight), 0.0, 0.96);
 
       gl_FragColor = vec4(color, alpha);
     }
@@ -1093,6 +1093,7 @@ function filteredTools() {
 }
 
 function renderFeedbackBoard() {
+  document.body.classList.add("app-page", "feedback-page");
   const allItems = feedbackItems();
   const filteredItems = state.feedbackFilter === "all"
     ? allItems
@@ -1781,6 +1782,7 @@ function feedbackItem({ tool, comment, index }) {
 }
 
 function renderSubmissionPage() {
+  document.body.classList.add("app-page", "submit-page");
   app.innerHTML = `
     <section class="screen submit-layout">
       <article class="wish-panel">
@@ -1965,6 +1967,7 @@ async function saveSubmission(event) {
 }
 
 function renderWishbox() {
+  document.body.classList.add("app-page", "wishbox-page");
   app.innerHTML = `
     <section class="screen wish-layout">
       <article class="wish-panel">

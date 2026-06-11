@@ -302,9 +302,9 @@ body.home-page .gallery-hero {
   inset: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.76;
+  opacity: 0.58;
   pointer-events: auto;
-  filter: saturate(1.12);
+  filter: saturate(0.96) brightness(1.05);
 }
 
 html[data-theme="night"] .strands-canvas {
@@ -2130,6 +2130,528 @@ html[data-theme="night"] body.tool-detail-page .field select {
   background: rgba(255, 255, 255, 0.055);
 }
 
+body.app-page {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(124, 58, 237, 0.07), transparent 26%),
+    radial-gradient(circle at 88% 8%, rgba(6, 182, 212, 0.09), transparent 24%),
+    #fbfbfd;
+}
+
+html[data-theme="night"] body.app-page {
+  background: transparent;
+}
+
+body.app-page .topbar {
+  border-bottom: 1px solid rgba(18, 18, 22, 0.08);
+  background: rgba(251, 251, 253, 0.78);
+  backdrop-filter: blur(18px);
+}
+
+html[data-theme="night"] body.app-page .topbar {
+  border-bottom-color: rgba(83, 255, 185, 0.14);
+  background: rgba(5, 7, 13, 0.74);
+}
+
+body.app-page .brand-mark {
+  border: 0;
+  border-radius: 11px;
+  background:
+    linear-gradient(90deg, transparent 0 46%, rgba(255, 255, 255, 0.22) 46% 54%, transparent 54% 100%),
+    linear-gradient(transparent 0 46%, rgba(255, 255, 255, 0.22) 46% 54%, transparent 54% 100%),
+    linear-gradient(135deg, #00f0a8, #44d7a8);
+  box-shadow: 0 10px 24px rgba(68, 215, 168, 0.22);
+}
+
+body.app-page .nav-link {
+  min-width: auto;
+  border-color: rgba(18, 18, 22, 0.10);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.70);
+  box-shadow: none;
+}
+
+body.app-page .nav-link.is-active {
+  background: #121216;
+  color: #fff;
+}
+
+html[data-theme="night"] body.app-page .nav-link {
+  border-color: rgba(83, 255, 185, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(237, 245, 238, 0.82);
+}
+
+html[data-theme="night"] body.app-page .nav-link.is-active {
+  background: rgba(0, 240, 168, 0.18);
+  color: var(--mint);
+}
+
+body.app-page .app-shell {
+  width: min(1640px, calc(100% - clamp(28px, 5vw, 92px)));
+  padding-top: clamp(28px, 3.4vw, 56px);
+}
+
+body.app-page .screen,
+.admin-panel,
+.toast {
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Noto Sans SC", sans-serif;
+}
+
+body.app-page .feedback-layout,
+body.app-page .wish-layout,
+body.app-page .submit-layout {
+  gap: clamp(24px, 2.8vw, 44px);
+}
+
+body.app-page .feedback-layout {
+  grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
+}
+
+body.app-page .wish-layout {
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+}
+
+body.app-page .submit-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.78fr);
+}
+
+body.app-page .control-panel,
+body.app-page .content-panel,
+body.app-page .wish-panel,
+body.app-page .empty-state {
+  border: 1px solid rgba(92, 99, 112, 0.11);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: 0 24px 70px rgba(22, 26, 39, 0.08);
+  backdrop-filter: blur(18px);
+}
+
+body.app-page .control-panel,
+body.app-page .content-panel,
+body.app-page .wish-panel {
+  padding: clamp(22px, 2.4vw, 34px);
+}
+
+body.app-page .control-panel {
+  top: 104px;
+  gap: 22px;
+}
+
+html[data-theme="night"] body.app-page .control-panel,
+html[data-theme="night"] body.app-page .content-panel,
+html[data-theme="night"] body.app-page .wish-panel,
+html[data-theme="night"] body.app-page .empty-state {
+  border-color: rgba(83, 255, 185, 0.13);
+  background: rgba(255, 255, 255, 0.055);
+  box-shadow: 0 28px 88px rgba(0, 0, 0, 0.34);
+}
+
+body.app-page .panel-head {
+  margin-bottom: clamp(16px, 2vw, 26px);
+}
+
+body.app-page .panel-head h1,
+body.app-page .panel-head h2,
+body.app-page .panel-head h3 {
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Noto Sans SC", sans-serif;
+  font-weight: 780;
+  letter-spacing: 0;
+}
+
+body.app-page .panel-head h1 {
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.04;
+}
+
+body.app-page .panel-head h2 {
+  font-size: clamp(24px, 2.4vw, 34px);
+  line-height: 1.16;
+}
+
+body.app-page .panel-head h3 {
+  font-size: 20px;
+}
+
+body.app-page .eyebrow {
+  color: rgba(18, 18, 22, 0.48);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  letter-spacing: 0.03em;
+}
+
+body.app-page .muted,
+body.app-page .admin-message {
+  color: rgba(18, 18, 22, 0.58);
+  line-height: 1.75;
+}
+
+html[data-theme="night"] body.app-page .eyebrow,
+html[data-theme="night"] body.app-page .muted,
+html[data-theme="night"] body.app-page .admin-message {
+  color: rgba(237, 245, 238, 0.58);
+}
+
+body.app-page .stats-grid {
+  gap: 12px;
+}
+
+body.app-page .stat-box {
+  min-height: 96px;
+  padding: 16px;
+  border: 1px solid rgba(92, 99, 112, 0.10);
+  border-radius: 18px;
+  background: rgba(248, 249, 252, 0.84);
+}
+
+body.app-page .stat-box strong {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 36px;
+  font-weight: 760;
+  line-height: 1;
+}
+
+body.app-page .stat-box span {
+  margin-top: 10px;
+  color: rgba(18, 18, 22, 0.50);
+  font-size: 13px;
+}
+
+html[data-theme="night"] body.app-page .stat-box {
+  border-color: rgba(83, 255, 185, 0.12);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+html[data-theme="night"] body.app-page .stat-box span {
+  color: rgba(237, 245, 238, 0.54);
+}
+
+body.app-page .field {
+  gap: 9px;
+}
+
+body.app-page .field > span,
+body.app-page .field label {
+  color: rgba(18, 18, 22, 0.72);
+  font-size: 14px;
+  font-weight: 720;
+}
+
+body.app-page .field input,
+body.app-page .field textarea,
+body.app-page .field select,
+body.app-page .search-input,
+body.app-page .data-editor {
+  border: 1px solid rgba(92, 99, 112, 0.13);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: none;
+}
+
+body.app-page .field input,
+body.app-page .field select,
+body.app-page .search-input {
+  min-height: 48px;
+  padding: 11px 14px;
+}
+
+body.app-page .field textarea {
+  min-height: 132px;
+  padding: 14px;
+}
+
+body.app-page .field input:focus,
+body.app-page .field textarea:focus,
+body.app-page .field select:focus,
+body.app-page .search-input:focus,
+body.app-page .data-editor:focus {
+  box-shadow: 0 0 0 4px rgba(68, 215, 168, 0.16);
+  border-color: rgba(68, 215, 168, 0.56);
+}
+
+html[data-theme="night"] body.app-page .field > span,
+html[data-theme="night"] body.app-page .field label {
+  color: rgba(237, 245, 238, 0.74);
+}
+
+html[data-theme="night"] body.app-page .field input,
+html[data-theme="night"] body.app-page .field textarea,
+html[data-theme="night"] body.app-page .field select,
+html[data-theme="night"] body.app-page .search-input,
+html[data-theme="night"] body.app-page .data-editor {
+  border-color: rgba(83, 255, 185, 0.14);
+  background: rgba(255, 255, 255, 0.055);
+  color: rgba(237, 245, 238, 0.90);
+}
+
+body.app-page .pixel-button,
+body.app-page .chip-button,
+body.app-page .icon-button,
+body.app-page .copy-button,
+body.app-page .like-button,
+.admin-panel .pixel-button,
+.admin-panel .icon-button,
+.toast {
+  border-width: 1px;
+  border-radius: 999px;
+  box-shadow: none;
+}
+
+body.app-page .pixel-button,
+body.app-page .chip-button,
+.admin-panel .pixel-button {
+  min-height: 42px;
+  padding: 10px 15px;
+}
+
+body.app-page .pixel-button.primary,
+body.app-page .chip-button.is-active,
+.admin-panel .pixel-button.primary {
+  background: #121216;
+  color: #fff;
+}
+
+body.app-page .pixel-button.danger,
+.admin-panel .pixel-button.danger {
+  background: rgba(255, 95, 143, 0.12);
+  color: #c92a54;
+}
+
+html[data-theme="night"] body.app-page .pixel-button.primary,
+html[data-theme="night"] body.app-page .chip-button.is-active,
+html[data-theme="night"] .admin-panel .pixel-button.primary {
+  border-color: rgba(83, 255, 185, 0.18);
+  background: rgba(0, 240, 168, 0.16);
+  color: var(--mint);
+}
+
+html[data-theme="night"] body.app-page .pixel-button.danger,
+html[data-theme="night"] .admin-panel .pixel-button.danger {
+  background: rgba(255, 95, 143, 0.12);
+  color: var(--coral);
+}
+
+body.app-page .chip-button {
+  justify-content: space-between;
+  border-color: rgba(92, 99, 112, 0.12);
+  background: rgba(248, 249, 252, 0.76);
+}
+
+body.app-page .chip-count,
+body.app-page .pixel-badge,
+body.app-page .like-count {
+  border: 0;
+  border-radius: 999px;
+  background: rgba(124, 58, 237, 0.10);
+  color: #4c1d95;
+}
+
+body.app-page .chip-button.is-active .chip-count {
+  background: rgba(255, 255, 255, 0.18);
+  color: inherit;
+}
+
+html[data-theme="night"] body.app-page .chip-button {
+  border-color: rgba(83, 255, 185, 0.13);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+html[data-theme="night"] body.app-page .chip-count,
+html[data-theme="night"] body.app-page .pixel-badge,
+html[data-theme="night"] body.app-page .like-count {
+  background: rgba(231, 255, 122, 0.10);
+  color: var(--sun);
+}
+
+body.app-page .quick-list {
+  gap: 10px;
+}
+
+body.app-page .feedback-list,
+body.app-page .wish-list {
+  gap: 14px;
+}
+
+body.app-page .feedback-item,
+body.app-page .comment-item,
+body.app-page .wish-item,
+body.app-page .review-steps div,
+body.app-page .doc-template {
+  border: 1px solid rgba(92, 99, 112, 0.10);
+  border-radius: 20px;
+  background: rgba(248, 249, 252, 0.82);
+  box-shadow: none;
+}
+
+body.app-page .comment-item,
+body.app-page .wish-item {
+  padding: 16px;
+}
+
+body.app-page .feedback-item {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+}
+
+body.app-page .feedback-item p,
+body.app-page .wish-item p,
+body.app-page .comment-item p {
+  color: rgba(18, 18, 22, 0.68);
+  line-height: 1.78;
+}
+
+body.app-page .comment-meta,
+body.app-page .wish-meta {
+  color: rgba(18, 18, 22, 0.48);
+}
+
+body.app-page .feedback-tool-link {
+  border: 0;
+  border-radius: 999px;
+  background: rgba(68, 215, 168, 0.14);
+  color: #087f5b;
+}
+
+body.app-page .like-button {
+  background: rgba(68, 215, 168, 0.14);
+  color: #087f5b;
+}
+
+html[data-theme="night"] body.app-page .feedback-item,
+html[data-theme="night"] body.app-page .comment-item,
+html[data-theme="night"] body.app-page .wish-item,
+html[data-theme="night"] body.app-page .review-steps div,
+html[data-theme="night"] body.app-page .doc-template {
+  border-color: rgba(83, 255, 185, 0.12);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+html[data-theme="night"] body.app-page .feedback-item p,
+html[data-theme="night"] body.app-page .wish-item p,
+html[data-theme="night"] body.app-page .comment-item p {
+  color: rgba(237, 245, 238, 0.68);
+}
+
+html[data-theme="night"] body.app-page .comment-meta,
+html[data-theme="night"] body.app-page .wish-meta {
+  color: rgba(237, 245, 238, 0.50);
+}
+
+html[data-theme="night"] body.app-page .feedback-tool-link,
+html[data-theme="night"] body.app-page .like-button {
+  background: rgba(0, 240, 168, 0.12);
+  color: var(--mint);
+}
+
+body.app-page .empty-state {
+  padding: 24px;
+  border-style: solid;
+}
+
+body.app-page .empty-state h3 {
+  margin: 0 0 8px;
+}
+
+body.app-page .empty-state p {
+  margin: 0;
+  color: rgba(18, 18, 22, 0.58);
+  line-height: 1.7;
+}
+
+html[data-theme="night"] body.app-page .empty-state p {
+  color: rgba(237, 245, 238, 0.58);
+}
+
+body.app-page .review-steps {
+  gap: 12px;
+}
+
+body.app-page .review-steps div {
+  grid-template-columns: 52px minmax(0, 1fr);
+  padding: 14px;
+}
+
+body.app-page .review-steps strong {
+  min-height: 38px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(68, 215, 168, 0.16);
+  color: #087f5b;
+}
+
+html[data-theme="night"] body.app-page .review-steps strong {
+  background: rgba(0, 240, 168, 0.12);
+  color: var(--mint);
+}
+
+body.app-page .doc-template {
+  padding: 18px;
+  color: rgba(18, 18, 22, 0.74);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Noto Sans SC", monospace;
+  font-size: 13px;
+  line-height: 1.82;
+}
+
+html[data-theme="night"] body.app-page .doc-template {
+  color: rgba(237, 245, 238, 0.74);
+}
+
+.admin-panel {
+  border-left: 1px solid rgba(92, 99, 112, 0.12);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: -24px 0 70px rgba(22, 26, 39, 0.12);
+  backdrop-filter: blur(22px);
+}
+
+html[data-theme="night"] .admin-panel {
+  border-left-color: rgba(83, 255, 185, 0.14);
+  background: rgba(5, 7, 13, 0.88);
+  box-shadow: -28px 0 90px rgba(0, 0, 0, 0.42);
+}
+
+.admin-panel__inner {
+  gap: 16px;
+  padding: clamp(20px, 3vw, 34px);
+}
+
+.admin-panel .data-editor {
+  border: 1px solid rgba(92, 99, 112, 0.13);
+  border-radius: 18px;
+  background: rgba(248, 249, 252, 0.88);
+  color: rgba(18, 18, 22, 0.78);
+  box-shadow: none;
+}
+
+html[data-theme="night"] .admin-panel .data-editor {
+  border-color: rgba(83, 255, 185, 0.14);
+  background: rgba(255, 255, 255, 0.055);
+  color: rgba(237, 245, 238, 0.82);
+}
+
+.admin-panel .icon-button {
+  background: rgba(255, 95, 143, 0.12);
+  color: #c92a54;
+}
+
+html[data-theme="night"] .admin-panel .icon-button {
+  background: rgba(255, 95, 143, 0.12);
+  color: var(--coral);
+}
+
+.toast {
+  border: 1px solid rgba(92, 99, 112, 0.12);
+  background: rgba(18, 18, 22, 0.88);
+  color: #fff;
+  box-shadow: 0 20px 60px rgba(22, 26, 39, 0.18);
+  backdrop-filter: blur(18px);
+}
+
+html[data-theme="night"] .toast {
+  border-color: rgba(83, 255, 185, 0.18);
+  background: rgba(5, 7, 13, 0.86);
+  color: rgba(237, 245, 238, 0.90);
+}
+
 @media (max-width: 960px) {
   .dashboard-grid,
   .detail-layout,
@@ -2141,6 +2663,33 @@ html[data-theme="night"] body.tool-detail-page .field select {
 
   .control-panel {
     position: static;
+  }
+
+  body.app-page .app-shell {
+    width: min(100% - 28px, 1640px);
+    padding-top: 22px;
+  }
+
+  body.app-page .control-panel,
+  body.app-page .content-panel,
+  body.app-page .wish-panel {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  body.app-page .panel-head h1 {
+    font-size: clamp(30px, 10vw, 42px);
+  }
+
+  body.app-page .stats-grid,
+  body.app-page .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.app-page .feedback-item__head,
+  body.app-page .submit-actions {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   body.tool-detail-page .detail-sidebar {
