@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260611d";
+const seedUrl = "./content/tools.seed.json?v=20260611e";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -19,6 +19,7 @@ let adminMessage = null;
 let lightboxKeyHandler = null;
 let homeStrandsAnimation = null;
 let spaceBackgroundAnimation = null;
+let brandLogoAnimation = null;
 
 const state = {
   seed: null,
@@ -534,7 +535,203 @@ function cleanSourceResources(resources) {
 
 function bindChrome() {
   bindThemeToggle();
+  startBrandLogo();
   mountLocalMaintenance();
+}
+
+function startBrandLogo() {
+  if (brandLogoAnimation) return;
+  const canvas = document.querySelector("#brand-logo-canvas");
+  if (!canvas) return;
+  const gl = canvas.getContext("webgl", {
+    alpha: true,
+    antialias: true,
+    premultipliedAlpha: false
+  }) || canvas.getContext("experimental-webgl", {
+    alpha: true,
+    antialias: true,
+    premultipliedAlpha: false
+  });
+  if (!gl) return;
+
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  let frameId = 0;
+
+  const vertexSource = `
+    attribute vec2 aPosition;
+
+    void main() {
+      gl_Position = vec4(aPosition, 0.0, 1.0);
+    }
+  `;
+
+  const fragmentSource = `
+    precision highp float;
+
+    uniform float uTime;
+    uniform vec2 uResolution;
+    uniform float uNight;
+
+    const float PI = 3.141592653589793;
+
+    vec3 palette(float t) {
+      vec3 pink = vec3(0.925, 0.282, 0.725);
+      vec3 violet = vec3(0.486, 0.227, 0.929);
+      vec3 cyan = vec3(0.024, 0.714, 0.831);
+      t = fract(t);
+      if (t < 0.333) return mix(pink, violet, t / 0.333);
+      if (t < 0.666) return mix(violet, cyan, (t - 0.333) / 0.333);
+      return mix(cyan, pink, (t - 0.666) / 0.334);
+    }
+
+    vec3 strands(vec2 p) {
+      vec2 uv = p / 1.3;
+      float intensity = 0.5;
+      float e = 0.06 + intensity * 0.94;
+      float env = pow(max(cos(uv.x * PI * 1.3), 0.0), 3.7);
+      vec3 col = vec3(0.0);
+
+      for (int i = 0; i < 3; i++) {
+        float fi = float(i);
+        float phase = fi * 1.7 * 1.3;
+        float freq = (2.0 + fi * 0.35) * 1.8;
+        float spd = 1.4 + fi * 1.2;
+        float tt = uTime * 0.3;
+        float wave = sin(uv.x * freq + tt * spd + phase) * 0.60
+          + sin(uv.x * freq * 1.1 - tt * spd * 0.7 + phase * 1.7) * 0.40;
+        float amp = (0.1 + 0.02 * e) * env * 0.4;
+        float y = wave * amp + (fi - 1.0) * 0.030;
+        float d = abs(uv.y - y);
+        float thick = (0.001 + 0.05 * e) * (0.35 + env) * 0.5;
+        float g = thick / (d + thick * 0.45);
+        g *= g;
+        float h = fi / 3.0 + uv.x * 0.30 + uTime * 0.04;
+        col += palette(h) * g * env;
+      }
+
+      col *= 0.45 + 0.7 * e;
+      col = 1.0 - exp(-col * 1.35);
+      float gray = dot(col, vec3(0.2126, 0.7152, 0.0722));
+      col = max(mix(vec3(gray), col, 1.5), 0.0);
+      return col * mix(0.92, 1.12, uNight);
+    }
+
+    void main() {
+      vec2 p = (gl_FragCoord.xy - 0.5 * uResolution) / uResolution.y;
+      float d = length(p);
+      float radius = 0.47;
+      float edge = 0.018;
+      float mask = 1.0 - smoothstep(radius - edge, radius + edge, d);
+      if (mask <= 0.0) {
+        gl_FragColor = vec4(0.0);
+        return;
+      }
+
+      vec2 dir = d > 0.0 ? p / d : vec2(0.0);
+      float nd = d / radius;
+      float lens = smoothstep(0.72, 1.0, nd) * pow(nd, 4.0);
+      vec2 offset = -dir * lens * 0.05 * 0.6;
+      vec2 disp = -dir * lens * 0.010 * 0.85;
+
+      vec3 light;
+      light.r = strands(p + offset - disp).r;
+      light.g = strands(p + offset).g;
+      light.b = strands(p + offset + disp).b;
+
+      float z = sqrt(max(radius * radius - d * d, 0.0)) / radius;
+      float fresnel = pow(1.0 - z, 3.0);
+      float spec = pow(max(dot(normalize(vec2(-0.55, 0.6)), p / max(radius, 0.0001)), 0.0), 8.0);
+      spec *= smoothstep(radius, radius * 0.48, d);
+      vec3 rim = mix(vec3(1.0), vec3(0.84, 1.0, 0.96), uNight) * fresnel * 0.24;
+      vec3 highlight = vec3(1.0) * spec * 0.55;
+      vec3 body = mix(vec3(0.95, 0.98, 1.0), vec3(0.05, 0.08, 0.12), uNight) * (0.05 + fresnel * 0.08);
+      vec3 color = light + rim + highlight + body;
+      float alpha = mask * clamp(max(max(color.r, color.g), color.b) * 0.86 + 0.12 + fresnel * 0.12, 0.0, 0.96);
+
+      gl_FragColor = vec4(color * mask, alpha);
+    }
+  `;
+
+  function compileShader(type, source) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      console.warn(gl.getShaderInfoLog(shader));
+      gl.deleteShader(shader);
+      return null;
+    }
+    return shader;
+  }
+
+  const vertexShader = compileShader(gl.VERTEX_SHADER, vertexSource);
+  const fragmentShader = compileShader(gl.FRAGMENT_SHADER, fragmentSource);
+  if (!vertexShader || !fragmentShader) return;
+
+  const program = gl.createProgram();
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    console.warn(gl.getProgramInfoLog(program));
+    gl.deleteProgram(program);
+    return;
+  }
+
+  const buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+    -1, -1,
+    3, -1,
+    -1, 3
+  ]), gl.STATIC_DRAW);
+
+  const positionLocation = gl.getAttribLocation(program, "aPosition");
+  const uniforms = {
+    time: gl.getUniformLocation(program, "uTime"),
+    resolution: gl.getUniformLocation(program, "uResolution"),
+    night: gl.getUniformLocation(program, "uNight")
+  };
+
+  gl.useProgram(program);
+  gl.enableVertexAttribArray(positionLocation);
+  gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+  gl.clearColor(0, 0, 0, 0);
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.max(1, Math.round(rect.width * dpr));
+    canvas.height = Math.max(1, Math.round(rect.height * dpr));
+    gl.viewport(0, 0, canvas.width, canvas.height);
+  }
+
+  function draw(timestamp = 0) {
+    gl.useProgram(program);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform1f(uniforms.time, timestamp * 0.001);
+    gl.uniform2f(uniforms.resolution, canvas.width, canvas.height);
+    gl.uniform1f(uniforms.night, document.documentElement.dataset.theme === "night" ? 1 : 0);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+    if (!reducedMotion) {
+      frameId = requestAnimationFrame(draw);
+    }
+  }
+
+  resize();
+  draw();
+  window.addEventListener("resize", resize);
+  brandLogoAnimation = () => {
+    cancelAnimationFrame(frameId);
+    window.removeEventListener("resize", resize);
+    gl.deleteBuffer(buffer);
+    gl.deleteProgram(program);
+    gl.deleteShader(vertexShader);
+    gl.deleteShader(fragmentShader);
+  };
 }
 
 function bindThemeToggle() {
