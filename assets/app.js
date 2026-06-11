@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260611b";
+const seedUrl = "./content/tools.seed.json?v=20260611c";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -1751,7 +1751,6 @@ function commentItem(comment, index) {
       </div>
       <p>${escapeHtml(comment.content)}</p>
       <button class="like-button" type="button" data-like-comment="${index}" aria-label="同意这条反馈">
-        <span class="pixel-like-icon" aria-hidden="true"></span>
         <span>同意</span>
         <span class="like-count">${Number(comment.likes || 0)}</span>
       </button>
@@ -1774,7 +1773,6 @@ function feedbackItem({ tool, comment, index }) {
       </div>
       <p>${escapeHtml(comment.content)}</p>
       <button class="like-button" type="button" data-like-feedback data-tool-id="${escapeHtml(tool.id)}" data-comment-index="${index}" aria-label="同意这条反馈">
-        <span class="pixel-like-icon" aria-hidden="true"></span>
         <span>同意</span>
         <span class="like-count">${Number(comment.likes || 0)}</span>
       </button>

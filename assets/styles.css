@@ -1348,40 +1348,6 @@ html[data-theme="night"] body.home-page .tool-card .developer-tag {
   transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
 }
 
-.pixel-like-icon {
-  position: relative;
-  display: inline-block;
-  width: 20px;
-  height: 18px;
-  image-rendering: pixelated;
-}
-
-.pixel-like-icon::before,
-.pixel-like-icon::after {
-  content: "";
-  position: absolute;
-  display: block;
-  border: 2px solid var(--line);
-  background: var(--sun);
-}
-
-.pixel-like-icon::before {
-  left: 0;
-  top: 7px;
-  width: 7px;
-  height: 9px;
-}
-
-.pixel-like-icon::after {
-  left: 7px;
-  top: 3px;
-  width: 11px;
-  height: 13px;
-  box-shadow:
-    0 -4px 0 -2px var(--line),
-    0 -6px 0 -2px var(--sun);
-}
-
 .like-count {
   min-width: 24px;
   padding: 1px 5px;
@@ -1997,6 +1963,11 @@ body.tool-detail-page .media-slot img {
   background: #f5f7fb;
 }
 
+html[data-theme="night"] body.tool-detail-page .media-zoom,
+html[data-theme="night"] body.tool-detail-page .media-slot img {
+  background: #070b14;
+}
+
 body.tool-detail-page .media-placeholder {
   background:
     radial-gradient(circle at 30% 25%, rgba(68, 215, 168, 0.20), transparent 32%),
@@ -2069,7 +2040,8 @@ body.tool-detail-page .prompt-box {
 
 html[data-theme="night"] body.tool-detail-page .prompt-box {
   border-color: rgba(83, 255, 185, 0.14);
-  background: rgba(0, 0, 0, 0.26);
+  background: rgba(3, 7, 18, 0.72);
+  color: rgba(237, 245, 238, 0.90);
 }
 
 body.tool-detail-page .pixel-button,
