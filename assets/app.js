@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260611a";
+const seedUrl = "./content/tools.seed.json?v=20260611b";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -1238,8 +1238,7 @@ function renderTool(slug) {
           ${listSection("解决的痛点", tool.painPoints)}
           ${listSection(tool.featuresTitle || "核心功能", tool.features)}
           ${visualSupportSection(tool, "features")}
-          ${stepsSection(tool.usageSteps, tool.stepsTitle)}
-          ${visualSupportSection(tool, "steps")}
+          ${stepsWithMediaSection(tool)}
           ${methodsSection(tool)}
           ${toolPraiseSection(tool)}
           ${resourcesSection(tool)}
@@ -1462,14 +1461,42 @@ function listSection(title, items = []) {
   `;
 }
 
-function stepsSection(items = [], title = "使用步骤") {
-  if (!items.length) return "";
+function stepsWithMediaSection(tool) {
+  const items = tool.usageSteps || [];
+  const title = tool.stepsTitle || "使用步骤";
+  const fallbackSlots = [
+    {
+      kind: "image",
+      label: "步骤截图",
+      description: "建议放安装、拖拽、导入、导出等关键步骤截图。",
+      status: "pending_upload"
+    },
+    {
+      kind: "video",
+      label: "完整使用视频",
+      description: "建议放从打开工具到完成结果的完整操作演示。",
+      status: "pending_upload"
+    }
+  ];
+  const slots = tool.stepMedia?.length ? tool.stepMedia : fallbackSlots;
+  const mediaTitle = !tool.stepMediaTitle || tool.stepMediaTitle === title ? "图文步骤" : tool.stepMediaTitle;
+  if (!items.length && !slots.length) return "";
   return `
-    <section class="section-block">
-      <h2>${escapeHtml(title || "使用步骤")}</h2>
-      <ol class="step-list">
-        ${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-      </ol>
+    <section class="section-block steps-media-block">
+      <h2>${escapeHtml(title)}</h2>
+      ${items.length ? `
+        <ol class="step-list">
+          ${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ol>
+      ` : ""}
+      ${slots.length ? `
+        <div class="steps-media-group">
+          <h3>${escapeHtml(mediaTitle)}</h3>
+          <div class="visual-grid">
+            ${slots.map((slot) => mediaSlot(slot)).join("")}
+          </div>
+        </div>
+      ` : ""}
     </section>
   `;
 }
