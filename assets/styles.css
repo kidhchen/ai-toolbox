@@ -2162,6 +2162,98 @@ html[data-theme="night"] body.tool-detail-page .like-button {
   color: var(--mint);
 }
 
+body.source-doc-page .doc-section {
+  border-top-width: 1px;
+  padding-top: clamp(22px, 3vw, 34px);
+}
+
+body.source-doc-page .doc-section h2 {
+  margin-bottom: 14px;
+  font-size: clamp(26px, 3.2vw, 40px);
+}
+
+body.source-doc-page .doc-section h3 {
+  margin: 0 0 12px;
+  font-size: clamp(20px, 2.2vw, 28px);
+}
+
+body.source-doc-page .doc-paragraphs {
+  display: grid;
+  gap: 10px;
+  max-width: 980px;
+}
+
+body.source-doc-page .doc-paragraphs p {
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(16px, 1.35vw, 20px);
+  line-height: 1.9;
+}
+
+body.source-doc-page .doc-bullets {
+  max-width: 1060px;
+  margin-top: 12px;
+}
+
+body.source-doc-page .doc-bullets li {
+  margin-bottom: 7px;
+  color: var(--text);
+}
+
+body.source-doc-page .doc-subsections {
+  display: grid;
+  gap: clamp(22px, 3vw, 38px);
+  margin-top: 10px;
+}
+
+body.source-doc-page .doc-subsections .doc-section {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+body.source-doc-page .doc-image-flow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: clamp(16px, 2vw, 24px);
+  margin-top: 18px;
+}
+
+body.source-doc-page .media-slot {
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+  box-shadow: none;
+}
+
+body.source-doc-page .media-slot img {
+  border-radius: 18px;
+  background: transparent;
+  object-fit: contain;
+}
+
+body.source-doc-page .media-slot figcaption {
+  padding: 8px 0 0;
+  background: transparent;
+}
+
+body.source-doc-page .media-slot figcaption span:empty {
+  display: none;
+}
+
+html[data-theme="night"] body.source-doc-page .media-slot {
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-theme="night"] body.source-doc-page .media-slot figcaption {
+  background: transparent;
+}
+
+html[data-theme="night"] body.source-doc-page .doc-paragraphs p {
+  color: rgba(237, 245, 238, 0.72);
+}
+
 body.tool-detail-page .detail-comment-panel h2 {
   margin-bottom: 14px;
 }

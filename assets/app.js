@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260612a";
+const seedUrl = "./content/tools.seed.json?v=20260612b";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -461,10 +461,12 @@ function mergeSeedUpdates(data) {
         "stepMediaTitle",
         "methodsTitle",
         "methods",
+        "documentSections",
         "stepMedia",
         "resources",
         "tags",
-        "version"
+        "version",
+        "detailStyle"
       ].forEach((key) => {
         if (seedTool[key] !== undefined) {
           tool[key] = cloneValue(seedTool[key]);
@@ -923,7 +925,7 @@ function startSpaceBackground() {
 
 function render() {
   stopHomeStrands();
-  document.body.classList.remove("home-page", "tool-detail-page", "app-page", "feedback-page", "submit-page", "wishbox-page");
+  document.body.classList.remove("home-page", "tool-detail-page", "source-doc-page", "app-page", "feedback-page", "submit-page", "wishbox-page");
   const hash = window.location.hash || "#/";
   if (hash.startsWith("#/tool/")) {
     setRouteActive("home");
@@ -1406,6 +1408,9 @@ function renderTool(slug) {
     app.innerHTML = emptyState("没有找到这个工具", "它可能被重命名或还没有上架。");
     return;
   }
+  if (tool.detailStyle === "source_document") {
+    document.body.classList.add("source-doc-page");
+  }
 
   const comments = state.comments[tool.id] || [];
 
@@ -1429,13 +1434,15 @@ function renderTool(slug) {
             </div>
           </header>
 
-          ${heroMediaSection(tool)}
-          ${listSection("适合谁使用", tool.targetUsers)}
-          ${listSection("解决的痛点", tool.painPoints)}
-          ${listSection(tool.featuresTitle || "核心功能", tool.features)}
-          ${visualSupportSection(tool, "features")}
-          ${stepsWithMediaSection(tool)}
-          ${methodsSection(tool)}
+          ${tool.detailStyle === "source_document" ? "" : heroMediaSection(tool)}
+          ${tool.documentSections?.length ? documentSectionsSection(tool) : `
+            ${listSection("适合谁使用", tool.targetUsers)}
+            ${listSection("解决的痛点", tool.painPoints)}
+            ${listSection(tool.featuresTitle || "核心功能", tool.features)}
+            ${visualSupportSection(tool, "features")}
+            ${stepsWithMediaSection(tool)}
+            ${methodsSection(tool)}
+          `}
           ${toolPraiseSection(tool)}
           ${resourcesSection(tool)}
         </article>
@@ -1653,6 +1660,43 @@ function listSection(title, items = []) {
       <ul class="clean-list">
         ${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
       </ul>
+    </section>
+  `;
+}
+
+function documentSectionsSection(tool) {
+  return tool.documentSections.map((section) => documentSection(section)).join("");
+}
+
+function documentSection(section, level = 2) {
+  const Heading = level <= 2 ? "h2" : "h3";
+  const paragraphs = section.paragraphs?.length ? `
+    <div class="doc-paragraphs">
+      ${section.paragraphs.map((text) => `<p>${escapeHtml(text)}</p>`).join("")}
+    </div>
+  ` : "";
+  const bullets = section.bullets?.length ? `
+    <ul class="clean-list doc-bullets">
+      ${section.bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+    </ul>
+  ` : "";
+  const images = section.images?.length ? `
+    <div class="doc-image-flow">
+      ${section.images.map((item) => mediaSlot(item)).join("")}
+    </div>
+  ` : "";
+  const subsections = section.subsections?.length ? `
+    <div class="doc-subsections">
+      ${section.subsections.map((item) => documentSection(item, level + 1)).join("")}
+    </div>
+  ` : "";
+  return `
+    <section class="section-block doc-section">
+      <${Heading}>${escapeHtml(section.title)}</${Heading}>
+      ${paragraphs}
+      ${bullets}
+      ${images}
+      ${subsections}
     </section>
   `;
 }

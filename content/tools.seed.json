@@ -766,136 +766,154 @@
     {
       "id": "itv-auto-marker",
       "slug": "itv-auto-marker",
-      "name": "AI自动制作ITV工作流",
+      "name": "AI自动制作itv工作流",
       "categoryId": "video-audio",
       "categoryIds": [
         "video-audio",
         "workflow-automation"
       ],
-      "type": "html_tool",
-      "developer": "文成",
+      "type": "workflow_package",
+      "developer": "海欣",
       "status": "iterating",
       "difficulty": "进阶",
-      "summary": "用 Codex / FCPX 分析 XML、视频图层和 Motion 规律，自动推断 ITV 节点、交互类型、热区与跳转配置，让批量交互视频制作少掉大量重复配置。",
-      "targetUsers": [
-        "需要批量制作 ITV / 互动视频的制作同学",
-        "经常在 FCP、Motion 和制课工具之间反复配置节点的人",
-        "希望把交互题定位、热区配置和跳转关系交给 AI 预处理的人"
-      ],
-      "painPoints": [
-        "复杂 ITV 题型需要反复标记选项、跳转点、热区和循环区间，手动配置很耗时。",
-        "批量生成不同类型 ITV 时，规则容易散落在工程、文档和制课工具里，后续维护成本高。",
-        "纯自动识别还需要更多真实案例训练，复杂拖拽题和多题型 XML 仍有优化空间。"
-      ],
-      "featuresTitle": "工作流能力",
-      "features": [
-        "支持把 FCP 中的字幕、标记或图层信息导出为 XML，让 AI 批量解析节点和交互配置。",
-        "可尝试在无标记情况下，根据 Motion 命名、重复规律和选项尺寸自动定位分支题、单选题等 ITV 段落。",
-        "支持手动标记与自动识别混合的折中方案，用少量标记帮助 AI 判断复杂分支或拖拽节点。",
-        "现阶段体验版已验证分支题准确率约 95%，拖拽题约 90%，单选题识别仍在补案例。"
-      ],
-      "stepsTitle": "推荐使用流程",
-      "stepMediaTitle": "验证过程图示",
-      "usageSteps": [
-        "在 FCP / Motion 中完成视频、图层或交互题基础制作。",
-        "导出 XML，或整理可供 AI 识别的工程信息、图层命名和节点规则。",
-        "按项目复杂度选择手动标记、自动识别或折中规则。",
-        "让 Codex / FCPX 分析 ITV 节点、选项、热区、跳转点和循环区间。",
-        "人工验证生成结果，并把复杂题型的修正规则沉淀回工作流。"
-      ],
+      "summary": "给 AI 提供 XML、视频文件或图层信息，让 AI 自动判定 itv 节点、交互类型和交互配置的制作工作流。",
+      "detailStyle": "source_document",
+      "targetUsers": [],
+      "painPoints": [],
+      "features": [],
+      "usageSteps": [],
       "coverImage": {
         "kind": "image",
-        "label": "AI自动制作ITV体验版",
-        "description": "文档中的体验版界面截图，用于展示当前工作流原型。",
+        "label": "体验版",
+        "description": "生成了HTML工具，还有很多需要优化的地方，暂时没有token去弄了，但是一秒生成！",
         "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/f773d889-fdc4-48c9-81c1-68119dce3abc.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=3Y%2FzQg%2BS8h7xfFHgduRpgcMZWXA%3D",
         "status": "dingtalk_document"
       },
-      "featureMedia": [
+      "featureMedia": [],
+      "stepMedia": [],
+      "methods": [],
+      "documentSections": [
         {
-          "kind": "image",
-          "label": "体验版效果截图",
-          "description": "文档中的体验版界面，后续可继续接入更完整的 HTML 原型。",
-          "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/f773d889-fdc4-48c9-81c1-68119dce3abc.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=3Y%2FzQg%2BS8h7xfFHgduRpgcMZWXA%3D",
-          "status": "dingtalk_document"
-        },
-        {
-          "kind": "image",
-          "label": "规则封装收益预估",
-          "description": "将规则沉淀为 Skill 后，可降低 AI 推理工作量和 token 消耗。",
-          "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/c211c636-20a1-4451-9de5-e18c8ea810d2.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=QY1rtGYmWsCCVtxQ7sXCAHFrNeo%3D",
-          "status": "dingtalk_document"
-        },
-        {
-          "kind": "image",
-          "label": "ITV 分支交互流程图",
-          "description": "分支题自动配置的极简流程图。",
-          "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/a556c9cd-9c0f-4daa-a1f4-047e7f45b4f8.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=1sX98lOWuo4vnZS%2BRzSEbg%2Findk%3D",
-          "status": "dingtalk_document"
-        }
-      ],
-      "stepMedia": [
-        {
-          "kind": "image",
-          "label": "分支题验证记录",
-          "description": "无标记 XML 下，由 Codex 自行推断交互节点并生成配置文件。",
-          "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/6586e768-f8f7-42f5-a963-810c49274a97.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=4MlsT0tC8I7aOEQzqlGAxvX6F0A%3D",
-          "status": "dingtalk_document"
-        },
-        {
-          "kind": "image",
-          "label": "分支题结果核对",
-          "description": "除个别循环区间和跳转时机外，其他配置基本准确。",
-          "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/d6a0fb9d-ee6a-4ce7-8263-fa3b86278ec9.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=08AWXc0H%2FPf8SjXgHaceS1Uuu48%3D",
-          "status": "dingtalk_document"
-        },
-        {
-          "kind": "image",
-          "label": "单选题识别验证",
-          "description": "根据图层命名或切割规律识别交互题。",
-          "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/59ec9680-7621-48b1-95d3-3b677f09822a.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=2%2F87mEsG6wp1HsxqbHlUywoOseY%3D",
-          "status": "dingtalk_document"
-        },
-        {
-          "kind": "image",
-          "label": "单选题补充验证",
-          "description": "单选题自动识别仍需继续补充案例。",
-          "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/6244c97e-6b57-40bc-9485-4e5bdcb9707f.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=QreDJokOX6IXhVZkXqljtRtOTJw%3D",
-          "status": "dingtalk_document"
-        }
-      ],
-      "methodsTitle": "三种实现路径",
-      "methods": [
-        {
-          "id": "itv-fcpx-markup",
-          "name": "方法一：FCP 内手动标记",
-          "sourceCredit": "钉钉文档",
-          "summary": "在 FCP 中用字幕、标记或图层写清楚视频名、选项、跳转点、热区和循环区间，再导出 XML 交给 AI 批量解析。",
-          "points": [
-            "适合复杂分支题，标注 A / A跳转 等关键词后，AI 可以逐一对应配置。",
-            "优点是边做视频边完成 ITV 标记，减少回到制课工具逐个配置的步骤。",
-            "痛点是仍然需要在 FCP 里做标记，流程还不够彻底自动化。"
+          "title": "工具",
+          "paragraphs": [
+            "codex/FCPX"
           ]
         },
         {
-          "id": "itv-motion-auto",
-          "name": "方法二：Motion 规律自动识别",
-          "sourceCredit": "钉钉文档",
-          "summary": "让 AI 根据 Motion 的重复规律、效果和选项尺寸，自动判断 ITV 段落、选项热区和节点位置。",
-          "points": [
-            "目前在没有任何标记打点的情况下，已验证可识别单选题和分支题。",
-            "分支题测试耗时约 6 分钟，人工验证准确率约 95%。",
-            "拖拽题、自动暂停、录音和视频开窗还需要继续补案例和完善规则。"
+          "title": "体验版",
+          "paragraphs": [
+            "生成了HTML工具，还有很多需要优化的地方，暂时没有token去弄了，但是一秒生成！"
+          ],
+          "bullets": [
+            "痛点：还需更多案例去练成，完善更多规则",
+            "痛点：想要批量生成不同类型的itv"
+          ],
+          "images": [
+            {
+              "kind": "image",
+              "label": "体验版",
+              "description": "",
+              "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/f773d889-fdc4-48c9-81c1-68119dce3abc.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=3Y%2FzQg%2BS8h7xfFHgduRpgcMZWXA%3D",
+              "status": "dingtalk_document"
+            }
           ]
         },
         {
-          "id": "itv-hybrid-rule",
-          "name": "方法三：手动标记 + 自动识别",
-          "sourceCredit": "钉钉文档",
-          "summary": "给 AI 同时提供少量手动标记和自动识别规则，让它结合判断复杂节点。",
-          "points": [
-            "例如 A 选项图层存在两个无文字标记点时，默认分别作为 A开始 和 A结束。",
-            "能减少标记命名工作，并帮助 AI 更稳地定位复杂分支或拖拽题。",
-            "目前仍属于设想方案，尚未完成验证。"
+          "title": "设想",
+          "paragraphs": [
+            "给AI提供xml文档、视频文件，AI根据文档中的itv标记，或分析图层信息，自动判定itv节点以及交互类型，进行交互配置。"
+          ]
+        },
+        {
+          "title": "具体操作",
+          "subsections": [
+            {
+              "title": "方法一",
+              "paragraphs": [
+                "在fcp中，使用字幕、打标记或图层功能，写清楚itv对应的视频名字、选项、跳转点、热区、循环区间，方便AI解析文件时定位和配置，相当于将在制课工具里面的操作搬到fcp里面完成了"
+              ],
+              "bullets": [
+                "优点：做视频顺便把itv给标记了，导出xml让AI批量完成配置",
+                "优点：复杂的分支只需要打标记，标注“A”/“A跳转”，AI就会一一对应配置",
+                "痛点：虽然不用再逐个去做itv，但需要在fcp里做标记，感觉还不够简便啊！",
+                "验证进度：分支题验证通过，正确率约95%，暂未发现bug（对话过程太长就不放了）",
+                "验证进度：拖拽题正确率约90%，对于拖拽图片的处理，AI还需要优化（对话过程太长就不放了）"
+              ]
+            },
+            {
+              "title": "方法二（已有体验版）",
+              "paragraphs": [
+                "让AI根据motion的重复规律和添加的效果，自动判断和定位文档中的itv段落，根据选项的尺寸来设置热区的尺寸和位置。",
+                "目前进度：在没有任何标记打点的情况下，已验证AI可以通过motion的名字或重复的规律，识别出单选题和分支题。"
+              ],
+              "bullets": [
+                "优点：解决了方法一里面的痛点",
+                "痛点：还未经过实战验证，可能存在比较多的问题，但像自动暂停、单选题这种简单的交互应该没问题",
+                "痛点：如果一整节包含各种讲解片段、各种交互题型的xml文件，交给AI自己定位节点，可能会比较耗时和消耗资源",
+                "关于资源的消耗，我咨询了codex，加入规则完善封装成skill，预计可以为AI减少3~60%的工作量，token消耗也会降低",
+                "验证进度：分支题提供了跟日常制作结构类似的测试文件，导出xml，里面没有打标记点，没有提前给答案，让codex自己推断节点，然后生成配置文件，耗时约6分钟，最后人工验证准确率有95%左右了。",
+                "除了循环区间与A选项节点贴在一起（可能会有bug）和B选项跳转时机过早以外，其他基本准确。",
+                "全流程思维导图和流程图见下方图示。",
+                "单选题：提供无标记额外信息的xml文件，已验证可根据图层命名或切割规律识别交互题，但还未加入案例试做。",
+                "拖拽题、自动暂停、录音、视频开窗：待继续补充。"
+              ],
+              "images": [
+                {
+                  "kind": "image",
+                  "label": "规则封装收益预估",
+                  "description": "",
+                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/c211c636-20a1-4451-9de5-e18c8ea810d2.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=QY1rtGYmWsCCVtxQ7sXCAHFrNeo%3D",
+                  "status": "dingtalk_document"
+                },
+                {
+                  "kind": "image",
+                  "label": "分支题验证记录",
+                  "description": "",
+                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/6586e768-f8f7-42f5-a963-810c49274a97.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=4MlsT0tC8I7aOEQzqlGAxvX6F0A%3D",
+                  "status": "dingtalk_document"
+                },
+                {
+                  "kind": "image",
+                  "label": "分支题结果核对",
+                  "description": "",
+                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/d6a0fb9d-ee6a-4ce7-8263-fa3b86278ec9.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=08AWXc0H%2FPf8SjXgHaceS1Uuu48%3D",
+                  "status": "dingtalk_document"
+                },
+                {
+                  "kind": "image",
+                  "label": "ITV分支交互-极简流程图",
+                  "description": "",
+                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/a556c9cd-9c0f-4daa-a1f4-047e7f45b4f8.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=1sX98lOWuo4vnZS%2BRzSEbg%2Findk%3D",
+                  "status": "dingtalk_document"
+                },
+                {
+                  "kind": "image",
+                  "label": "单选题识别验证",
+                  "description": "",
+                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/59ec9680-7621-48b1-95d3-3b677f09822a.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=2%2F87mEsG6wp1HsxqbHlUywoOseY%3D",
+                  "status": "dingtalk_document"
+                },
+                {
+                  "kind": "image",
+                  "label": "单选题补充验证",
+                  "description": "",
+                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/6244c97e-6b57-40bc-9485-4e5bdcb9707f.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=QreDJokOX6IXhVZkXqljtRtOTJw%3D",
+                  "status": "dingtalk_document"
+                }
+              ]
+            },
+            {
+              "title": "方法三（折中版）",
+              "paragraphs": [
+                "给AI提供手动标记节点和自动识别itv两套规则，让它结合判断，假设一道分支题，命名为“A选项”的图层上存在2个标记点，且标记点里面没有任何文字备注，则默认它们分别是“A开始”“A结束”。"
+              ],
+              "bullets": [
+                "优点：快速标记，无需对标记做任何命名",
+                "优点：复杂的分支或拖拽题，更便于AI对节点的定位",
+                "痛点：有可能会出现识别错误",
+                "痛点：纯设想，未验证"
+              ]
+            }
           ]
         }
       ],
@@ -907,24 +925,15 @@
           "actionLabel": "查看原文",
           "note": "完整图文、安装包或大文件资源以钉钉原文为准。",
           "status": "external_link"
-        },
-        {
-          "kind": "html",
-          "label": "体验版 HTML 工具",
-          "originalLabel": "好像没怎么加快交互的工具.html",
-          "url": "./tools/finalcut-itv.html",
-          "actionLabel": "打开体验版",
-          "note": "站内可直接打开当前体验版工具。",
-          "status": "uploaded"
         }
       ],
       "media": [],
       "tags": [
         "ITV",
-        "AI工作流",
+        "Codex",
         "FCPX",
         "Motion",
-        "HTML工具",
+        "AI工作流",
         "持续迭代"
       ],
       "version": "体验版"
