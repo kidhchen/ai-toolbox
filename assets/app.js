@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260610o";
+const seedUrl = "./content/tools.seed.json?v=20260611g";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -7,7 +7,8 @@ const storageKeys = {
   data: "ai_toolbox_data_override",
   comments: "ai_toolbox_comments",
   wishes: "ai_toolbox_wishes",
-  toolLikes: "ai_toolbox_tool_likes"
+  toolLikes: "ai_toolbox_tool_likes",
+  theme: "ai_toolbox_theme"
 };
 
 const app = document.querySelector("#app");
@@ -16,6 +17,9 @@ let adminPanel = null;
 let dataEditor = null;
 let adminMessage = null;
 let lightboxKeyHandler = null;
+let homeStrandsAnimation = null;
+let spaceBackgroundAnimation = null;
+let brandLogoAnimation = null;
 
 const state = {
   seed: null,
@@ -23,6 +27,7 @@ const state = {
   query: "",
   category: "all",
   feedbackFilter: "all",
+  theme: readJson(storageKeys.theme, "day"),
   comments: readJson(storageKeys.comments, {}),
   wishes: readJson(storageKeys.wishes, []),
   toolLikes: readJson(storageKeys.toolLikes, {}),
@@ -35,34 +40,29 @@ const state = {
 
 const functionalCategories = [
   {
-    id: "storyboard-prompts",
-    name: "剧本分镜与提示词",
-    description: "从剧本拆分、起手式、场景视图到故事板生成的创作方法。"
+    id: "text-tools",
+    name: "文本工具",
+    description: "提示词、剧本拆分、文案整理和内容结构化方法。"
   },
   {
-    id: "video-audio",
-    name: "视频与音频制作",
-    description: "处理视频、音效、转场、XML、绿幕和ITV制作效率的工具。"
+    id: "video-processing",
+    name: "视频处理",
+    description: "处理视频剪辑、字幕、绿幕、标记、转场和软件联动。"
   },
   {
-    id: "visual-assets",
-    name: "图片与视觉素材",
-    description: "用于抠图、高清放大、换背景和视觉素材增强的工具。"
+    id: "image-processing",
+    name: "图片处理",
+    description: "用于抠图、高清放大、换背景和视觉素材增强。"
+  },
+  {
+    id: "audio-processing",
+    name: "音频处理",
+    description: "音效生成、配音整理、音频素材处理和声音工作流。"
   },
   {
     id: "workflow-automation",
-    name: "自动化与工作流",
-    description: "把重复操作交给Codex、脚本或跨软件工作流来完成。"
-  },
-  {
-    id: "creation-entry",
-    name: "工具入口与管理",
-    description: "集中管理常用AI网址、提示词入口和制作流程快捷方式。"
-  },
-  {
-    id: "course-layout",
-    name: "教程与积木排版",
-    description: "服务教程、课件、积木截图和说明素材整理的工具。"
+    name: "自动化工作流",
+    description: "把重复操作交给Codex、脚本或跨软件流程来完成。"
   }
 ];
 
@@ -75,24 +75,24 @@ const issueTypeLabels = {
 };
 
 const toolCategoryAssignments = {
-  "dianmao-prompt-assistant": ["creation-entry", "storyboard-prompts"],
-  "codex-sound-effect-method": ["video-audio", "workflow-automation"],
-  "auto-sound-html": ["video-audio"],
-  "batch-cutout-upscale": ["visual-assets"],
-  "greenscreen-video-cutout": ["visual-assets", "video-audio"],
-  "block-layout-tool": ["course-layout"],
-  "finalcut-motion-html-bridge": ["video-audio", "workflow-automation"],
+  "dianmao-prompt-assistant": ["text-tools", "workflow-automation"],
+  "codex-sound-effect-method": ["audio-processing", "workflow-automation"],
+  "auto-sound-html": ["audio-processing", "video-processing"],
+  "batch-cutout-upscale": ["image-processing"],
+  "greenscreen-video-cutout": ["video-processing", "image-processing"],
+  "block-layout-tool": ["text-tools", "image-processing"],
+  "finalcut-motion-html-bridge": ["video-processing", "workflow-automation"],
   "ai-screen-recording-skill": ["workflow-automation"],
-  "itv-auto-marker": ["video-audio", "workflow-automation"]
+  "itv-auto-marker": ["video-processing", "workflow-automation"]
 };
 
 const legacyCategoryMap = {
-  "prompt-workflows": ["storyboard-prompts"],
+  "prompt-workflows": ["text-tools"],
   "html-tools": ["workflow-automation"],
-  "browser-extensions": ["creation-entry"],
+  "browser-extensions": ["workflow-automation"],
   "codex-skills": ["workflow-automation"],
-  "editing-audio": ["video-audio"],
-  "asset-processing": ["visual-assets"],
+  "editing-audio": ["audio-processing"],
+  "asset-processing": ["image-processing"],
   automation: ["workflow-automation"]
 };
 
@@ -534,10 +534,395 @@ function cleanSourceResources(resources) {
 }
 
 function bindChrome() {
+  bindThemeToggle();
+  startBrandLogo();
   mountLocalMaintenance();
 }
 
+function startBrandLogo() {
+  if (brandLogoAnimation) return;
+  const canvas = document.querySelector("#brand-logo-canvas");
+  if (!canvas) return;
+  const gl = canvas.getContext("webgl", {
+    alpha: true,
+    antialias: true,
+    premultipliedAlpha: false
+  }) || canvas.getContext("experimental-webgl", {
+    alpha: true,
+    antialias: true,
+    premultipliedAlpha: false
+  });
+  if (!gl) return;
+
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  let frameId = 0;
+
+  const vertexSource = `
+    attribute vec2 aPosition;
+
+    void main() {
+      gl_Position = vec4(aPosition, 0.0, 1.0);
+    }
+  `;
+
+  const fragmentSource = `
+    precision highp float;
+
+    uniform float uTime;
+    uniform vec2 uResolution;
+    uniform float uNight;
+
+    const float PI = 3.141592653589793;
+
+    vec3 palette(float t) {
+      vec3 pink = vec3(0.925, 0.282, 0.725);
+      vec3 violet = vec3(0.486, 0.227, 0.929);
+      vec3 cyan = vec3(0.024, 0.714, 0.831);
+      t = fract(t);
+      if (t < 0.333) return mix(pink, violet, t / 0.333);
+      if (t < 0.666) return mix(violet, cyan, (t - 0.333) / 0.333);
+      return mix(cyan, pink, (t - 0.666) / 0.334);
+    }
+
+    vec3 strands(vec2 p) {
+      vec2 uv = p / 1.3;
+      float intensity = 0.5;
+      float e = 0.06 + intensity * 0.94;
+      float env = pow(max(cos(uv.x * PI * 1.3), 0.0), 3.7);
+      vec3 col = vec3(0.0);
+
+      for (int i = 0; i < 3; i++) {
+        float fi = float(i);
+        float phase = fi * 1.7 * 1.3;
+        float freq = (2.0 + fi * 0.35) * 1.8;
+        float spd = 1.4 + fi * 1.2;
+        float tt = uTime * 0.3;
+        float wave = sin(uv.x * freq + tt * spd + phase) * 0.60
+          + sin(uv.x * freq * 1.1 - tt * spd * 0.7 + phase * 1.7) * 0.40;
+        float amp = (0.1 + 0.02 * e) * env * 0.4;
+        float y = wave * amp + (fi - 1.0) * 0.030;
+        float d = abs(uv.y - y);
+        float thick = (0.001 + 0.05 * e) * (0.35 + env) * 0.5;
+        float g = thick / (d + thick * 0.45);
+        g *= g;
+        float h = fi / 3.0 + uv.x * 0.30 + uTime * 0.04;
+        col += palette(h) * g * env;
+      }
+
+      col *= 0.45 + 0.7 * e;
+      col = 1.0 - exp(-col * 1.35);
+      float gray = dot(col, vec3(0.2126, 0.7152, 0.0722));
+      col = max(mix(vec3(gray), col, 1.5), 0.0);
+      return col * mix(0.92, 1.12, uNight);
+    }
+
+    void main() {
+      vec2 p = (gl_FragCoord.xy - 0.5 * uResolution) / uResolution.y;
+      float d = length(p);
+      float radius = 0.47;
+      float edge = 0.018;
+      float mask = 1.0 - smoothstep(radius - edge, radius + edge, d);
+      if (mask <= 0.0) {
+        gl_FragColor = vec4(0.0);
+        return;
+      }
+
+      vec2 dir = d > 0.0 ? p / d : vec2(0.0);
+      float nd = d / radius;
+      float lens = smoothstep(0.72, 1.0, nd) * pow(nd, 4.0);
+      vec2 offset = -dir * lens * 0.05 * 0.6;
+      vec2 disp = -dir * lens * 0.010 * 0.85;
+
+      vec3 light;
+      light.r = strands(p + offset - disp).r;
+      light.g = strands(p + offset).g;
+      light.b = strands(p + offset + disp).b;
+
+      float z = sqrt(max(radius * radius - d * d, 0.0)) / radius;
+      float fresnel = pow(1.0 - z, 3.0);
+      vec3 rim = mix(vec3(1.0), vec3(0.84, 1.0, 0.96), uNight) * fresnel * 0.24;
+      vec3 body = mix(vec3(0.95, 0.98, 1.0), vec3(0.05, 0.08, 0.12), uNight) * (0.05 + fresnel * 0.08);
+      vec3 color = light + rim + body;
+      float alpha = mask * clamp(max(max(color.r, color.g), color.b) * 0.86 + 0.12 + fresnel * 0.12, 0.0, 0.96);
+
+      gl_FragColor = vec4(color * mask, alpha);
+    }
+  `;
+
+  function compileShader(type, source) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      console.warn(gl.getShaderInfoLog(shader));
+      gl.deleteShader(shader);
+      return null;
+    }
+    return shader;
+  }
+
+  const vertexShader = compileShader(gl.VERTEX_SHADER, vertexSource);
+  const fragmentShader = compileShader(gl.FRAGMENT_SHADER, fragmentSource);
+  if (!vertexShader || !fragmentShader) return;
+
+  const program = gl.createProgram();
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    console.warn(gl.getProgramInfoLog(program));
+    gl.deleteProgram(program);
+    return;
+  }
+
+  const buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+    -1, -1,
+    3, -1,
+    -1, 3
+  ]), gl.STATIC_DRAW);
+
+  const positionLocation = gl.getAttribLocation(program, "aPosition");
+  const uniforms = {
+    time: gl.getUniformLocation(program, "uTime"),
+    resolution: gl.getUniformLocation(program, "uResolution"),
+    night: gl.getUniformLocation(program, "uNight")
+  };
+
+  gl.useProgram(program);
+  gl.enableVertexAttribArray(positionLocation);
+  gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+  gl.clearColor(0, 0, 0, 0);
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.max(1, Math.round(rect.width * dpr));
+    canvas.height = Math.max(1, Math.round(rect.height * dpr));
+    gl.viewport(0, 0, canvas.width, canvas.height);
+  }
+
+  function draw(timestamp = 0) {
+    gl.useProgram(program);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform1f(uniforms.time, timestamp * 0.001);
+    gl.uniform2f(uniforms.resolution, canvas.width, canvas.height);
+    gl.uniform1f(uniforms.night, document.documentElement.dataset.theme === "night" ? 1 : 0);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+    if (!reducedMotion) {
+      frameId = requestAnimationFrame(draw);
+    }
+  }
+
+  resize();
+  draw();
+  window.addEventListener("resize", resize);
+  brandLogoAnimation = () => {
+    cancelAnimationFrame(frameId);
+    window.removeEventListener("resize", resize);
+    gl.deleteBuffer(buffer);
+    gl.deleteProgram(program);
+    gl.deleteShader(vertexShader);
+    gl.deleteShader(fragmentShader);
+  };
+}
+
+function bindThemeToggle() {
+  applyTheme(state.theme);
+  document.querySelector("#theme-toggle")?.addEventListener("click", () => {
+    state.theme = state.theme === "night" ? "day" : "night";
+    writeJson(storageKeys.theme, state.theme);
+    applyTheme(state.theme);
+  });
+}
+
+function applyTheme(theme) {
+  const nextTheme = theme === "night" ? "night" : "day";
+  state.theme = nextTheme;
+  document.documentElement.dataset.theme = nextTheme;
+  syncSpaceBackground(nextTheme);
+  const button = document.querySelector("#theme-toggle");
+  if (!button) return;
+  button.textContent = nextTheme === "night" ? "白天版" : "夜晚版";
+  button.setAttribute("aria-pressed", String(nextTheme === "night"));
+}
+
+function syncSpaceBackground(theme) {
+  if (theme === "night") {
+    startSpaceBackground();
+    return;
+  }
+  stopSpaceBackground();
+}
+
+function stopSpaceBackground() {
+  if (!spaceBackgroundAnimation) return;
+  spaceBackgroundAnimation();
+  spaceBackgroundAnimation = null;
+}
+
+function startSpaceBackground() {
+  if (spaceBackgroundAnimation) return;
+  const canvas = document.querySelector("#space-canvas");
+  if (!canvas) return;
+  const gl = canvas.getContext("webgl", {
+    alpha: true,
+    antialias: true,
+    premultipliedAlpha: false
+  }) || canvas.getContext("experimental-webgl", {
+    alpha: true,
+    antialias: true,
+    premultipliedAlpha: false
+  });
+  if (!gl) return;
+
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  const pointer = { x: 0.35, y: 0.65 };
+  let frameId = 0;
+
+  const vertexSource = `
+    attribute vec2 aPosition;
+
+    void main() {
+      gl_Position = vec4(aPosition, 0.0, 1.0);
+    }
+  `;
+
+  const fragmentSource = `
+    precision highp float;
+
+    uniform float uTime;
+    uniform vec2 uResolution;
+    uniform vec2 uPointer;
+
+    float hash21(vec2 p) {
+      p = fract(p * vec2(213.21, 417.37));
+      p += dot(p, p + 42.23);
+      return fract(p.x * p.y);
+    }
+
+    float star(vec2 uv, float scale, float threshold, float size) {
+      vec2 cell = floor(uv * scale);
+      vec2 local = fract(uv * scale) - 0.5;
+      float seed = hash21(cell);
+      float pulse = 0.6 + 0.4 * sin(uTime * (1.0 + seed * 2.0) + seed * 6.2831);
+      return smoothstep(size, 0.0, length(local)) * step(threshold, seed) * pulse;
+    }
+
+    void main() {
+      vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution) / uResolution.y;
+      vec2 screen = gl_FragCoord.xy / uResolution;
+      vec2 drift = vec2(uTime * 0.006, -uTime * 0.004);
+      vec2 field = uv + drift;
+
+      vec3 color = vec3(0.010, 0.012, 0.030);
+      color += vec3(0.015, 0.030, 0.070) * smoothstep(1.35, 0.0, length(uv * vec2(0.72, 1.18)));
+      color += vec3(0.042, 0.006, 0.070) * smoothstep(1.05, 0.0, length(uv - vec2(-0.42, 0.10))) * 0.72;
+      color += vec3(0.000, 0.120, 0.095) * smoothstep(0.88, 0.0, length(uv - vec2(0.48, -0.18))) * 0.34;
+      color += vec3(0.015, 0.018, 0.032) * sin((uv.x + uv.y) * 1.7 + uTime * 0.08) * 0.08;
+
+      float stars = 0.0;
+      stars += star(field + vec2(0.0, uTime * 0.008), 48.0, 0.956, 0.040);
+      stars += star(field * 1.21 - vec2(uTime * 0.010, 0.0), 92.0, 0.976, 0.034) * 0.82;
+      stars += star(field * 0.68 + vec2(0.13, -0.21), 24.0, 0.938, 0.052) * 0.55;
+
+      float mouseGlow = exp(-pow(distance(screen, uPointer), 2.0) * 11.0);
+      color += vec3(0.00, 0.72, 0.54) * mouseGlow * 0.12;
+      color += vec3(0.44, 0.16, 0.88) * mouseGlow * 0.08;
+      color += vec3(0.76, 0.93, 1.00) * stars;
+
+      gl_FragColor = vec4(color, 1.0);
+    }
+  `;
+
+  function compileShader(type, source) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      console.warn(gl.getShaderInfoLog(shader));
+      gl.deleteShader(shader);
+      return null;
+    }
+    return shader;
+  }
+
+  const vertexShader = compileShader(gl.VERTEX_SHADER, vertexSource);
+  const fragmentShader = compileShader(gl.FRAGMENT_SHADER, fragmentSource);
+  if (!vertexShader || !fragmentShader) return;
+
+  const program = gl.createProgram();
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    console.warn(gl.getProgramInfoLog(program));
+    gl.deleteProgram(program);
+    return;
+  }
+
+  const buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+
+  const positionLocation = gl.getAttribLocation(program, "aPosition");
+  const uniforms = {
+    time: gl.getUniformLocation(program, "uTime"),
+    resolution: gl.getUniformLocation(program, "uResolution"),
+    pointer: gl.getUniformLocation(program, "uPointer")
+  };
+
+  gl.useProgram(program);
+  gl.enableVertexAttribArray(positionLocation);
+  gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+  gl.clearColor(0, 0, 0, 0);
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const width = Math.max(1, window.innerWidth);
+    const height = Math.max(1, window.innerHeight);
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+  }
+
+  function updatePointer(event) {
+    pointer.x = event.clientX / Math.max(1, window.innerWidth);
+    pointer.y = 1 - event.clientY / Math.max(1, window.innerHeight);
+  }
+
+  function draw(timestamp = 0) {
+    gl.useProgram(program);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform1f(uniforms.time, timestamp * 0.001);
+    gl.uniform2f(uniforms.resolution, canvas.width, canvas.height);
+    gl.uniform2f(uniforms.pointer, pointer.x, pointer.y);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    if (!reducedMotion) frameId = requestAnimationFrame(draw);
+  }
+
+  resize();
+  draw();
+  window.addEventListener("resize", resize);
+  window.addEventListener("pointermove", updatePointer);
+  spaceBackgroundAnimation = () => {
+    cancelAnimationFrame(frameId);
+    window.removeEventListener("resize", resize);
+    window.removeEventListener("pointermove", updatePointer);
+    gl.deleteBuffer(buffer);
+    gl.deleteProgram(program);
+    gl.deleteShader(vertexShader);
+    gl.deleteShader(fragmentShader);
+  };
+}
+
 function render() {
+  stopHomeStrands();
+  document.body.classList.remove("home-page", "tool-detail-page", "app-page", "feedback-page", "submit-page", "wishbox-page");
   const hash = window.location.hash || "#/";
   if (hash.startsWith("#/tool/")) {
     setRouteActive("home");
@@ -569,52 +954,42 @@ function render() {
 }
 
 function renderHome() {
+  document.body.classList.add("home-page");
   const tools = filteredTools();
   const categories = state.data.categories;
-  const publishedCount = state.data.tools.filter((tool) => tool.status === "published").length;
-  const pendingResources = state.data.tools
-    .flatMap((tool) => tool.resources || [])
-    .filter((resource) => resource.status === "pending_upload" && !resourceUrl(resource)).length;
 
   app.innerHTML = `
-    <section class="screen dashboard-grid">
-      <aside class="control-panel">
-        <div class="panel-head">
+    <section class="screen gallery-home">
+      <section class="gallery-hero">
+        <canvas class="strands-canvas" id="strands-canvas" aria-hidden="true"></canvas>
+        <div class="gallery-hero__copy">
+          <p class="eyebrow">AI TOOLBOX</p>
+          <h1>猫厂AI制作工具箱</h1>
+          <p>这里收集了实用的AI工具，制作方法和工作流，助力各位每周少上半天班。</p>
+        </div>
+      </section>
+
+      <section class="home-discovery" aria-label="工具分类和搜索">
+        <div class="home-discovery__head">
           <div>
-            <p class="eyebrow">TOOL LOBBY</p>
-            <h1>${escapeHtml(state.data.site.name)}</h1>
+            <h2>工具分类</h2>
           </div>
+          <label class="gallery-search" for="search-input">
+            <span>搜索</span>
+            <input class="search-input" id="search-input" type="search" value="${escapeHtml(state.query)}" placeholder="工具名、用途或标签">
+          </label>
         </div>
 
-        <div class="stats-grid" aria-label="工具统计">
-          <div class="stat-box"><strong>${state.data.tools.length}</strong><span>工具入口</span></div>
-          <div class="stat-box"><strong>${publishedCount}</strong><span>已上线</span></div>
-          <div class="stat-box"><strong>${pendingResources}</strong><span>待上传资源</span></div>
+        <div class="category-rail">
+          ${categoryButton("all", "全部工具", state.data.tools.length, false)}
+          ${categories.map((category) => categoryButton(
+            category.id,
+            category.name,
+            state.data.tools.filter((tool) => toolInCategory(tool, category.id)).length,
+            false
+          )).join("")}
         </div>
-
-        <label class="field">
-          <span>搜索工具</span>
-          <input class="search-input" id="search-input" type="search" value="${escapeHtml(state.query)}" placeholder="输入工具名、标签或开发者">
-        </label>
-
-        <div class="field">
-          <label>分类</label>
-          <div class="category-list">
-            ${categoryButton("all", "全部工具", state.data.tools.length)}
-            ${categories.map((category) => categoryButton(
-              category.id,
-              category.name,
-              state.data.tools.filter((tool) => toolInCategory(tool, category.id)).length
-            )).join("")}
-          </div>
-        </div>
-
-        <div class="quick-list">
-          <a class="pixel-button primary" href="#/feedback">反馈评价集合</a>
-          <a class="pixel-button primary" href="#/wishbox">进入许愿箱</a>
-          <a class="pixel-button" href="#/submit">提交工具</a>
-        </div>
-      </aside>
+      </section>
 
       ${homeResultsPanel(tools)}
     </section>
@@ -631,17 +1006,249 @@ function renderHome() {
       renderHome();
     });
   });
+
+  startHomeStrands();
+}
+
+function stopHomeStrands() {
+  if (!homeStrandsAnimation) return;
+  homeStrandsAnimation();
+  homeStrandsAnimation = null;
+}
+
+function startHomeStrands() {
+  stopHomeStrands();
+  const canvas = document.querySelector("#strands-canvas");
+  if (!canvas) return;
+  const gl = canvas.getContext("webgl", {
+    alpha: true,
+    antialias: true,
+    premultipliedAlpha: false
+  }) || canvas.getContext("experimental-webgl", {
+    alpha: true,
+    antialias: true,
+    premultipliedAlpha: false
+  });
+  if (!gl) return;
+
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  const palette = new Float32Array([
+    0.976, 0.357, 0.086,
+    0.486, 0.227, 0.929,
+    0.024, 0.714, 0.831,
+    0.267, 0.843, 0.659
+  ]);
+  let frameId = 0;
+  let width = 1;
+  let height = 1;
+  const pointer = { x: 2, y: 2 };
+
+  const vertexSource = `
+    attribute vec2 aPosition;
+
+    void main() {
+      gl_Position = vec4(aPosition, 0.0, 1.0);
+    }
+  `;
+
+  const fragmentSource = `
+    precision highp float;
+
+    uniform float uTime;
+    uniform vec2 uResolution;
+    uniform vec2 uPointer;
+    uniform float uNight;
+    uniform vec3 uColors[4];
+
+    const float PI = 3.141592653589793;
+
+    float hash21(vec2 p) {
+      p = fract(p * vec2(123.34, 345.45));
+      p += dot(p, p + 34.345);
+      return fract(p.x * p.y);
+    }
+
+    vec3 palette(float t) {
+      t = fract(t);
+      if (t < 0.25) return mix(uColors[0], uColors[1], t / 0.25);
+      if (t < 0.50) return mix(uColors[1], uColors[2], (t - 0.25) / 0.25);
+      if (t < 0.75) return mix(uColors[2], uColors[3], (t - 0.50) / 0.25);
+      return mix(uColors[3], uColors[0], (t - 0.75) / 0.25);
+    }
+
+    float starLayer(vec2 uv, float scale, float threshold) {
+      vec2 cell = floor(uv * scale);
+      vec2 local = fract(uv * scale) - 0.5;
+      float seed = hash21(cell);
+      float radius = 0.035 + seed * 0.035;
+      float twinkle = 0.55 + 0.45 * sin(uTime * (1.4 + seed) + seed * 6.2831);
+      return smoothstep(radius, 0.0, length(local)) * step(threshold, seed) * twinkle;
+    }
+
+    float strand(vec2 uv, float index, float env) {
+      float t = uTime * (0.58 + index * 0.08);
+      float phase = index * 1.65;
+      float wave = sin(uv.x * (2.15 + index * 0.28) + t * 1.7 + phase) * 0.62;
+      wave += sin(uv.x * (3.85 + index * 0.22) - t * 1.1 + phase * 1.7) * 0.38;
+      float amplitude = mix(0.135, 0.16, uNight) * env;
+      float y = wave * amplitude + (index - 1.5) * 0.018 * (0.8 + env);
+      float d = abs(uv.y - y);
+      float thickness = (0.006 + 0.013 * env) * mix(1.02, 1.14, uNight);
+      float core = thickness / (d + thickness * 0.46);
+      float halo = exp(-d * d / (thickness * 0.32)) * mix(0.036, 0.16, uNight);
+      return core * core * env * mix(1.04, 1.0, uNight) + halo * env;
+    }
+
+    void main() {
+      vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution) / uResolution.y;
+      float heroAspect = uResolution.x / uResolution.y;
+      vec2 beamUv = uv - vec2(heroAspect * 0.22, -0.015);
+
+      float env = pow(max(cos(beamUv.x * PI * 0.86), 0.0), 3.4);
+      env *= smoothstep(-heroAspect * 0.18, heroAspect * 0.10, uv.x);
+      vec3 beam = vec3(0.0);
+
+      for (int i = 0; i < 4; i++) {
+        float fi = float(i);
+        float energy = strand(beamUv, fi, env);
+        vec3 color = palette(fi * 0.19 + beamUv.x * 0.18 + uTime * 0.035);
+        beam += color * energy * mix(0.58 + env * 0.70, 0.55 + env * 0.74, uNight);
+      }
+
+      beam = 1.0 - exp(-beam * mix(2.18, 2.45, uNight));
+
+      float pointerGlow = exp(-pow(distance(uv, uPointer), 2.0) * 8.0);
+      beam += vec3(0.00, 0.94, 0.66) * pointerGlow * 0.08 * uNight;
+      beam += vec3(0.45, 0.18, 0.95) * pointerGlow * 0.04 * uNight;
+
+      vec3 color = beam * mix(1.16, 1.12, uNight);
+      float lum = max(max(beam.r, beam.g), beam.b);
+      float alpha = clamp(lum * mix(0.94, 1.06, uNight), 0.0, 0.96);
+
+      gl_FragColor = vec4(color, alpha);
+    }
+  `;
+
+  function compileShader(type, source) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      console.warn(gl.getShaderInfoLog(shader));
+      gl.deleteShader(shader);
+      return null;
+    }
+    return shader;
+  }
+
+  const vertexShader = compileShader(gl.VERTEX_SHADER, vertexSource);
+  const fragmentShader = compileShader(gl.FRAGMENT_SHADER, fragmentSource);
+  if (!vertexShader || !fragmentShader) return;
+
+  const program = gl.createProgram();
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    console.warn(gl.getProgramInfoLog(program));
+    gl.deleteProgram(program);
+    return;
+  }
+
+  const buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+    -1, -1,
+    3, -1,
+    -1, 3
+  ]), gl.STATIC_DRAW);
+
+  const positionLocation = gl.getAttribLocation(program, "aPosition");
+  const uniforms = {
+    time: gl.getUniformLocation(program, "uTime"),
+    resolution: gl.getUniformLocation(program, "uResolution"),
+    pointer: gl.getUniformLocation(program, "uPointer"),
+    night: gl.getUniformLocation(program, "uNight"),
+    colors: gl.getUniformLocation(program, "uColors[0]")
+  };
+
+  gl.useProgram(program);
+  gl.enableVertexAttribArray(positionLocation);
+  gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+  gl.uniform3fv(uniforms.colors, palette);
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+  gl.clearColor(0, 0, 0, 0);
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = Math.max(1, rect.width);
+    height = Math.max(1, rect.height);
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+  }
+
+  function updatePointer(event) {
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    pointer.x = (x - rect.width * 0.5) / rect.height;
+    pointer.y = (rect.height * 0.5 - y) / rect.height;
+  }
+
+  function resetPointer() {
+    pointer.x = 2;
+    pointer.y = 2;
+  }
+
+  function draw(timestamp = 0) {
+    gl.useProgram(program);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform1f(uniforms.time, timestamp * 0.001);
+    gl.uniform2f(uniforms.resolution, canvas.width, canvas.height);
+    gl.uniform2f(uniforms.pointer, pointer.x, pointer.y);
+    gl.uniform1f(uniforms.night, document.documentElement.dataset.theme === "night" ? 1 : 0);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+    if (!reducedMotion) {
+      frameId = requestAnimationFrame(draw);
+    }
+  }
+
+  resize();
+  draw();
+  window.addEventListener("resize", resize);
+  canvas.addEventListener("pointermove", updatePointer);
+  canvas.addEventListener("pointerleave", resetPointer);
+  homeStrandsAnimation = () => {
+    cancelAnimationFrame(frameId);
+    window.removeEventListener("resize", resize);
+    canvas.removeEventListener("pointermove", updatePointer);
+    canvas.removeEventListener("pointerleave", resetPointer);
+    gl.deleteBuffer(buffer);
+    gl.deleteProgram(program);
+    gl.deleteShader(vertexShader);
+    gl.deleteShader(fragmentShader);
+  };
 }
 
 function homeResultsPanel(tools = filteredTools()) {
+  const selectedCategory = state.data.categories.find((category) => category.id === state.category);
+  const title = selectedCategory?.name || "全部工具";
+  const description = selectedCategory?.description || "从截图快速浏览工具，点击卡片进入详情。";
+  const queryText = state.query.trim();
+
   return `
-    <section class="content-panel">
-      <div class="panel-head">
+    <section class="home-results">
+      <div class="home-results__head">
         <div>
-          <p class="eyebrow">SELECT A TOOL</p>
-          <h2>${state.category === "all" ? "全部工具" : escapeHtml(categoryName(state.category))}</h2>
+          <p class="eyebrow">TOOL GALLERY</p>
+          <h2>${escapeHtml(title)}</h2>
+          <p>${escapeHtml(queryText ? `正在搜索：${queryText}` : description)}</p>
         </div>
-        <span class="pixel-badge">${tools.length} 个入口</span>
+        ${tools.length ? "" : `<span class="result-hint">没有匹配结果</span>`}
       </div>
       ${tools.length ? `<div class="tool-grid">${tools.map(toolCard).join("")}</div>` : emptyState("没有匹配的工具", "换个关键词或分类再试一次。")}
     </section>
@@ -649,16 +1256,16 @@ function homeResultsPanel(tools = filteredTools()) {
 }
 
 function renderHomeResults() {
-  const panel = document.querySelector(".content-panel");
+  const panel = document.querySelector(".home-results");
   if (!panel) return;
   panel.outerHTML = homeResultsPanel();
 }
 
-function categoryButton(id, label, count) {
+function categoryButton(id, label, count, showCount = true) {
   return `
     <button class="chip-button ${state.category === id ? "is-active" : ""}" type="button" data-category="${escapeHtml(id)}">
       <span>${escapeHtml(label)}</span>
-      <span class="chip-count">${count}</span>
+      ${showCount ? `<span class="chip-count">${count}</span>` : ""}
     </button>
   `;
 }
@@ -680,6 +1287,7 @@ function filteredTools() {
 }
 
 function renderFeedbackBoard() {
+  document.body.classList.add("app-page", "feedback-page");
   const allItems = feedbackItems();
   const filteredItems = state.feedbackFilter === "all"
     ? allItems
@@ -772,20 +1380,18 @@ function feedbackFilterButton(id, count) {
 function toolCard(tool) {
   return `
     <article class="tool-card" onclick="location.hash='#/tool/${encodeURIComponent(tool.slug)}'">
-      <div class="tool-card__top">
-        <span class="status-badge" data-status="${escapeHtml(tool.status)}">${escapeHtml(statusLabel(tool.status))}</span>
-        <span class="pixel-badge">${escapeHtml(typeLabel(tool.type))}</span>
-      </div>
       ${toolThumbnail(tool)}
-      <h2>${escapeHtml(tool.name)}</h2>
-      <p>${escapeHtml(tool.summary)}</p>
-      <div>
-        <div class="meta-row">
-          <span class="meta-item">开发者 ${escapeHtml(tool.developer)}</span>
-          <span class="meta-item">${escapeHtml(tool.difficulty)}</span>
+      <div class="tool-card__body">
+        <div class="tool-card__top">
+          <span class="pixel-badge">${escapeHtml(typeLabel(tool.type))}</span>
+          <span class="status-badge" data-status="${escapeHtml(tool.status)}">${escapeHtml(statusLabel(tool.status))}</span>
         </div>
+        <h2>${escapeHtml(tool.name)}</h2>
+        <p>${escapeHtml(tool.summary)}</p>
         <div class="tag-row" aria-label="标签">
-          ${(tool.tags || []).slice(0, 3).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}
+          ${tool.developer ? `<span class="tag developer-tag">${escapeHtml(tool.developer)}</span>` : ""}
+          ${toolCategoryIds(tool).slice(0, 2).map((id) => `<span class="tag">${escapeHtml(categoryName(id))}</span>`).join("")}
+          ${(tool.tags || []).slice(0, 1).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}
         </div>
       </div>
     </article>
@@ -793,6 +1399,7 @@ function toolCard(tool) {
 }
 
 function renderTool(slug) {
+  document.body.classList.add("tool-detail-page");
   const tool = state.data.tools.find((item) => item.slug === slug);
   if (!tool) {
     app.innerHTML = emptyState("没有找到这个工具", "它可能被重命名或还没有上架。");
@@ -802,8 +1409,8 @@ function renderTool(slug) {
   const comments = state.comments[tool.id] || [];
 
   app.innerHTML = `
-    <section class="screen">
-      <a class="pixel-button" href="#/">返回工具大厅</a>
+    <section class="screen tool-detail-screen">
+      <a class="pixel-button detail-back" href="#/">返回工具大厅</a>
       <div class="detail-layout">
         <article class="detail-band">
           <header class="detail-title">
@@ -826,15 +1433,14 @@ function renderTool(slug) {
           ${listSection("解决的痛点", tool.painPoints)}
           ${listSection(tool.featuresTitle || "核心功能", tool.features)}
           ${visualSupportSection(tool, "features")}
-          ${stepsSection(tool.usageSteps, tool.stepsTitle)}
-          ${visualSupportSection(tool, "steps")}
+          ${stepsWithMediaSection(tool)}
           ${methodsSection(tool)}
           ${toolPraiseSection(tool)}
           ${resourcesSection(tool)}
         </article>
 
-        <aside class="detail-band">
-          <div class="section-block" style="margin-top:0;padding-top:0;border-top:0">
+        <aside class="detail-band detail-sidebar">
+          <div class="section-block detail-comment-panel" style="margin-top:0;padding-top:0;border-top:0">
             <h2>匿名评论</h2>
             <form class="comment-form" id="comment-form">
               <div class="form-grid">
@@ -1050,14 +1656,42 @@ function listSection(title, items = []) {
   `;
 }
 
-function stepsSection(items = [], title = "使用步骤") {
-  if (!items.length) return "";
+function stepsWithMediaSection(tool) {
+  const items = tool.usageSteps || [];
+  const title = tool.stepsTitle || "使用步骤";
+  const fallbackSlots = [
+    {
+      kind: "image",
+      label: "步骤截图",
+      description: "建议放安装、拖拽、导入、导出等关键步骤截图。",
+      status: "pending_upload"
+    },
+    {
+      kind: "video",
+      label: "完整使用视频",
+      description: "建议放从打开工具到完成结果的完整操作演示。",
+      status: "pending_upload"
+    }
+  ];
+  const slots = tool.stepMedia?.length ? tool.stepMedia : fallbackSlots;
+  const mediaTitle = !tool.stepMediaTitle || tool.stepMediaTitle === title ? "图文步骤" : tool.stepMediaTitle;
+  if (!items.length && !slots.length) return "";
   return `
-    <section class="section-block">
-      <h2>${escapeHtml(title || "使用步骤")}</h2>
-      <ol class="step-list">
-        ${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-      </ol>
+    <section class="section-block steps-media-block">
+      <h2>${escapeHtml(title)}</h2>
+      ${items.length ? `
+        <ol class="step-list">
+          ${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ol>
+      ` : ""}
+      ${slots.length ? `
+        <div class="steps-media-group">
+          <h3>${escapeHtml(mediaTitle)}</h3>
+          <div class="visual-grid">
+            ${slots.map((slot) => mediaSlot(slot)).join("")}
+          </div>
+        </div>
+      ` : ""}
     </section>
   `;
 }
@@ -1312,7 +1946,6 @@ function commentItem(comment, index) {
       </div>
       <p>${escapeHtml(comment.content)}</p>
       <button class="like-button" type="button" data-like-comment="${index}" aria-label="同意这条反馈">
-        <span class="pixel-like-icon" aria-hidden="true"></span>
         <span>同意</span>
         <span class="like-count">${Number(comment.likes || 0)}</span>
       </button>
@@ -1335,7 +1968,6 @@ function feedbackItem({ tool, comment, index }) {
       </div>
       <p>${escapeHtml(comment.content)}</p>
       <button class="like-button" type="button" data-like-feedback data-tool-id="${escapeHtml(tool.id)}" data-comment-index="${index}" aria-label="同意这条反馈">
-        <span class="pixel-like-icon" aria-hidden="true"></span>
         <span>同意</span>
         <span class="like-count">${Number(comment.likes || 0)}</span>
       </button>
@@ -1344,6 +1976,7 @@ function feedbackItem({ tool, comment, index }) {
 }
 
 function renderSubmissionPage() {
+  document.body.classList.add("app-page", "submit-page");
   app.innerHTML = `
     <section class="screen submit-layout">
       <article class="wish-panel">
@@ -1528,6 +2161,7 @@ async function saveSubmission(event) {
 }
 
 function renderWishbox() {
+  document.body.classList.add("app-page", "wishbox-page");
   app.innerHTML = `
     <section class="screen wish-layout">
       <article class="wish-panel">
