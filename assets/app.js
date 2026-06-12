@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260611g";
+const seedUrl = "./content/tools.seed.json?v=20260612a";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -98,12 +98,13 @@ const legacyCategoryMap = {
 
 const legacyDocumentHost = String.fromCharCode(109, 121, 46, 102, 101, 105, 115, 104, 117, 46, 99, 110);
 const sourceDocumentLinks = {
+  "itv-auto-marker": "https://alidocs.dingtalk.com/i/nodes/YMyQA2dXW792qoPNI5Nd40n0JzlwrZgb?utm_scene=team_space",
   "dianmao-prompt-assistant": "https://alidocs.dingtalk.com/i/nodes/ZX6GRezwJl7ZrYdQHr4AjmNrVdqbropQ?utm_scene=team_space",
   "codex-sound-effect-method": "https://alidocs.dingtalk.com/i/nodes/gwva2dxOW4K2Pkbgf0MLdQ5z8bkz3BRL?utm_scene=team_space",
   "auto-sound-html": "https://alidocs.dingtalk.com/i/nodes/amweZ92PV6v25O1jCKBnRg4xVxEKBD6p?utm_scene=team_space",
   "batch-cutout-upscale": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHZrRyAjpJxkXOEP2?utm_scene=team_space"
 };
-const authoritativeSeedTools = new Set(["dianmao-prompt-assistant"]);
+const authoritativeSeedTools = new Set(["dianmao-prompt-assistant", "itv-auto-marker"]);
 
 function readJson(key, fallback) {
   try {
@@ -1702,17 +1703,26 @@ function methodsSection(tool) {
     <section class="section-block">
       <h2>${escapeHtml(tool.methodsTitle || "方法入口")}</h2>
       <div class="method-list">
-        ${tool.methods.map((method) => `
-          <article class="method-item" id="${escapeHtml(method.id)}">
-            <div class="resource-title">
-              <strong>${escapeHtml(method.name)}</strong>
-              <span class="meta-item">来源 ${escapeHtml(method.sourceCredit)}</span>
-            </div>
-            <p>${escapeHtml(method.summary)}</p>
+        ${tool.methods.map((method) => {
+          const source = method.sourceCredit ? `<span class="meta-item">来源 ${escapeHtml(method.sourceCredit)}</span>` : "";
+          const summary = method.summary ? `<p>${escapeHtml(method.summary)}</p>` : "";
+          const points = method.points?.length ? `<ul class="clean-list method-points">${method.points.map((point) => `<li>${escapeHtml(point)}</li>`).join("")}</ul>` : "";
+          const prompt = method.optimizedPrompt ? `
             <pre class="prompt-box">${escapeHtml(method.optimizedPrompt)}</pre>
             <button class="copy-button" type="button" data-copy="${escapeHtml(method.id)}">复制提示词</button>
-          </article>
-        `).join("")}
+          ` : "";
+          return `
+            <article class="method-item" id="${escapeHtml(method.id)}">
+              <div class="resource-title">
+                <strong>${escapeHtml(method.name)}</strong>
+                ${source}
+              </div>
+              ${summary}
+              ${points}
+              ${prompt}
+            </article>
+          `;
+        }).join("")}
       </div>
     </section>
   `;
@@ -1908,7 +1918,7 @@ function resourceItem(resource) {
           ? `<a class="pixel-button primary" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(actionLabel)}</a>`
           : `<button class="pixel-button" type="button" disabled>等待资源</button>`
         }
-        <span class="meta-item">${escapeHtml(resource.kind)}</span>
+        <span class="meta-item">${escapeHtml(resourceKindLabel(resource.kind))}</span>
       </div>
     </article>
   `;
@@ -1920,14 +1930,30 @@ function resourceUrl(resource) {
 
 function resourceActionLabel(resource) {
   if (resource.actionLabel) return resource.actionLabel;
+  if (resource.kind === "source_doc") return "查看原文";
   if (resource.downloadUrl || ["package", "skill"].includes(resource.kind)) return "下载资源";
   if (["html", "html_tool", "web_tool"].includes(resource.kind)) return "打开工具";
   if (resource.previewUrl) return "查看预览";
   return "打开资源";
 }
 
+function resourceKindLabel(kind) {
+  const map = {
+    source_doc: "图文文档",
+    html: "HTML工具",
+    html_tool: "HTML工具",
+    web_tool: "网页工具",
+    package: "安装包",
+    skill: "Skill包",
+    video: "视频",
+    image: "图片"
+  };
+  return map[kind] || kind || "资源";
+}
+
 function resourceNote(resource) {
   if (resource.note) return resource.note;
+  if (resource.kind === "source_doc") return "完整图文、安装包或大文件资源以原文为准。";
   if (resource.status === "uploaded") {
     if (["html", "html_tool"].includes(resource.kind)) return "资源已接入，点击即可打开工具。";
     if (resource.downloadUrl || ["package", "skill"].includes(resource.kind)) return "资源已接入，点击即可下载。";
