@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260615b";
+const seedUrl = "./content/tools.seed.json?v=20260615c";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -79,7 +79,6 @@ const toolCategoryAssignments = {
   "codex-sound-effect-method": ["audio-processing", "workflow-automation"],
   "auto-sound-html": ["audio-processing", "video-processing"],
   "batch-cutout-upscale": ["image-processing"],
-  "greenscreen-video-cutout": ["video-processing", "image-processing"],
   "block-layout-tool": ["text-tools", "image-processing"],
   "finalcut-motion-html-bridge": ["video-processing", "workflow-automation"],
   "ai-screen-recording-skill": ["workflow-automation"],
@@ -102,9 +101,19 @@ const sourceDocumentLinks = {
   "dianmao-prompt-assistant": "https://alidocs.dingtalk.com/i/nodes/ZX6GRezwJl7ZrYdQHr4AjmNrVdqbropQ?utm_scene=team_space",
   "codex-sound-effect-method": "https://alidocs.dingtalk.com/i/nodes/gwva2dxOW4K2Pkbgf0MLdQ5z8bkz3BRL?utm_scene=team_space",
   "auto-sound-html": "https://alidocs.dingtalk.com/i/nodes/amweZ92PV6v25O1jCKBnRg4xVxEKBD6p?utm_scene=team_space",
-  "batch-cutout-upscale": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHZrRyAjpJxkXOEP2?utm_scene=team_space"
+  "batch-cutout-upscale": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHZrRyAjpJxkXOEP2?utm_scene=team_space",
+  "block-layout-tool": "https://alidocs.dingtalk.com/i/nodes/ZgpG2NdyVXrAYQbpIPNrOOd48MwvDqPk?utm_scene=team_space",
+  "finalcut-motion-html-bridge": "https://alidocs.dingtalk.com/i/nodes/gvNG4YZ7JneL9pmQtN3Ma2bdV2LD0oRE?utm_scene=team_space"
 };
-const authoritativeSeedTools = new Set(["dianmao-prompt-assistant", "itv-auto-marker"]);
+const authoritativeSeedTools = new Set([
+  "dianmao-prompt-assistant",
+  "itv-auto-marker",
+  "codex-sound-effect-method",
+  "auto-sound-html",
+  "batch-cutout-upscale",
+  "block-layout-tool",
+  "finalcut-motion-html-bridge"
+]);
 
 function readJson(key, fallback) {
   try {
@@ -510,7 +519,12 @@ function normalizeData(data) {
     delete nextData.commentSchema.rating;
     nextData.commentSchema.likes = "number";
   }
+  nextData.tools?.sort((a, b) => getToolUpdateTime(b) - getToolUpdateTime(a));
   return nextData;
+}
+
+function getToolUpdateTime(tool) {
+  return Number(tool?.sourceMeta?.updateTime || tool?.updatedAt || tool?.createdAt || 0);
 }
 
 function withSourceDocumentResource(tool) {

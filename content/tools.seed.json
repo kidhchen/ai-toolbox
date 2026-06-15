@@ -40,6 +40,295 @@
   ],
   "tools": [
     {
+      "id": "block-layout-tool",
+      "slug": "block-layout-tool",
+      "name": "积木自动排版工具",
+      "categoryId": "course-layout",
+      "categoryIds": [
+        "course-layout"
+      ],
+      "type": "html_tool",
+      "developer": "文帆",
+      "status": "published",
+      "difficulty": "入门",
+      "summary": "拖动积木图片，实现积木自动排版。",
+      "targetUsers": [
+        "需要整理积木图片或教程截图的人",
+        "制作教程、课件或演示素材的同学"
+      ],
+      "painPoints": [
+        "积木图片手动排版费时间。",
+        "图片布局不统一，影响教程观感。"
+      ],
+      "features": [
+        "拖动积木图片。",
+        "自动生成更整齐的排版。",
+        "适合网页端快速使用。"
+      ],
+      "usageSteps": [
+        "打开网页端工具。",
+        "拖动积木图片。",
+        "查看自动排版结果。"
+      ],
+      "coverImage": {
+        "kind": "image",
+        "label": "积木自动排版工具界面",
+        "src": "assets/doc-images/doc-image-52.png",
+        "status": "imported_from_docs"
+      },
+      "featureMedia": [
+        {
+          "kind": "image",
+          "label": "积木拖入与排版效果",
+          "src": "assets/doc-images/doc-image-53.png",
+          "status": "imported_from_docs"
+        },
+        {
+          "kind": "image",
+          "label": "积木排版结果示例",
+          "src": "assets/doc-images/doc-image-54.png",
+          "status": "imported_from_docs"
+        }
+      ],
+      "resources": [
+        {
+          "kind": "source_doc",
+          "label": "图文说明 / 资源入口",
+          "url": "https://alidocs.dingtalk.com/i/nodes/ZgpG2NdyVXrAYQbpIPNrOOd48MwvDqPk?utm_scene=team_space",
+          "status": "external_link"
+        },
+        {
+          "kind": "html",
+          "label": "积木自动排版工具-网页端插件.html",
+          "url": "./tools/auto-block-layout.html",
+          "status": "uploaded"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "积木",
+        "自动排版",
+        "HTML工具",
+        "教程制作"
+      ],
+      "version": "待补充",
+      "sourceMeta": {
+        "provider": "dingtalk",
+        "nodeId": "ZgpG2NdyVXrAYQbpIPNrOOd48MwvDqPk",
+        "url": "https://alidocs.dingtalk.com/i/nodes/ZgpG2NdyVXrAYQbpIPNrOOd48MwvDqPk?utm_scene=team_space",
+        "updateTime": 1781497606000,
+        "updateTimeText": "2026-06-15 12:26:46"
+      }
+    },
+    {
+      "id": "itv-auto-marker",
+      "slug": "itv-auto-marker",
+      "name": "AI自动制作itv工作流",
+      "categoryId": "video-audio",
+      "categoryIds": [
+        "video-audio",
+        "workflow-automation"
+      ],
+      "type": "workflow_package",
+      "developer": "海欣",
+      "status": "iterating",
+      "difficulty": "进阶",
+      "summary": "上传原视频和 XML 文件，让 AI 自动分析 itv 节点并生成配置，目标是把交互视频配置压缩到几步完成。",
+      "detailStyle": "source_document",
+      "sourceMeta": {
+        "provider": "dingtalk",
+        "nodeId": "YMyQA2dXW792qoPNI5Nd40n0JzlwrZgb",
+        "url": "https://alidocs.dingtalk.com/i/nodes/YMyQA2dXW792qoPNI5Nd40n0JzlwrZgb?utm_scene=team_space",
+        "updateTime": 1781495806000,
+        "updateTimeText": "2026-06-15 11:56:46",
+        "primaryUpdateTime": 1781261842000,
+        "relatedDocument": "https://alidocs.dingtalk.com/i/nodes/G1DKw2zgV2R0xvb9Uql7zG0zVB5r9YAn?utm_scene=team_space"
+      },
+      "targetUsers": [],
+      "painPoints": [],
+      "features": [],
+      "usageSteps": [],
+      "coverImage": {
+        "kind": "image",
+        "label": "体验版",
+        "description": "生成了HTML工具，还有很多需要优化的地方，暂时没有token去弄了，但是一秒生成！",
+        "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/f773d889-fdc4-48c9-81c1-68119dce3abc.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=2HKww7Dl3un292Qg3ZbQ5puH9bs%3D",
+        "status": "dingtalk_document"
+      },
+      "featureMedia": [],
+      "stepMedia": [],
+      "methods": [],
+      "documentSections": [
+        {
+          "title": "工具",
+          "paragraphs": [
+            "codex/FCPX"
+          ]
+        },
+        {
+          "title": "体验版",
+          "paragraphs": [
+            "生成了HTML工具，还有很多需要优化的地方，暂时没有token去弄了，但是一秒生成！"
+          ],
+          "bullets": [
+            "优点：只需3步即可完成配置，且耗时极短",
+            "步骤1：上传原视频、xml文件",
+            "步骤2：点击“自动分析”",
+            "步骤3：如无问题，点击“生成并下载”",
+            "痛点：还需更多案例去练成，完善更多规则和bug",
+            "痛点：想要批量生成不同类型的itv",
+            "硬性条件：工程文件中，必须要有一条和原视频长度相同的图层提供给AI识别定位"
+          ],
+          "images": [
+            {
+              "kind": "image",
+              "label": "体验版",
+              "description": "",
+              "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/f773d889-fdc4-48c9-81c1-68119dce3abc.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=2HKww7Dl3un292Qg3ZbQ5puH9bs%3D",
+              "status": "dingtalk_document"
+            },
+            {
+              "kind": "image",
+              "label": "硬性条件图示",
+              "description": "",
+              "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/8b6adbba-567d-43a8-8ceb-9a78048d039d.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=BHvP5xUaTCgYI56Oj0agpyOegZE%3D",
+              "status": "dingtalk_document"
+            }
+          ]
+        },
+        {
+          "title": "设想",
+          "paragraphs": [
+            "给AI提供xml文档、视频文件，AI根据文档中的itv标记，或分析图层信息，自动判定itv节点以及交互类型，进行交互配置。"
+          ]
+        },
+        {
+          "title": "具体操作",
+          "subsections": [
+            {
+              "title": "方法一",
+              "paragraphs": [
+                "在fcp中，使用字幕、打标记或图层功能，写清楚itv对应的视频名字、选项、跳转点、热区、循环区间，方便AI解析文件时定位和配置，相当于将在制课工具里面的操作搬到fcp里面完成了"
+              ],
+              "bullets": [
+                "优点：做视频顺便把itv给标记了，导出xml让AI批量完成配置",
+                "优点：复杂的分支只需要打标记，标注“A”/“A跳转”，AI就会一一对应配置",
+                "痛点：虽然不用再逐个去做itv，但需要在fcp里做标记，感觉还不够简便啊！",
+                "验证进度：分支题验证通过，正确率约95%，暂未发现bug（对话过程太长就不放了）",
+                "验证进度：拖拽题正确率约90%，对于拖拽图片的处理，AI还需要优化（对话过程太长就不放了）"
+              ]
+            },
+            {
+              "title": "方法二（已有体验版）",
+              "paragraphs": [
+                "让AI根据motion的重复规律和添加的效果，自动判断和定位文档中的itv段落，根据选项的尺寸来设置热区的尺寸和位置。",
+                "目前进度：在没有任何标记打点的情况下，已验证AI可以通过motion的名字或重复的规律，识别出单选题和分支题。"
+              ],
+              "bullets": [
+                "优点：解决了方法一里面的痛点",
+                "痛点：还未经过实战验证，可能存在比较多的问题，但像自动暂停、单选题这种简单的交互应该没问题",
+                "痛点：如果一整节包含各种讲解片段、各种交互题型的xml文件，交给AI自己定位节点，可能会比较耗时和消耗资源",
+                "关于资源的消耗，我咨询了codex，加入规则完善封装成skill，预计可以为AI减少3~60%的工作量，token消耗也会降低",
+                "验证进度：分支题提供了跟日常制作结构类似的测试文件，导出xml，里面没有打标记点，没有提前给答案，让codex自己推断节点，然后生成配置文件，耗时约6分钟，最后人工验证准确率有95%左右了。",
+                "除了循环区间与A选项节点贴在一起（可能会有bug）和B选项跳转时机过早以外，其他基本准确。",
+                "全流程思维导图和流程图见下方图示。",
+                "单选题：提供无标记额外信息的xml文件，已验证可根据图层命名或切割规律识别交互题，但还未加入案例试做。",
+                "拖拽题、自动暂停、录音、视频开窗：待继续补充。"
+              ],
+              "images": [
+                {
+                  "kind": "image",
+                  "label": "规则封装收益预估",
+                  "description": "",
+                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/c211c636-20a1-4451-9de5-e18c8ea810d2.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=T2IGnSGI0zTP0%2BDfRVeBnYYzhsI%3D",
+                  "status": "dingtalk_document"
+                },
+                {
+                  "kind": "image",
+                  "label": "分支题验证记录",
+                  "description": "",
+                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/6586e768-f8f7-42f5-a963-810c49274a97.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=slyMw%2BIwCN%2BT7PfXYNl%2BvloU1bk%3D",
+                  "status": "dingtalk_document"
+                },
+                {
+                  "kind": "image",
+                  "label": "分支题结果核对",
+                  "description": "",
+                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/d6a0fb9d-ee6a-4ce7-8263-fa3b86278ec9.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=UrV3Eq9T7tuuHi1mL3Xbho17LZI%3D",
+                  "status": "dingtalk_document"
+                },
+                {
+                  "kind": "image",
+                  "label": "ITV分支交互-极简流程图",
+                  "description": "",
+                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/a556c9cd-9c0f-4daa-a1f4-047e7f45b4f8.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=eTvzlDYSDlShKFPOkMoQ2%2FLjW7w%3D",
+                  "status": "dingtalk_document"
+                },
+                {
+                  "kind": "image",
+                  "label": "单选题识别验证",
+                  "description": "",
+                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/59ec9680-7621-48b1-95d3-3b677f09822a.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=NAPkzvzbklkGbUjy%2Fd0HE6SVDgI%3D",
+                  "status": "dingtalk_document"
+                },
+                {
+                  "kind": "image",
+                  "label": "单选题补充验证",
+                  "description": "",
+                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/6244c97e-6b57-40bc-9485-4e5bdcb9707f.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=Gstpc9GrsZXagTEgN6YaOMXMdeY%3D",
+                  "status": "dingtalk_document"
+                }
+              ]
+            },
+            {
+              "title": "方法三（折中版）",
+              "paragraphs": [
+                "给AI提供手动标记节点和自动识别itv两套规则，让它结合判断，假设一道分支题，命名为“A选项”的图层上存在2个标记点，且标记点里面没有任何文字备注，则默认它们分别是“A开始”“A结束”。"
+              ],
+              "bullets": [
+                "优点：快速标记，无需对标记做任何命名",
+                "优点：复杂的分支或拖拽题，更便于AI对节点的定位",
+                "痛点：有可能会出现识别错误",
+                "痛点：纯设想，未验证"
+              ]
+            }
+          ]
+        }
+      ],
+      "resources": [
+        {
+          "kind": "html",
+          "label": "分支交互itv生成_优化版.html",
+          "url": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/att/9f27d13d-33bc-4955-aaa6-0fdb96438738.html?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=loue%2F%2B6kSXCXmIUTVWFJ5PAxRCc%3D",
+          "actionLabel": "打开体验版",
+          "note": "来自钉钉文档的 HTML 体验版链接。",
+          "status": "external_link"
+        },
+        {
+          "kind": "source_doc",
+          "label": "钉钉正文 / 后续资源",
+          "url": "https://alidocs.dingtalk.com/i/nodes/YMyQA2dXW792qoPNI5Nd40n0JzlwrZgb?utm_scene=team_space",
+          "status": "external_link"
+        },
+        {
+          "kind": "source_doc",
+          "label": "互动视频制课工具-优化文档",
+          "url": "https://alidocs.dingtalk.com/i/nodes/G1DKw2zgV2R0xvb9Uql7zG0zVB5r9YAn?utm_scene=team_space",
+          "status": "external_link"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "ITV",
+        "Codex",
+        "FCPX",
+        "Motion",
+        "AI工作流",
+        "持续迭代"
+      ],
+      "version": "体验版"
+    },
+    {
       "id": "dianmao-prompt-assistant",
       "slug": "dianmao-prompt-assistant",
       "name": "点猫提示词助手",
@@ -57,9 +346,9 @@
         "provider": "dingtalk",
         "nodeId": "ZX6GRezwJl7ZrYdQHr4AjmNrVdqbropQ",
         "url": "https://alidocs.dingtalk.com/i/nodes/ZX6GRezwJl7ZrYdQHr4AjmNrVdqbropQ?utm_scene=team_space",
-        "originalUrl": "https://alidocs.dingtalk.com/i/nodes/G1DKw2zgV2R0xvb9UPQDDyeYVB5r9YAn?utm_scene=person_space",
         "updateTime": 1781495458000,
-        "updateTimeText": "2026-06-15 11:50:58"
+        "updateTimeText": "2026-06-15 11:50:58",
+        "packageDocUrl": "https://alidocs.dingtalk.com/i/nodes/amweZ92PV6v25O1jCM0Gzq5bVxEKBD6p?utm_scene=team_space"
       },
       "targetUsers": [
         "经常使用多个AI网站的制作同学",
@@ -224,18 +513,9 @@
           "status": "external_link"
         },
         {
-          "kind": "source_doc",
-          "label": "原文地址",
-          "url": "https://alidocs.dingtalk.com/i/nodes/G1DKw2zgV2R0xvb9UPQDDyeYVB5r9YAn?utm_scene=person_space",
-          "actionLabel": "查看原文",
-          "status": "external_link"
-        },
-        {
           "kind": "package",
           "label": "点猫提示词助手安装包",
-          "url": "https://alidocs.dingtalk.com/i/nodes/G1DKw2zgV2R0xvb9UPQDDyeYVB5r9YAn?utm_scene=person_space",
-          "actionLabel": "打开下载页",
-          "note": "安装包位于文档底部“软件下载”区域，点击后在文档中下载。",
+          "url": "https://alidocs.dingtalk.com/i/nodes/amweZ92PV6v25O1jCM0Gzq5bVxEKBD6p?utm_scene=team_space",
           "status": "external_link"
         }
       ],
@@ -286,347 +566,6 @@
       "stepsTitle": "安装方法",
       "stepMediaTitle": "安装方法",
       "methodsTitle": "常用公式"
-    },
-    {
-      "id": "codex-sound-effect-method",
-      "slug": "codex-sound-effect-method",
-      "name": "Codex 自动加音效方法",
-      "categoryId": "video-audio",
-      "categoryIds": [
-        "video-audio",
-        "workflow-automation"
-      ],
-      "type": "codex_skill",
-      "developer": "益达",
-      "status": "published",
-      "difficulty": "进阶",
-      "summary": "用 Codex 辅助匹配音效、转场和插件效果，最后重新导入 XML 文件完成制作。",
-      "targetUsers": [
-        "使用 Final Cut 进行视频制作的伙伴",
-        "需要给视频批量匹配音效的同学",
-        "希望减少手动查找、放置和调整音效的人"
-      ],
-      "painPoints": [
-        "音效和转场需要人工逐段匹配。",
-        "同类视频音效处理流程重复，手动操作耗时。",
-        "XML 处理过程容易出错。"
-      ],
-      "features": [
-        "让 Codex 根据视频结构辅助规划音效。",
-        "支持转场和插件效果匹配思路。",
-        "最终通过重新导入 XML 完成效果应用。",
-        "规则可继续优化并转成 Codex Skill 安装使用。"
-      ],
-      "usageSteps": [
-        "准备 XML 文件音效规则框架，以及需要添加音效的 XML 文件。",
-        "向 Codex 描述音效、转场和插件效果要求。",
-        "让 Codex 生成或调整匹配方案。",
-        "将处理后的 XML 重新导入剪辑软件。"
-      ],
-      "coverImage": {
-        "kind": "image",
-        "label": "Codex 加音效流程示例",
-        "src": "assets/doc-images/doc-image-43.png",
-        "status": "imported_from_docs"
-      },
-      "featureMedia": [
-        {
-          "kind": "image",
-          "label": "音效匹配与工程示例",
-          "src": "assets/doc-images/doc-image-44.png",
-          "status": "imported_from_docs"
-        }
-      ],
-      "resources": [
-        {
-          "kind": "source_doc",
-          "label": "图文说明 / 资源入口",
-          "url": "https://alidocs.dingtalk.com/i/nodes/gwva2dxOW4K2Pkbgf0MLdQ5z8bkz3BRL?utm_scene=team_space",
-          "status": "external_link"
-        },
-        {
-          "kind": "tutorial",
-          "label": "Codex加音效方法教程",
-          "storageKey": "pending/codex-sound-effect-method.md",
-          "status": "pending_upload"
-        }
-      ],
-      "media": [],
-      "tags": [
-        "Codex",
-        "Codex Skill",
-        "音效",
-        "XML",
-        "剪辑"
-      ],
-      "version": "待补充"
-    },
-    {
-      "id": "auto-sound-html",
-      "slug": "auto-sound-html",
-      "name": "自动加音效 HTML 工具",
-      "categoryId": "video-audio",
-      "categoryIds": [
-        "video-audio"
-      ],
-      "type": "html_tool",
-      "developer": "文成",
-      "status": "published",
-      "difficulty": "入门",
-      "summary": "打开网页后拖入 XML 文件即可批量处理音效模板，不需要复制复杂代码。",
-      "targetUsers": [
-        "使用 Final Cut 进行视频制作的伙伴",
-        "需要快速处理音效，又想保留定制化空间的同学",
-        "同样的 Motion 模板希望统一使用一类音效的人"
-      ],
-      "painPoints": [
-        "需要机械化手动加音效。",
-        "不能给重复的模板快速加音效。",
-        "无法使用 Codex 这类付费 AI 平台时，也需要一个轻量工具。"
-      ],
-      "features": [
-        "拖拽 XML 文件即可使用。",
-        "自动处理重复模板。",
-        "将重复模板合并显示，降低查找成本。",
-        "按页面提示完成路径设置和音效处理。"
-      ],
-      "usageSteps": [
-        "在 Final Cut 中导出 XML 格式文件。",
-        "打开网页工具并拖入需要处理的 XML 文件。",
-        "按页面提示完成路径设置和音效处理。",
-        "导出或复制处理结果并用于剪辑流程。"
-      ],
-      "coverImage": {
-        "kind": "image",
-        "label": "自动加音效工具界面",
-        "src": "assets/doc-images/doc-image-45.png",
-        "status": "imported_from_docs"
-      },
-      "featureMedia": [
-        {
-          "kind": "image",
-          "label": "XML 处理说明",
-          "src": "assets/doc-images/doc-image-47.png",
-          "status": "imported_from_docs"
-        }
-      ],
-      "resources": [
-        {
-          "kind": "source_doc",
-          "label": "图文说明 / 资源入口",
-          "url": "https://alidocs.dingtalk.com/i/nodes/amweZ92PV6v25O1jCKBnRg4xVxEKBD6p?utm_scene=team_space",
-          "status": "external_link"
-        },
-        {
-          "kind": "html",
-          "label": "快速音4.0.html",
-          "url": "./tools/instant-sound-effects-4.html",
-          "status": "uploaded"
-        }
-      ],
-      "media": [],
-      "tags": [
-        "HTML工具",
-        "XML",
-        "音效",
-        "剪辑"
-      ],
-      "version": "4.0"
-    },
-    {
-      "id": "batch-cutout-upscale",
-      "slug": "batch-cutout-upscale",
-      "name": "一键批量抠图 + 高清放大工具 2.0",
-      "categoryId": "visual-assets",
-      "categoryIds": [
-        "visual-assets"
-      ],
-      "type": "html_tool",
-      "developer": "三盛",
-      "status": "published",
-      "difficulty": "入门",
-      "summary": "把批量抠图、背景替换和高清放大功能合在一个工具里，减少多个软件来回切换。",
-      "targetUsers": [
-        "需要批量处理角色、道具、素材图的人",
-        "经常在抠图和高清放大工具之间切换的人"
-      ],
-      "painPoints": [
-        "抠图、换背景和放大分散在不同工具里。",
-        "批量素材处理流程重复。",
-        "手动修边和局部调整费时间。"
-      ],
-      "features": [
-        "批量抠除背景。",
-        "高清放大素材。",
-        "支持更换背景。",
-        "内置吸管、钢笔、橡皮擦等编辑工具。"
-      ],
-      "usageSteps": [
-        "打开工具并导入需要处理的图片。",
-        "选择抠图、换背景或高清放大功能。",
-        "必要时使用内置编辑工具修正细节。",
-        "选择导出格式并保存结果。"
-      ],
-      "coverImage": {
-        "kind": "image",
-        "label": "批量抠图与高清放大界面",
-        "src": "assets/doc-images/doc-image-49.png",
-        "status": "imported_from_docs"
-      },
-      "featureMedia": [
-        {
-          "kind": "image",
-          "label": "素材批处理面板",
-          "src": "assets/doc-images/doc-image-50.png",
-          "status": "imported_from_docs"
-        }
-      ],
-      "resources": [
-        {
-          "kind": "source_doc",
-          "label": "图文说明 / 资源入口",
-          "url": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHZrRyAjpJxkXOEP2?utm_scene=team_space",
-          "status": "external_link"
-        },
-        {
-          "kind": "web_tool",
-          "label": "打开一键批量抠图 + 高清放大工具",
-          "url": "https://yyffyysalt-spec.github.io/yyff/",
-          "status": "external_link"
-        },
-        {
-          "kind": "package",
-          "label": "批量抠图 + 高清放大",
-          "storageKey": "pending/batch-cutout-upscale",
-          "status": "pending_upload"
-        }
-      ],
-      "media": [],
-      "tags": [
-        "抠图",
-        "高清放大",
-        "素材处理",
-        "批量处理"
-      ],
-      "version": "2.0"
-    },
-    {
-      "id": "greenscreen-video-cutout",
-      "slug": "greenscreen-video-cutout",
-      "name": "一键抠绿幕视频 + 高清放大工具 1.0",
-      "categoryId": "visual-assets",
-      "categoryIds": [
-        "visual-assets",
-        "video-audio"
-      ],
-      "type": "html_tool",
-      "developer": "待补充",
-      "status": "in_development",
-      "difficulty": "进阶",
-      "summary": "面向绿幕视频的一键抠除和高清增强工具，适合后续作为视频素材处理入口。",
-      "targetUsers": [
-        "需要处理绿幕视频素材的人",
-        "希望把视频抠像和增强流程集中在一个工具中的制作同学"
-      ],
-      "painPoints": [
-        "绿幕视频处理流程较长。",
-        "抠像和高清增强通常需要多个软件配合。",
-        "批量处理绿幕素材不够方便。"
-      ],
-      "features": [
-        "绿幕视频抠除，开发中。",
-        "视频高清放大，开发中。",
-        "未来可支持批量导入和导出。"
-      ],
-      "usageSteps": [
-        "当前版本建议标记为开发中。",
-        "先通过评论区收集使用场景和功能需求。"
-      ],
-      "coverImage": {
-        "kind": "image",
-        "label": "绿幕视频处理界面",
-        "src": "assets/doc-images/doc-image-51.png",
-        "status": "imported_from_docs"
-      },
-      "resources": [],
-      "media": [],
-      "tags": [
-        "绿幕",
-        "视频处理",
-        "高清放大",
-        "开发中"
-      ],
-      "version": "1.0"
-    },
-    {
-      "id": "block-layout-tool",
-      "slug": "block-layout-tool",
-      "name": "积木自动排版工具",
-      "categoryId": "course-layout",
-      "categoryIds": [
-        "course-layout"
-      ],
-      "type": "html_tool",
-      "developer": "文帆",
-      "status": "published",
-      "difficulty": "入门",
-      "summary": "拖入积木图片后自动排版，减少手动摆放和整理截图的时间。",
-      "targetUsers": [
-        "需要整理积木式编程截图的人",
-        "制作教程、课件或演示素材的同学"
-      ],
-      "painPoints": [
-        "积木截图手动排版费时间。",
-        "图片布局不统一，影响教程观感。",
-        "重复整理素材效率低。"
-      ],
-      "features": [
-        "拖入积木图片。",
-        "自动生成更整齐的排版。",
-        "适合网页端快速使用。"
-      ],
-      "usageSteps": [
-        "打开网页端工具。",
-        "拖入积木图片。",
-        "等待工具自动排版。",
-        "保存或导出排版结果。"
-      ],
-      "coverImage": {
-        "kind": "image",
-        "label": "积木自动排版工具界面",
-        "src": "assets/doc-images/doc-image-52.png",
-        "status": "imported_from_docs"
-      },
-      "featureMedia": [
-        {
-          "kind": "image",
-          "label": "积木拖入与排版效果",
-          "src": "assets/doc-images/doc-image-53.png",
-          "status": "imported_from_docs"
-        },
-        {
-          "kind": "image",
-          "label": "积木排版结果示例",
-          "src": "assets/doc-images/doc-image-54.png",
-          "status": "imported_from_docs"
-        }
-      ],
-      "resources": [
-        {
-          "kind": "html",
-          "label": "积木自动排版工具-网页端插件.html",
-          "url": "./tools/auto-block-layout.html",
-          "status": "uploaded"
-        }
-      ],
-      "media": [],
-      "tags": [
-        "积木",
-        "自动排版",
-        "HTML工具",
-        "教程制作"
-      ],
-      "version": "待补充"
     },
     {
       "id": "finalcut-motion-html-bridge",
@@ -695,16 +634,10 @@
       ],
       "resources": [
         {
-          "kind": "package",
-          "label": "插件本体整合包与说明书",
-          "storageKey": "pending/finalcut-motion-html-bridge-package",
-          "status": "pending_upload"
-        },
-        {
-          "kind": "package",
-          "label": "小程序本体",
-          "storageKey": "pending/finalcut-motion-html-bridge-miniapps",
-          "status": "pending_upload"
+          "kind": "source_doc",
+          "label": "使用说明书 / 资源入口",
+          "url": "https://alidocs.dingtalk.com/i/nodes/gvNG4YZ7JneL9pmQtN3Ma2bdV2LD0oRE?utm_scene=team_space",
+          "status": "external_link"
         }
       ],
       "media": [
@@ -722,7 +655,246 @@
         "HTML工具",
         "工作流"
       ],
-      "version": "1.0"
+      "version": "1.0",
+      "sourceMeta": {
+        "provider": "dingtalk",
+        "nodeId": "gvNG4YZ7JneL9pmQtN3Ma2bdV2LD0oRE",
+        "url": "https://alidocs.dingtalk.com/i/nodes/gvNG4YZ7JneL9pmQtN3Ma2bdV2LD0oRE?utm_scene=team_space",
+        "updateTime": 1781495274000,
+        "updateTimeText": "2026-06-15 11:47:54"
+      }
+    },
+    {
+      "id": "batch-cutout-upscale",
+      "slug": "batch-cutout-upscale",
+      "name": "一键批量抠图 + 高清放大工具 2.0",
+      "categoryId": "visual-assets",
+      "categoryIds": [
+        "visual-assets"
+      ],
+      "type": "html_tool",
+      "developer": "三盛",
+      "status": "published",
+      "difficulty": "入门",
+      "summary": "把批量抠图、背景替换和高清放大功能合在一个工具里，减少多个软件来回切换。",
+      "targetUsers": [
+        "需要批量处理角色、道具、素材图的人",
+        "经常在抠图和高清放大工具之间切换的人"
+      ],
+      "painPoints": [
+        "抠图、换背景和放大分散在不同工具里。",
+        "批量素材处理流程重复。",
+        "手动修边和局部调整费时间。"
+      ],
+      "features": [
+        "批量抠除背景。",
+        "高清放大素材。",
+        "支持更换背景。",
+        "内置吸管、钢笔、橡皮擦等编辑工具。"
+      ],
+      "usageSteps": [
+        "打开工具并导入需要处理的图片。",
+        "选择抠图、换背景或高清放大功能。",
+        "必要时使用内置编辑工具修正细节。",
+        "选择导出格式并保存结果。"
+      ],
+      "coverImage": {
+        "kind": "image",
+        "label": "批量抠图与高清放大界面",
+        "src": "assets/doc-images/doc-image-49.png",
+        "status": "imported_from_docs"
+      },
+      "featureMedia": [
+        {
+          "kind": "image",
+          "label": "素材批处理面板",
+          "src": "assets/doc-images/doc-image-50.png",
+          "status": "imported_from_docs"
+        }
+      ],
+      "resources": [
+        {
+          "kind": "source_doc",
+          "label": "图文说明 / 资源入口",
+          "url": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHZrRyAjpJxkXOEP2?utm_scene=team_space",
+          "status": "external_link"
+        },
+        {
+          "kind": "web_tool",
+          "label": "打开一键批量抠图 + 高清放大工具",
+          "url": "https://yyffyysalt-spec.github.io/yyff/",
+          "status": "external_link"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "抠图",
+        "高清放大",
+        "素材处理",
+        "批量处理"
+      ],
+      "version": "2.0",
+      "sourceMeta": {
+        "provider": "dingtalk",
+        "nodeId": "r1R7q3QmWe7OGlxyHZrRyAjpJxkXOEP2",
+        "url": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHZrRyAjpJxkXOEP2?utm_scene=team_space",
+        "updateTime": 1781021791000,
+        "updateTimeText": "2026-06-10 00:16:31"
+      }
+    },
+    {
+      "id": "auto-sound-html",
+      "slug": "auto-sound-html",
+      "name": "自动加音效 HTML 工具",
+      "categoryId": "video-audio",
+      "categoryIds": [
+        "video-audio"
+      ],
+      "type": "html_tool",
+      "developer": "文成",
+      "status": "published",
+      "difficulty": "入门",
+      "summary": "打开网页后拖入 XML 文件即可批量处理音效模板，不需要复制复杂代码。",
+      "targetUsers": [
+        "使用 Final Cut 进行视频制作的伙伴",
+        "需要快速处理音效，又想保留定制化空间的同学",
+        "同样的 Motion 模板希望统一使用一类音效的人"
+      ],
+      "painPoints": [
+        "需要机械化手动加音效。",
+        "不能给重复模板快速加音效。",
+        "无法使用 Codex 这类付费 AI 平台时，也需要一个轻量工具。"
+      ],
+      "features": [
+        "拖入 XML 文件即可使用。",
+        "自动处理重复模板。",
+        "将重复模板合并显示，降低查找成本。",
+        "按页面提示完成路径设置和音效处理。"
+      ],
+      "usageSteps": [
+        "在 Final Cut 中导出 XML 格式文件。",
+        "打开网页工具并拖入需要处理的 XML 文件。",
+        "按页面提示完成路径设置和音效处理。",
+        "导出或复制处理结果并用于剪辑流程。"
+      ],
+      "coverImage": {
+        "kind": "image",
+        "label": "自动加音效工具界面",
+        "src": "assets/doc-images/doc-image-45.png",
+        "status": "imported_from_docs"
+      },
+      "featureMedia": [
+        {
+          "kind": "image",
+          "label": "XML 处理说明",
+          "src": "assets/doc-images/doc-image-47.png",
+          "status": "imported_from_docs"
+        }
+      ],
+      "resources": [
+        {
+          "kind": "source_doc",
+          "label": "图文说明 / 资源入口",
+          "url": "https://alidocs.dingtalk.com/i/nodes/amweZ92PV6v25O1jCKBnRg4xVxEKBD6p?utm_scene=team_space",
+          "status": "external_link"
+        },
+        {
+          "kind": "html",
+          "label": "快速音4.0.html",
+          "url": "./tools/instant-sound-effects-4.html",
+          "status": "uploaded"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "HTML工具",
+        "XML",
+        "音效",
+        "剪辑"
+      ],
+      "version": "4.0",
+      "sourceMeta": {
+        "provider": "dingtalk",
+        "nodeId": "amweZ92PV6v25O1jCKBnRg4xVxEKBD6p",
+        "url": "https://alidocs.dingtalk.com/i/nodes/amweZ92PV6v25O1jCKBnRg4xVxEKBD6p?utm_scene=team_space",
+        "updateTime": 1781019812000,
+        "updateTimeText": "2026-06-09 23:43:32"
+      }
+    },
+    {
+      "id": "codex-sound-effect-method",
+      "slug": "codex-sound-effect-method",
+      "name": "Codex 自动加音效方法",
+      "categoryId": "video-audio",
+      "categoryIds": [
+        "video-audio",
+        "workflow-automation"
+      ],
+      "type": "codex_skill",
+      "developer": "益达",
+      "status": "published",
+      "difficulty": "进阶",
+      "summary": "用 Codex 辅助匹配音效、转场和插件效果，最后重新导入 XML 文件完成制作。",
+      "targetUsers": [
+        "使用 Final Cut 进行视频制作的伙伴",
+        "需要给视频批量匹配音效的同学",
+        "希望减少手动查找、放置和调整音效的人"
+      ],
+      "painPoints": [
+        "音效和转场需要人工逐段匹配。",
+        "同类视频音效处理流程重复，手动操作耗时。",
+        "XML 处理过程容易出错。"
+      ],
+      "features": [
+        "Codex 根据视频结构辅助规划音效。",
+        "支持转场和插件效果匹配思路。",
+        "最终通过重新导入 XML 完成效果应用。",
+        "当前规则仍可继续优化，后续可转成 Codex Skill 安装使用。"
+      ],
+      "usageSteps": [
+        "准备 XML 文件音效规则框架，以及需要添加音效的 XML 文件。",
+        "向 Codex 描述音效、转场和插件效果要求。",
+        "让 Codex 生成或调整匹配方案。",
+        "将处理后的 XML 重新导入剪辑软件。"
+      ],
+      "coverImage": {
+        "kind": "image",
+        "label": "Codex 加音效流程示例",
+        "src": "assets/doc-images/doc-image-43.png",
+        "status": "imported_from_docs"
+      },
+      "featureMedia": [
+        {
+          "kind": "image",
+          "label": "音效匹配与工程示例",
+          "src": "assets/doc-images/doc-image-44.png",
+          "status": "imported_from_docs"
+        }
+      ],
+      "resources": [
+        {
+          "kind": "source_doc",
+          "label": "图文说明 / 资源入口",
+          "url": "https://alidocs.dingtalk.com/i/nodes/gwva2dxOW4K2Pkbgf0MLdQ5z8bkz3BRL?utm_scene=team_space",
+          "status": "external_link"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "Codex",
+        "Codex Skill",
+        "音效",
+        "XML",
+        "剪辑"
+      ],
+      "version": "待补充",
+      "sourceMeta": {
+        "provider": "dingtalk",
+        "nodeId": "gwva2dxOW4K2Pkbgf0MLdQ5z8bkz3BRL",
+        "url": "https://alidocs.dingtalk.com/i/nodes/gwva2dxOW4K2Pkbgf0MLdQ5z8bkz3BRL?utm_scene=team_space",
+        "updateTime": 1781019662000,
+        "updateTimeText": "2026-06-09 23:41:02"
+      }
     },
     {
       "id": "ai-screen-recording-skill",
@@ -774,208 +946,6 @@
         "自动化"
       ],
       "version": "待补充"
-    },
-    {
-      "id": "itv-auto-marker",
-      "slug": "itv-auto-marker",
-      "name": "AI自动制作itv工作流",
-      "categoryId": "video-audio",
-      "categoryIds": [
-        "video-audio",
-        "workflow-automation"
-      ],
-      "type": "workflow_package",
-      "developer": "海欣",
-      "status": "iterating",
-      "difficulty": "进阶",
-      "summary": "上传原视频和 XML 文件，让 AI 自动分析 itv 节点并生成配置，目标是把交互视频配置压缩到几步完成。",
-      "detailStyle": "source_document",
-      "sourceMeta": {
-        "provider": "dingtalk",
-        "nodeId": "YMyQA2dXW792qoPNI5Nd40n0JzlwrZgb",
-        "url": "https://alidocs.dingtalk.com/i/nodes/YMyQA2dXW792qoPNI5Nd40n0JzlwrZgb?utm_scene=team_space",
-        "updateTime": 1781261842000,
-        "updateTimeText": "2026-06-12 18:57:22"
-      },
-      "targetUsers": [],
-      "painPoints": [],
-      "features": [],
-      "usageSteps": [],
-      "coverImage": {
-        "kind": "image",
-        "label": "体验版",
-        "description": "生成了HTML工具，还有很多需要优化的地方，暂时没有token去弄了，但是一秒生成！",
-        "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/f773d889-fdc4-48c9-81c1-68119dce3abc.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=2HKww7Dl3un292Qg3ZbQ5puH9bs%3D",
-        "status": "dingtalk_document"
-      },
-      "featureMedia": [],
-      "stepMedia": [],
-      "methods": [],
-      "documentSections": [
-        {
-          "title": "工具",
-          "paragraphs": [
-            "codex/FCPX"
-          ]
-        },
-        {
-          "title": "体验版",
-          "paragraphs": [
-            "生成了HTML工具，还有很多需要优化的地方，暂时没有token去弄了，但是一秒生成！"
-          ],
-          "bullets": [
-            "优点：只需3步即可完成配置，且耗时极短",
-            "步骤1：上传原视频、xml文件",
-            "步骤2：点击“自动分析”",
-            "步骤3：如无问题，点击“生成并下载”",
-            "痛点：还需更多案例去练成，完善更多规则和bug",
-            "痛点：想要批量生成不同类型的itv",
-            "硬性条件：工程文件中，必须要有一条和原视频长度相同的图层提供给AI识别定位"
-          ],
-          "images": [
-            {
-              "kind": "image",
-              "label": "体验版",
-              "description": "",
-              "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/f773d889-fdc4-48c9-81c1-68119dce3abc.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=2HKww7Dl3un292Qg3ZbQ5puH9bs%3D",
-              "status": "dingtalk_document"
-            },
-            {
-              "kind": "image",
-              "label": "硬性条件图示",
-              "description": "",
-              "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/8b6adbba-567d-43a8-8ceb-9a78048d039d.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=BHvP5xUaTCgYI56Oj0agpyOegZE%3D",
-              "status": "dingtalk_document"
-            }
-          ]
-        },
-        {
-          "title": "设想",
-          "paragraphs": [
-            "给AI提供xml文档、视频文件，AI根据文档中的itv标记，或分析图层信息，自动判定itv节点以及交互类型，进行交互配置。"
-          ]
-        },
-        {
-          "title": "具体操作",
-          "subsections": [
-            {
-              "title": "方法一",
-              "paragraphs": [
-                "在fcp中，使用字幕、打标记或图层功能，写清楚itv对应的视频名字、选项、跳转点、热区、循环区间，方便AI解析文件时定位和配置，相当于将在制课工具里面的操作搬到fcp里面完成了"
-              ],
-              "bullets": [
-                "优点：做视频顺便把itv给标记了，导出xml让AI批量完成配置",
-                "优点：复杂的分支只需要打标记，标注“A”/“A跳转”，AI就会一一对应配置",
-                "痛点：虽然不用再逐个去做itv，但需要在fcp里做标记，感觉还不够简便啊！",
-                "验证进度：分支题验证通过，正确率约95%，暂未发现bug（对话过程太长就不放了）",
-                "验证进度：拖拽题正确率约90%，对于拖拽图片的处理，AI还需要优化（对话过程太长就不放了）"
-              ]
-            },
-            {
-              "title": "方法二（已有体验版）",
-              "paragraphs": [
-                "让AI根据motion的重复规律和添加的效果，自动判断和定位文档中的itv段落，根据选项的尺寸来设置热区的尺寸和位置。",
-                "目前进度：在没有任何标记打点的情况下，已验证AI可以通过motion的名字或重复的规律，识别出单选题和分支题。"
-              ],
-              "bullets": [
-                "优点：解决了方法一里面的痛点",
-                "痛点：还未经过实战验证，可能存在比较多的问题，但像自动暂停、单选题这种简单的交互应该没问题",
-                "痛点：如果一整节包含各种讲解片段、各种交互题型的xml文件，交给AI自己定位节点，可能会比较耗时和消耗资源",
-                "关于资源的消耗，我咨询了codex，加入规则完善封装成skill，预计可以为AI减少3~60%的工作量，token消耗也会降低",
-                "验证进度：分支题提供了跟日常制作结构类似的测试文件，导出xml，里面没有打标记点，没有提前给答案，让codex自己推断节点，然后生成配置文件，耗时约6分钟，最后人工验证准确率有95%左右了。",
-                "除了循环区间与A选项节点贴在一起（可能会有bug）和B选项跳转时机过早以外，其他基本准确。",
-                "全流程思维导图和流程图见下方图示。",
-                "单选题：提供无标记额外信息的xml文件，已验证可根据图层命名或切割规律识别交互题，但还未加入案例试做。",
-                "拖拽题、自动暂停、录音、视频开窗：待继续补充。"
-              ],
-              "images": [
-                {
-                  "kind": "image",
-                  "label": "规则封装收益预估",
-                  "description": "",
-                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/c211c636-20a1-4451-9de5-e18c8ea810d2.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=T2IGnSGI0zTP0%2BDfRVeBnYYzhsI%3D",
-                  "status": "dingtalk_document"
-                },
-                {
-                  "kind": "image",
-                  "label": "分支题验证记录",
-                  "description": "",
-                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/6586e768-f8f7-42f5-a963-810c49274a97.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=slyMw%2BIwCN%2BT7PfXYNl%2BvloU1bk%3D",
-                  "status": "dingtalk_document"
-                },
-                {
-                  "kind": "image",
-                  "label": "分支题结果核对",
-                  "description": "",
-                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/d6a0fb9d-ee6a-4ce7-8263-fa3b86278ec9.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=UrV3Eq9T7tuuHi1mL3Xbho17LZI%3D",
-                  "status": "dingtalk_document"
-                },
-                {
-                  "kind": "image",
-                  "label": "ITV分支交互-极简流程图",
-                  "description": "",
-                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/a556c9cd-9c0f-4daa-a1f4-047e7f45b4f8.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=eTvzlDYSDlShKFPOkMoQ2%2FLjW7w%3D",
-                  "status": "dingtalk_document"
-                },
-                {
-                  "kind": "image",
-                  "label": "单选题识别验证",
-                  "description": "",
-                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/59ec9680-7621-48b1-95d3-3b677f09822a.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=NAPkzvzbklkGbUjy%2Fd0HE6SVDgI%3D",
-                  "status": "dingtalk_document"
-                },
-                {
-                  "kind": "image",
-                  "label": "单选题补充验证",
-                  "description": "",
-                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/6244c97e-6b57-40bc-9485-4e5bdcb9707f.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=Gstpc9GrsZXagTEgN6YaOMXMdeY%3D",
-                  "status": "dingtalk_document"
-                }
-              ]
-            },
-            {
-              "title": "方法三（折中版）",
-              "paragraphs": [
-                "给AI提供手动标记节点和自动识别itv两套规则，让它结合判断，假设一道分支题，命名为“A选项”的图层上存在2个标记点，且标记点里面没有任何文字备注，则默认它们分别是“A开始”“A结束”。"
-              ],
-              "bullets": [
-                "优点：快速标记，无需对标记做任何命名",
-                "优点：复杂的分支或拖拽题，更便于AI对节点的定位",
-                "痛点：有可能会出现识别错误",
-                "痛点：纯设想，未验证"
-              ]
-            }
-          ]
-        }
-      ],
-      "resources": [
-        {
-          "kind": "html",
-          "label": "分支交互itv生成_优化版.html",
-          "url": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/att/9f27d13d-33bc-4955-aaa6-0fdb96438738.html?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=loue%2F%2B6kSXCXmIUTVWFJ5PAxRCc%3D",
-          "actionLabel": "打开体验版",
-          "note": "来自钉钉文档的 HTML 体验版链接。",
-          "status": "external_link"
-        },
-        {
-          "kind": "source_doc",
-          "label": "钉钉原文 / 后续资源",
-          "url": "https://alidocs.dingtalk.com/i/nodes/YMyQA2dXW792qoPNI5Nd40n0JzlwrZgb?utm_scene=team_space",
-          "actionLabel": "查看原文",
-          "note": "完整图文、安装包或大文件资源以钉钉原文为准。",
-          "status": "external_link"
-        }
-      ],
-      "media": [],
-      "tags": [
-        "ITV",
-        "Codex",
-        "FCPX",
-        "Motion",
-        "AI工作流",
-        "持续迭代"
-      ],
-      "version": "体验版"
     }
   ],
   "commentSchema": {
