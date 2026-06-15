@@ -52,34 +52,39 @@
       "developer": "跃鹏",
       "status": "published",
       "difficulty": "入门",
-      "summary": "把常用 AI 网站、提示词模板、常用公式和一键打开入口整合到浏览器插件里，让找网址、召唤工具、插入提示词和生成视频提示词这几件事都能在同一个入口完成。",
+      "summary": "把常用AI网站、提示词模板和一键打开入口整合到浏览器里，减少找网址、复制提示词和切换页面的时间。",
+      "sourceMeta": {
+        "provider": "dingtalk",
+        "nodeId": "ZX6GRezwJl7ZrYdQHr4AjmNrVdqbropQ",
+        "url": "https://alidocs.dingtalk.com/i/nodes/ZX6GRezwJl7ZrYdQHr4AjmNrVdqbropQ?utm_scene=team_space",
+        "originalUrl": "https://alidocs.dingtalk.com/i/nodes/G1DKw2zgV2R0xvb9UPQDDyeYVB5r9YAn?utm_scene=person_space",
+        "updateTime": 1781495458000,
+        "updateTimeText": "2026-06-15 11:50:58"
+      },
       "targetUsers": [
-        "经常使用豆包、DeepSeek、Oii、即梦等多个 AI 网站的制作同学",
-        "需要频繁复制提示词、打开工具页面、调用固定提示词模板的人",
-        "希望团队成员使用同一套提示词公式和生成格式的人",
-        "需要制作图片、视频、多风格内容，并经常拆分剧本、生成故事板的人"
+        "经常使用多个AI网站的制作同学",
+        "需要频繁复制提示词和打开工具页面的人",
+        "希望把提示词流程固定下来的团队成员"
       ],
       "painPoints": [
-        "常用 AI 网站分散，每次制作都要重新找入口、开页面、切换窗口。",
-        "提示词需要反复查找和复制，复制错、漏复制、格式不统一都会影响生成结果。",
-        "网站改版后，自动插入提示词可能失效，需要有复制兜底。",
-        "视频生成、分镜拆分、场景四视图、Image2 故事板等流程缺少固定公式，团队产出容易不一致。"
+        "常用AI网站分散，打开效率低。",
+        "提示词需要反复查找和复制。",
+        "需要用到多种类型的 AI 生成提示词，如图片、视频、多风格。"
       ],
       "features": [
-        "网址收录：集中收录常用 AI 制作网站，减少重复找网址的时间。",
-        "智能工人：一键打开配置好的 AI 网站，包括豆包、DeepSeek、Oii、即梦等。",
-        "自动插入提示词：识别当前网页输入框，把提示词追加进去。",
-        "复制兜底：如果网站改版导致插入失败，提示词会自动复制，手动粘贴即可继续。",
-        "常用公式：内置视频起手式、分镜拆分、场景四视图、Image2 故事板等提示词公式。",
-        "安装后固定到浏览器工具栏，日常制作时从右上角插件入口直接使用。"
+        "收录常用AI制作网址。",
+        "智能工人按钮可一键召唤豆包、DeepSeek、Oii、即梦等网站。",
+        "自动识别当前网页并尝试插入提示词。",
+        "插入失败时自动复制提示词，用户可手动粘贴。",
+        "常用公式：内置起手式、分镜拆分、场景四视图、Image2 故事板等提示词公式。"
       ],
       "usageSteps": [
         "下载点猫提示词助手压缩包，并在磁盘任意目录解压成文件夹。",
         "检查解压后的文件夹内容，确认插件文件完整。",
-        "打开 Chrome 或同类浏览器的扩展程序页面，进入“管理扩展程序”。",
+        "打开浏览器扩展程序页面，进入“管理扩展程序”。",
         "将解压后的整个插件文件夹拖入扩展页面。",
-        "出现点猫提示词助手后，表示安装成功。",
-        "将点猫提示词助手固定到浏览器工具栏，以后点击右上角插件入口使用。"
+        "看到点猫提示词助手后，将插件固定到浏览器工具栏。",
+        "按制作需求使用 chrome 插件功能。"
       ],
       "coverImage": {
         "kind": "image",
@@ -219,11 +224,18 @@
           "status": "external_link"
         },
         {
+          "kind": "source_doc",
+          "label": "原文地址",
+          "url": "https://alidocs.dingtalk.com/i/nodes/G1DKw2zgV2R0xvb9UPQDDyeYVB5r9YAn?utm_scene=person_space",
+          "actionLabel": "查看原文",
+          "status": "external_link"
+        },
+        {
           "kind": "package",
           "label": "点猫提示词助手安装包",
-          "url": "https://alidocs.dingtalk.com/i/nodes/ZX6GRezwJl7ZrYdQHr4AjmNrVdqbropQ?utm_scene=team_space",
+          "url": "https://alidocs.dingtalk.com/i/nodes/G1DKw2zgV2R0xvb9UPQDDyeYVB5r9YAn?utm_scene=person_space",
           "actionLabel": "打开下载页",
-          "note": "安装包位于钉钉文档底部“软件下载”区域，点击后在文档中下载。",
+          "note": "安装包位于文档底部“软件下载”区域，点击后在文档中下载。",
           "status": "external_link"
         }
       ],

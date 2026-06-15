@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260615a";
+const seedUrl = "./content/tools.seed.json?v=20260615b";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
