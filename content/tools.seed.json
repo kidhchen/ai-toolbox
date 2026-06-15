@@ -776,8 +776,15 @@
       "developer": "海欣",
       "status": "iterating",
       "difficulty": "进阶",
-      "summary": "给 AI 提供 XML、视频文件或图层信息，让 AI 自动判定 itv 节点、交互类型和交互配置的制作工作流。",
+      "summary": "上传原视频和 XML 文件，让 AI 自动分析 itv 节点并生成配置，目标是把交互视频配置压缩到几步完成。",
       "detailStyle": "source_document",
+      "sourceMeta": {
+        "provider": "dingtalk",
+        "nodeId": "YMyQA2dXW792qoPNI5Nd40n0JzlwrZgb",
+        "url": "https://alidocs.dingtalk.com/i/nodes/YMyQA2dXW792qoPNI5Nd40n0JzlwrZgb?utm_scene=team_space",
+        "updateTime": 1781261842000,
+        "updateTimeText": "2026-06-12 18:57:22"
+      },
       "targetUsers": [],
       "painPoints": [],
       "features": [],
@@ -786,7 +793,7 @@
         "kind": "image",
         "label": "体验版",
         "description": "生成了HTML工具，还有很多需要优化的地方，暂时没有token去弄了，但是一秒生成！",
-        "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/f773d889-fdc4-48c9-81c1-68119dce3abc.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=3Y%2FzQg%2BS8h7xfFHgduRpgcMZWXA%3D",
+        "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/f773d889-fdc4-48c9-81c1-68119dce3abc.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=2HKww7Dl3un292Qg3ZbQ5puH9bs%3D",
         "status": "dingtalk_document"
       },
       "featureMedia": [],
@@ -805,15 +812,27 @@
             "生成了HTML工具，还有很多需要优化的地方，暂时没有token去弄了，但是一秒生成！"
           ],
           "bullets": [
-            "痛点：还需更多案例去练成，完善更多规则",
-            "痛点：想要批量生成不同类型的itv"
+            "优点：只需3步即可完成配置，且耗时极短",
+            "步骤1：上传原视频、xml文件",
+            "步骤2：点击“自动分析”",
+            "步骤3：如无问题，点击“生成并下载”",
+            "痛点：还需更多案例去练成，完善更多规则和bug",
+            "痛点：想要批量生成不同类型的itv",
+            "硬性条件：工程文件中，必须要有一条和原视频长度相同的图层提供给AI识别定位"
           ],
           "images": [
             {
               "kind": "image",
               "label": "体验版",
               "description": "",
-              "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/f773d889-fdc4-48c9-81c1-68119dce3abc.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=3Y%2FzQg%2BS8h7xfFHgduRpgcMZWXA%3D",
+              "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/f773d889-fdc4-48c9-81c1-68119dce3abc.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=2HKww7Dl3un292Qg3ZbQ5puH9bs%3D",
+              "status": "dingtalk_document"
+            },
+            {
+              "kind": "image",
+              "label": "硬性条件图示",
+              "description": "",
+              "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/8b6adbba-567d-43a8-8ceb-9a78048d039d.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=BHvP5xUaTCgYI56Oj0agpyOegZE%3D",
               "status": "dingtalk_document"
             }
           ]
@@ -862,42 +881,42 @@
                   "kind": "image",
                   "label": "规则封装收益预估",
                   "description": "",
-                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/c211c636-20a1-4451-9de5-e18c8ea810d2.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=QY1rtGYmWsCCVtxQ7sXCAHFrNeo%3D",
+                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/c211c636-20a1-4451-9de5-e18c8ea810d2.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=T2IGnSGI0zTP0%2BDfRVeBnYYzhsI%3D",
                   "status": "dingtalk_document"
                 },
                 {
                   "kind": "image",
                   "label": "分支题验证记录",
                   "description": "",
-                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/6586e768-f8f7-42f5-a963-810c49274a97.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=4MlsT0tC8I7aOEQzqlGAxvX6F0A%3D",
+                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/6586e768-f8f7-42f5-a963-810c49274a97.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=slyMw%2BIwCN%2BT7PfXYNl%2BvloU1bk%3D",
                   "status": "dingtalk_document"
                 },
                 {
                   "kind": "image",
                   "label": "分支题结果核对",
                   "description": "",
-                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/d6a0fb9d-ee6a-4ce7-8263-fa3b86278ec9.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=08AWXc0H%2FPf8SjXgHaceS1Uuu48%3D",
+                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/d6a0fb9d-ee6a-4ce7-8263-fa3b86278ec9.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=UrV3Eq9T7tuuHi1mL3Xbho17LZI%3D",
                   "status": "dingtalk_document"
                 },
                 {
                   "kind": "image",
                   "label": "ITV分支交互-极简流程图",
                   "description": "",
-                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/a556c9cd-9c0f-4daa-a1f4-047e7f45b4f8.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=1sX98lOWuo4vnZS%2BRzSEbg%2Findk%3D",
+                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/a556c9cd-9c0f-4daa-a1f4-047e7f45b4f8.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=eTvzlDYSDlShKFPOkMoQ2%2FLjW7w%3D",
                   "status": "dingtalk_document"
                 },
                 {
                   "kind": "image",
                   "label": "单选题识别验证",
                   "description": "",
-                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/59ec9680-7621-48b1-95d3-3b677f09822a.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=2%2F87mEsG6wp1HsxqbHlUywoOseY%3D",
+                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/59ec9680-7621-48b1-95d3-3b677f09822a.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=NAPkzvzbklkGbUjy%2Fd0HE6SVDgI%3D",
                   "status": "dingtalk_document"
                 },
                 {
                   "kind": "image",
                   "label": "单选题补充验证",
                   "description": "",
-                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/6244c97e-6b57-40bc-9485-4e5bdcb9707f.png?Expires=1781264169&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=QreDJokOX6IXhVZkXqljtRtOTJw%3D",
+                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/6244c97e-6b57-40bc-9485-4e5bdcb9707f.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=Gstpc9GrsZXagTEgN6YaOMXMdeY%3D",
                   "status": "dingtalk_document"
                 }
               ]
@@ -918,6 +937,14 @@
         }
       ],
       "resources": [
+        {
+          "kind": "html",
+          "label": "分支交互itv生成_优化版.html",
+          "url": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/att/9f27d13d-33bc-4955-aaa6-0fdb96438738.html?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=loue%2F%2B6kSXCXmIUTVWFJ5PAxRCc%3D",
+          "actionLabel": "打开体验版",
+          "note": "来自钉钉文档的 HTML 体验版链接。",
+          "status": "external_link"
+        },
         {
           "kind": "source_doc",
           "label": "钉钉原文 / 后续资源",

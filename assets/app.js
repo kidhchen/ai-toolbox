@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260612b";
+const seedUrl = "./content/tools.seed.json?v=20260615a";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -462,6 +462,7 @@ function mergeSeedUpdates(data) {
         "methodsTitle",
         "methods",
         "documentSections",
+        "sourceMeta",
         "stepMedia",
         "resources",
         "tags",
