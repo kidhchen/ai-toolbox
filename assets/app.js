@@ -1445,7 +1445,6 @@ function renderTool(slug) {
             <div class="meta-row">
               <span class="meta-item">开发者 ${escapeHtml(tool.developer)}</span>
               <span class="meta-item">版本 ${escapeHtml(tool.version)}</span>
-              <span class="meta-item">难度 ${escapeHtml(tool.difficulty)}</span>
             </div>
           </header>
 
@@ -1620,48 +1619,20 @@ function heroMediaSection(tool) {
 function visualSupportSection(tool, slotType) {
   const config = {
     features: {
-      title: "核心功能图示",
-      slots: [
-        {
-          kind: "image",
-          label: "功能截图",
-          description: "建议放工具主界面、关键按钮或处理前后对比图。",
-          status: "pending_upload"
-        },
-        {
-          kind: "video",
-          label: "功能演示视频",
-          description: "建议放 30 到 90 秒的核心能力演示。",
-          status: "pending_upload"
-        }
-      ]
+      title: "核心功能图示"
     },
     steps: {
-      title: tool.stepMediaTitle || "使用步骤图文 / 视频",
-      slots: [
-        {
-          kind: "image",
-          label: "步骤截图",
-          description: "建议放安装、拖拽、导入、导出等关键步骤截图。",
-          status: "pending_upload"
-        },
-        {
-          kind: "video",
-          label: "完整使用视频",
-          description: "建议放从打开工具到完成结果的完整操作演示。",
-          status: "pending_upload"
-        }
-      ]
+      title: tool.stepMediaTitle || "使用步骤图文 / 视频"
     }
   }[slotType];
   if (!config) return "";
   const actualSlots = slotType === "features" ? tool.featureMedia || [] : tool.stepMedia || [];
-  const slots = actualSlots.length ? actualSlots : config.slots;
+  if (!actualSlots.length) return "";
   return `
     <section class="section-block visual-block">
       <h2>${escapeHtml(config.title)}</h2>
       <div class="visual-grid">
-        ${slots.map((slot) => mediaSlot(slot)).join("")}
+        ${actualSlots.map((slot) => mediaSlot(slot)).join("")}
       </div>
     </section>
   `;
@@ -1719,21 +1690,7 @@ function documentSection(section, level = 2) {
 function stepsWithMediaSection(tool) {
   const items = tool.usageSteps || [];
   const title = tool.stepsTitle || "使用步骤";
-  const fallbackSlots = [
-    {
-      kind: "image",
-      label: "步骤截图",
-      description: "建议放安装、拖拽、导入、导出等关键步骤截图。",
-      status: "pending_upload"
-    },
-    {
-      kind: "video",
-      label: "完整使用视频",
-      description: "建议放从打开工具到完成结果的完整操作演示。",
-      status: "pending_upload"
-    }
-  ];
-  const slots = tool.stepMedia?.length ? tool.stepMedia : fallbackSlots;
+  const slots = tool.stepMedia || [];
   const mediaTitle = !tool.stepMediaTitle || tool.stepMediaTitle === title ? "图文步骤" : tool.stepMediaTitle;
   if (!items.length && !slots.length) return "";
   return `
