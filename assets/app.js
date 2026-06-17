@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260615c";
+const seedUrl = "./content/tools.seed.json?v=20260617b";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -1610,6 +1610,7 @@ function heroMediaSection(tool) {
 }
 
 function toolNarrativeSections(tool) {
+  const stepMedia = [...(tool.stepMedia || []), ...inlineOperationMedia(tool)];
   return `
     ${contentSection("适合谁使用", { items: tool.targetUsers })}
     ${contentSection("解决的痛点", { items: tool.painPoints })}
@@ -1619,12 +1620,23 @@ function toolNarrativeSections(tool) {
     })}
     ${contentSection(tool.stepsTitle || "使用步骤", {
       items: tool.usageSteps,
-      images: tool.stepMedia,
+      images: stepMedia,
       ordered: true,
       mediaTitle: tool.stepMediaTitle
     })}
     ${methodsSection(tool)}
   `;
+}
+
+function inlineOperationMedia(tool) {
+  return (tool.media || []).map((item) => ({
+    kind: item.kind || "video",
+    label: item.label || "操作演示",
+    description: item.description || (item.duration ? `预计视频时长：${item.duration}` : "完整操作演示。"),
+    status: item.status,
+    src: item.src,
+    url: item.url || item.href || item.previewUrl
+  }));
 }
 
 function contentSection(title, { items = [], images = [], ordered = false, mediaTitle = "" } = {}) {
@@ -1720,25 +1732,10 @@ function methodsSection(tool) {
 
 function resourcesSection(tool) {
   const resources = tool.resources || [];
-  const media = tool.media || [];
   return `
     <section class="section-block">
       <h2>资源入口</h2>
       ${resources.length ? `<div class="resource-list">${resources.map(resourceItem).join("")}</div>` : emptyState("暂无安装包", "资源上传后会在这里出现。")}
-      ${media.length ? `
-        <div class="media-row" style="margin-top:12px">
-          ${media.map((item) => `
-            ${mediaSlot({
-              kind: item.kind || "video",
-              label: item.label,
-              description: item.duration ? `预计视频时长：${item.duration}` : "资源上传后可在这里播放。",
-              status: item.status,
-              src: item.src,
-              url: item.url || item.href || item.previewUrl
-            })}
-          `).join("")}
-        </div>
-      ` : ""}
     </section>
   `;
 }

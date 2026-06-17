@@ -73,21 +73,24 @@
       "coverImage": {
         "kind": "image",
         "label": "积木自动排版工具界面",
-        "src": "assets/doc-images/doc-image-52.png",
-        "status": "imported_from_docs"
+        "description": "拖动积木图片，实现积木自动排版。",
+        "src": "assets/doc-images/dingtalk-20260617/block-layout-1.png",
+        "status": "site_asset"
       },
       "featureMedia": [
         {
           "kind": "image",
-          "label": "积木拖入与排版效果",
-          "src": "assets/doc-images/doc-image-53.png",
-          "status": "imported_from_docs"
+          "label": "积木自动排版工具界面",
+          "description": "网页端插件主界面。",
+          "src": "assets/doc-images/dingtalk-20260617/block-layout-1.png",
+          "status": "site_asset"
         },
         {
           "kind": "image",
           "label": "积木排版结果示例",
-          "src": "assets/doc-images/doc-image-54.png",
-          "status": "imported_from_docs"
+          "description": "积木图片自动排版后的效果。",
+          "src": "assets/doc-images/dingtalk-20260617/block-layout-2.png",
+          "status": "site_asset"
         }
       ],
       "resources": [
@@ -150,10 +153,10 @@
       "usageSteps": [],
       "coverImage": {
         "kind": "image",
-        "label": "体验版",
-        "description": "生成了HTML工具，还有很多需要优化的地方，暂时没有token去弄了，但是一秒生成！",
-        "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/f773d889-fdc4-48c9-81c1-68119dce3abc.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=2HKww7Dl3un292Qg3ZbQ5puH9bs%3D",
-        "status": "dingtalk_document"
+        "label": "分支交互题生成体验版",
+        "description": "上传原视频、XML 文件后自动分析并生成配置。",
+        "src": "assets/doc-images/dingtalk-20260617/itv-experience.png",
+        "status": "site_asset"
       },
       "featureMedia": [],
       "stepMedia": [],
@@ -182,17 +185,24 @@
           "images": [
             {
               "kind": "image",
-              "label": "体验版",
-              "description": "",
-              "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/f773d889-fdc4-48c9-81c1-68119dce3abc.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=2HKww7Dl3un292Qg3ZbQ5puH9bs%3D",
-              "status": "dingtalk_document"
+              "label": "分支交互题生成体验版",
+              "description": "上传原视频、XML 文件后自动分析并生成配置。",
+              "src": "assets/doc-images/dingtalk-20260617/itv-experience.png",
+              "status": "site_asset"
             },
             {
               "kind": "image",
-              "label": "硬性条件图示",
-              "description": "",
-              "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/8b6adbba-567d-43a8-8ceb-9a78048d039d.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=BHvP5xUaTCgYI56Oj0agpyOegZE%3D",
-              "status": "dingtalk_document"
+              "label": "工程文件硬性条件",
+              "description": "工程文件中需要有和原视频长度相同的图层或复合片段。",
+              "src": "assets/doc-images/dingtalk-20260617/itv-condition.png",
+              "status": "site_asset"
+            },
+            {
+              "kind": "image",
+              "label": "批量生成验证",
+              "description": "目前支持分支、单选等类型，仍有规则待优化。",
+              "src": "assets/doc-images/dingtalk-20260617/itv-batch.png",
+              "status": "site_asset"
             }
           ]
         },
@@ -238,45 +248,45 @@
               "images": [
                 {
                   "kind": "image",
-                  "label": "规则封装收益预估",
-                  "description": "",
-                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/c211c636-20a1-4451-9de5-e18c8ea810d2.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=T2IGnSGI0zTP0%2BDfRVeBnYYzhsI%3D",
-                  "status": "dingtalk_document"
+                  "label": "资源消耗评估",
+                  "description": "封装规则后预计可以降低部分 token 消耗。",
+                  "src": "assets/doc-images/dingtalk-20260617/itv-token.png",
+                  "status": "site_asset"
                 },
                 {
                   "kind": "image",
-                  "label": "分支题验证记录",
-                  "description": "",
-                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/6586e768-f8f7-42f5-a963-810c49274a97.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=slyMw%2BIwCN%2BT7PfXYNl%2BvloU1bk%3D",
-                  "status": "dingtalk_document"
+                  "label": "分支题自动识别结果",
+                  "description": "无标记情况下识别分支题并生成配置。",
+                  "src": "assets/doc-images/dingtalk-20260617/itv-branch-result.png",
+                  "status": "site_asset"
                 },
                 {
                   "kind": "image",
-                  "label": "分支题结果核对",
-                  "description": "",
-                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/d6a0fb9d-ee6a-4ce7-8263-fa3b86278ec9.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=UrV3Eq9T7tuuHi1mL3Xbho17LZI%3D",
-                  "status": "dingtalk_document"
+                  "label": "分支题问题定位",
+                  "description": "部分循环区间和跳转时机仍需优化。",
+                  "src": "assets/doc-images/dingtalk-20260617/itv-branch-issue.png",
+                  "status": "site_asset"
                 },
                 {
                   "kind": "image",
-                  "label": "ITV分支交互-极简流程图",
-                  "description": "",
-                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/a556c9cd-9c0f-4daa-a1f4-047e7f45b4f8.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=eTvzlDYSDlShKFPOkMoQ2%2FLjW7w%3D",
-                  "status": "dingtalk_document"
+                  "label": "ITV 分支交互流程图",
+                  "description": "全流程思维导图和流程图。",
+                  "src": "assets/doc-images/dingtalk-20260617/itv-flow.png",
+                  "status": "site_asset"
                 },
                 {
                   "kind": "image",
-                  "label": "单选题识别验证",
-                  "description": "",
-                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/59ec9680-7621-48b1-95d3-3b677f09822a.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=NAPkzvzbklkGbUjy%2Fd0HE6SVDgI%3D",
-                  "status": "dingtalk_document"
+                  "label": "单选题识别示例 A",
+                  "description": "根据图层命名或切割规律识别单选题。",
+                  "src": "assets/doc-images/dingtalk-20260617/itv-single-1.png",
+                  "status": "site_asset"
                 },
                 {
                   "kind": "image",
-                  "label": "单选题补充验证",
-                  "description": "",
-                  "src": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/img/6244c97e-6b57-40bc-9485-4e5bdcb9707f.png?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=Gstpc9GrsZXagTEgN6YaOMXMdeY%3D",
-                  "status": "dingtalk_document"
+                  "label": "单选题识别示例 B",
+                  "description": "单选题测试文件示例。",
+                  "src": "assets/doc-images/dingtalk-20260617/itv-single-2.png",
+                  "status": "site_asset"
                 }
               ]
             },
@@ -700,16 +710,18 @@
       ],
       "coverImage": {
         "kind": "image",
-        "label": "批量抠图与高清放大界面",
-        "src": "assets/doc-images/doc-image-49.png",
-        "status": "imported_from_docs"
+        "label": "图片&视频后期处理工具界面",
+        "description": "批量抠图、背景替换、视频抠绿幕、压缩和高清放大工具界面。",
+        "src": "assets/doc-images/dingtalk-20260617/batch-cutout-core.png",
+        "status": "site_asset"
       },
       "featureMedia": [
         {
           "kind": "image",
-          "label": "素材批处理面板",
-          "src": "assets/doc-images/doc-image-50.png",
-          "status": "imported_from_docs"
+          "label": "核心功能图示",
+          "description": "批量抠图、背景替换、视频抠绿幕、图片/gif压缩、高清放大集中在一个工具里。",
+          "src": "assets/doc-images/dingtalk-20260617/batch-cutout-core.png",
+          "status": "site_asset"
         }
       ],
       "resources": [
@@ -779,16 +791,25 @@
       ],
       "coverImage": {
         "kind": "image",
-        "label": "自动加音效工具界面",
-        "src": "assets/doc-images/doc-image-45.png",
-        "status": "imported_from_docs"
+        "label": "自动加音效 HTML 工具界面",
+        "description": "打开网页后拖入 XML 文件即可批量处理音效模板。",
+        "src": "assets/doc-images/dingtalk-20260617/auto-sound-xml.png",
+        "status": "site_asset"
       },
       "featureMedia": [
         {
           "kind": "image",
-          "label": "XML 处理说明",
-          "src": "assets/doc-images/doc-image-47.png",
-          "status": "imported_from_docs"
+          "label": "拖拽 XML 使用方法",
+          "description": "打开网站后拖拽 XML，不用复制复杂代码。",
+          "src": "assets/doc-images/dingtalk-20260617/auto-sound-xml.png",
+          "status": "site_asset"
+        },
+        {
+          "kind": "image",
+          "label": "重复模板合并显示",
+          "description": "将重复模板变成只显示一个，降低查找成本。",
+          "src": "assets/doc-images/dingtalk-20260617/auto-sound-merge.png",
+          "status": "site_asset"
         }
       ],
       "resources": [
@@ -859,16 +880,25 @@
       ],
       "coverImage": {
         "kind": "image",
-        "label": "Codex 加音效流程示例",
-        "src": "assets/doc-images/doc-image-43.png",
-        "status": "imported_from_docs"
+        "label": "Codex 匹配音效效果",
+        "description": "Codex 匹配音效、转场和插件效果。",
+        "src": "assets/doc-images/dingtalk-20260617/codex-sound-effects.png",
+        "status": "site_asset"
       },
       "featureMedia": [
         {
           "kind": "image",
-          "label": "音效匹配与工程示例",
-          "src": "assets/doc-images/doc-image-44.png",
-          "status": "imported_from_docs"
+          "label": "Codex 匹配音效效果",
+          "description": "Codex 匹配音效、转场和插件效果。",
+          "src": "assets/doc-images/dingtalk-20260617/codex-sound-effects.png",
+          "status": "site_asset"
+        },
+        {
+          "kind": "image",
+          "label": "重新导入 XML 文件",
+          "description": "处理完成后重新导入 XML 文件即可应用。",
+          "src": "assets/doc-images/dingtalk-20260617/codex-sound-import.png",
+          "status": "site_asset"
         }
       ],
       "resources": [
