@@ -1971,22 +1971,6 @@ html[data-theme="night"] body.tool-detail-page .step-list li::before {
   color: var(--mint);
 }
 
-body.tool-detail-page .steps-media-group {
-  margin-top: clamp(18px, 2vw, 28px);
-}
-
-body.tool-detail-page .steps-media-group h3 {
-  margin: 0 0 14px;
-  color: rgba(18, 18, 22, 0.54);
-  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Noto Sans SC", sans-serif;
-  font-size: 15px;
-  font-weight: 760;
-}
-
-html[data-theme="night"] body.tool-detail-page .steps-media-group h3 {
-  color: rgba(237, 245, 238, 0.58);
-}
-
 body.tool-detail-page .media-hero {
   margin-bottom: clamp(28px, 4vw, 52px);
 }
@@ -2062,6 +2046,26 @@ html[data-theme="night"] body.tool-detail-page .media-slot figcaption {
 body.tool-detail-page .visual-grid,
 body.tool-detail-page .media-row {
   gap: clamp(14px, 1.8vw, 22px);
+}
+
+body.tool-detail-page .doc-image-flow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: clamp(14px, 1.8vw, 22px);
+  margin-top: clamp(16px, 2vw, 24px);
+}
+
+body.tool-detail-page .doc-image-flow h3 {
+  grid-column: 1 / -1;
+  margin: 0 0 -4px;
+  color: rgba(18, 18, 22, 0.54);
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Noto Sans SC", sans-serif;
+  font-size: 15px;
+  font-weight: 760;
+}
+
+html[data-theme="night"] body.tool-detail-page .doc-image-flow h3 {
+  color: rgba(237, 245, 238, 0.58);
 }
 
 body.tool-detail-page .resource-item,

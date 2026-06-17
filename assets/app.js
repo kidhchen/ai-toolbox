@@ -1449,14 +1449,7 @@ function renderTool(slug) {
           </header>
 
           ${tool.detailStyle === "source_document" ? "" : heroMediaSection(tool)}
-          ${tool.documentSections?.length ? documentSectionsSection(tool) : `
-            ${listSection("适合谁使用", tool.targetUsers)}
-            ${listSection("解决的痛点", tool.painPoints)}
-            ${listSection(tool.featuresTitle || "核心功能", tool.features)}
-            ${visualSupportSection(tool, "features")}
-            ${stepsWithMediaSection(tool)}
-            ${methodsSection(tool)}
-          `}
+          ${tool.documentSections?.length ? documentSectionsSection(tool) : toolNarrativeSections(tool)}
           ${toolPraiseSection(tool)}
           ${resourcesSection(tool)}
         </article>
@@ -1616,36 +1609,43 @@ function heroMediaSection(tool) {
   `;
 }
 
-function visualSupportSection(tool, slotType) {
-  const config = {
-    features: {
-      title: "核心功能图示"
-    },
-    steps: {
-      title: tool.stepMediaTitle || "使用步骤图文 / 视频"
-    }
-  }[slotType];
-  if (!config) return "";
-  const actualSlots = slotType === "features" ? tool.featureMedia || [] : tool.stepMedia || [];
-  if (!actualSlots.length) return "";
+function toolNarrativeSections(tool) {
   return `
-    <section class="section-block visual-block">
-      <h2>${escapeHtml(config.title)}</h2>
-      <div class="visual-grid">
-        ${actualSlots.map((slot) => mediaSlot(slot)).join("")}
-      </div>
-    </section>
+    ${contentSection("适合谁使用", { items: tool.targetUsers })}
+    ${contentSection("解决的痛点", { items: tool.painPoints })}
+    ${contentSection(tool.featuresTitle || "核心功能", {
+      items: tool.features,
+      images: tool.featureMedia
+    })}
+    ${contentSection(tool.stepsTitle || "使用步骤", {
+      items: tool.usageSteps,
+      images: tool.stepMedia,
+      ordered: true,
+      mediaTitle: tool.stepMediaTitle
+    })}
+    ${methodsSection(tool)}
   `;
 }
 
-function listSection(title, items = []) {
-  if (!items.length) return "";
+function contentSection(title, { items = [], images = [], ordered = false, mediaTitle = "" } = {}) {
+  const realImages = (images || []).filter((item) => item?.src || item?.url || item?.href || item?.previewUrl || item?.downloadUrl);
+  if (!items.length && !realImages.length) return "";
+  const ListTag = ordered ? "ol" : "ul";
+  const listClass = ordered ? "step-list" : "clean-list";
   return `
-    <section class="section-block">
+    <section class="section-block doc-section tool-doc-section">
       <h2>${escapeHtml(title)}</h2>
-      <ul class="clean-list">
-        ${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-      </ul>
+      ${items.length ? `
+        <${ListTag} class="${listClass}">
+          ${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </${ListTag}>
+      ` : ""}
+      ${realImages.length ? `
+        <div class="doc-image-flow">
+          ${mediaTitle && mediaTitle !== title ? `<h3>${escapeHtml(mediaTitle)}</h3>` : ""}
+          ${realImages.map((item) => mediaSlot(item)).join("")}
+        </div>
+      ` : ""}
     </section>
   `;
 }
@@ -1683,32 +1683,6 @@ function documentSection(section, level = 2) {
       ${bullets}
       ${images}
       ${subsections}
-    </section>
-  `;
-}
-
-function stepsWithMediaSection(tool) {
-  const items = tool.usageSteps || [];
-  const title = tool.stepsTitle || "使用步骤";
-  const slots = tool.stepMedia || [];
-  const mediaTitle = !tool.stepMediaTitle || tool.stepMediaTitle === title ? "图文步骤" : tool.stepMediaTitle;
-  if (!items.length && !slots.length) return "";
-  return `
-    <section class="section-block steps-media-block">
-      <h2>${escapeHtml(title)}</h2>
-      ${items.length ? `
-        <ol class="step-list">
-          ${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-        </ol>
-      ` : ""}
-      ${slots.length ? `
-        <div class="steps-media-group">
-          <h3>${escapeHtml(mediaTitle)}</h3>
-          <div class="visual-grid">
-            ${slots.map((slot) => mediaSlot(slot)).join("")}
-          </div>
-        </div>
-      ` : ""}
     </section>
   `;
 }
