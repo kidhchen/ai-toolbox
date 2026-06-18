@@ -307,23 +307,9 @@
       ],
       "resources": [
         {
-          "kind": "html",
-          "label": "分支交互itv生成_优化版.html",
-          "url": "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/ABmOoWb3JPbvWOaw/att/9f27d13d-33bc-4955-aaa6-0fdb96438738.html?Expires=1781498550&OSSAccessKeyId=LTAI5tKTjg4Kq1HCdBJ8qpSp&Signature=loue%2F%2B6kSXCXmIUTVWFJ5PAxRCc%3D",
-          "actionLabel": "打开体验版",
-          "note": "来自钉钉文档的 HTML 体验版链接。",
-          "status": "external_link"
-        },
-        {
           "kind": "source_doc",
-          "label": "钉钉正文 / 后续资源",
+          "label": "图文文档 / 后续资源",
           "url": "https://alidocs.dingtalk.com/i/nodes/YMyQA2dXW792qoPNI5Nd40n0JzlwrZgb?utm_scene=team_space",
-          "status": "external_link"
-        },
-        {
-          "kind": "source_doc",
-          "label": "互动视频制课工具-优化文档",
-          "url": "https://alidocs.dingtalk.com/i/nodes/G1DKw2zgV2R0xvb9Uql7zG0zVB5r9YAn?utm_scene=team_space",
           "status": "external_link"
         }
       ],
@@ -580,7 +566,7 @@
     {
       "id": "finalcut-motion-html-bridge",
       "slug": "finalcut-motion-html-bridge",
-      "name": "Final Cut / Motion 集成 HTML 工具",
+      "name": "Final Cut 网页端绑定小程序 1.0",
       "categoryId": "video-audio",
       "categoryIds": [
         "video-audio",
@@ -590,63 +576,113 @@
       "developer": "文帆",
       "status": "published",
       "difficulty": "工作流",
-      "summary": "把常用HTML小工具、网页入口和Motion工作流绑定在一起，让剪辑制作时更容易调用。",
+      "summary": "把 HTML 小程序或网页链接绑定到 Motion 项目里，通过 Motion 入口快速跳转网页工具。",
       "targetUsers": [
-        "经常使用Final Cut或Motion的剪辑同学",
-        "手里有多个HTML小工具但复用率不高的人",
-        "希望把网页工具绑定进本地制作流程的人"
+        "经常使用 Final Cut 或 Motion 的剪辑同学。",
+        "想把网页小程序、网页链接整合进本地制作流程的人。",
+        "需要复用多个 HTML 小工具，但不想每次重新查找入口的人。"
       ],
       "painPoints": [
-        "HTML小程序分散，不好找。",
-        "工具每次都要重新打开，复用率低。",
-        "Motion和网页工具之间缺少快捷桥接。"
+        "HTML 小程序和网页工具分散，剪辑时需要来回寻找。",
+        "Motion 和网页工具之间缺少快捷桥接。",
+        "1.0 版本首次使用仍依赖手动绑定和权限设置。"
       ],
       "features": [
-        "将小程序绑定到Motion包。",
-        "内置常用网页快捷入口。",
-        "支持绑定新增小程序。",
-        "首次使用需完成权限设置和绑定步骤。"
+        "提供网页跳转桥接工具，可用于自己 DIY 小程序绑定。",
+        "提供整合好的 Motion 包，包内已包含解压好的网页端工具。",
+        "小程序界面会按步骤创建脚本文件并打开文件夹菜单。",
+        "支持使用脚本包，把 Motion 文件夹和脚本文件进行绑定。",
+        "新建项目时，把绑定程序和 HTML 小程序或网页链接说明放入 Motion 文件夹，双击后可自动生成启动脚本。"
       ],
       "usageSteps": [
-        "下载插件本体整合包和说明书。",
-        "按说明安装或打开整合好的Motion包。",
-        "首次使用时根据提示完成系统权限设置。",
-        "如需新建项目，将绑定程序、HTML小程序或网页链接说明放入Motion文件夹。",
-        "双击启动后生成启动脚本，通过Motion入口快速打开对应工具。"
+        "先下载网页跳转桥接工具，或直接使用文档中整合好的 Motion 包。",
+        "第一次使用时点击运行权限脚本，并根据 macOS 提示到系统隐私设置里开启权限。",
+        "打开小程序，按界面步骤自动创建脚本文件并打开文件夹菜单，也可以直接使用作者创建的脚本包。",
+        "在文件夹操作设置里，左边选择 Motion 文件夹，右边选择脚本文件。",
+        "如果需要新建项目，新建一个 Motion 后，把绑定程序和 HTML 小程序或网页链接说明一起放入 Motion 文件夹。",
+        "双击启动后自动生成启动脚本，后续可通过右键 Motion 图标“在访达中显示”实现自动跳转网页。"
       ],
       "coverImage": {
         "kind": "image",
-        "label": "Final Cut / Motion 工具整合效果",
-        "src": "assets/doc-images/doc-image-56.png",
-        "status": "imported_from_docs"
+        "label": "网页端插件文件夹与首次运行脚本",
+        "src": "assets/doc-images/dingtalk-20260617/finalcut/run-command.png",
+        "status": "imported_from_dingtalk"
       },
       "featureMedia": [
         {
           "kind": "image",
-          "label": "Motion 工具包界面",
-          "src": "assets/doc-images/doc-image-57.png",
-          "status": "imported_from_docs"
+          "label": "整合好的 Motion 包内容",
+          "src": "assets/doc-images/dingtalk-20260617/finalcut/motion-package.png",
+          "status": "imported_from_dingtalk"
+        },
+        {
+          "kind": "image",
+          "label": "Motion 安装路径说明",
+          "src": "assets/doc-images/dingtalk-20260617/finalcut/install-path.png",
+          "status": "imported_from_dingtalk"
+        },
+        {
+          "kind": "image",
+          "label": "小程序自动创建脚本界面",
+          "src": "assets/doc-images/dingtalk-20260617/finalcut/bridge-ui.png",
+          "status": "imported_from_dingtalk"
         }
       ],
       "stepMedia": [
         {
           "kind": "image",
-          "label": "权限设置步骤",
-          "src": "assets/doc-images/doc-image-62.png",
-          "status": "imported_from_docs"
+          "label": "第一次使用点击运行脚本",
+          "src": "assets/doc-images/dingtalk-20260617/finalcut/run-command.png",
+          "status": "imported_from_dingtalk"
         },
         {
           "kind": "image",
-          "label": "脚本与文件夹绑定步骤",
-          "src": "assets/doc-images/doc-image-65.png",
-          "status": "imported_from_docs"
+          "label": "macOS 权限提示窗口",
+          "src": "assets/doc-images/dingtalk-20260617/finalcut/permission-popup.png",
+          "status": "imported_from_dingtalk"
+        },
+        {
+          "kind": "image",
+          "label": "系统隐私设置开启权限",
+          "src": "assets/doc-images/dingtalk-20260617/finalcut/privacy-settings.png",
+          "status": "imported_from_dingtalk"
+        },
+        {
+          "kind": "image",
+          "label": "脚本包位置说明",
+          "src": "assets/doc-images/dingtalk-20260617/finalcut/folder-action-scripts.png",
+          "status": "imported_from_dingtalk"
+        },
+        {
+          "kind": "image",
+          "label": "文件夹操作绑定界面",
+          "src": "assets/doc-images/dingtalk-20260617/finalcut/folder-action-setup.png",
+          "status": "imported_from_dingtalk"
+        },
+        {
+          "kind": "image",
+          "label": "左边选择 Motion 文件夹",
+          "src": "assets/doc-images/dingtalk-20260617/finalcut/select-motion-folder.png",
+          "status": "imported_from_dingtalk"
+        },
+        {
+          "kind": "image",
+          "label": "右边选择脚本文件",
+          "src": "assets/doc-images/dingtalk-20260617/finalcut/select-script-file.png",
+          "status": "imported_from_dingtalk"
+        },
+        {
+          "kind": "image",
+          "label": "新建项目文件放置方式",
+          "src": "assets/doc-images/dingtalk-20260617/finalcut/new-project-files.png",
+          "status": "imported_from_dingtalk"
         }
       ],
       "resources": [
         {
           "kind": "source_doc",
           "label": "使用说明书 / 资源入口",
-          "url": "https://alidocs.dingtalk.com/i/nodes/gvNG4YZ7JneL9pmQtN3Ma2bdV2LD0oRE?utm_scene=team_space",
+          "url": "https://alidocs.dingtalk.com/i/nodes/R1zknDm0WR3Amzdgf0Mond4EVBQEx5rG?utm_scene=team_space",
           "status": "external_link"
         }
       ],
@@ -662,16 +698,17 @@
       "tags": [
         "Final Cut",
         "Motion",
-        "HTML工具",
+        "HTML 工具",
+        "网页跳转",
         "工作流"
       ],
       "version": "1.0",
       "sourceMeta": {
         "provider": "dingtalk",
-        "nodeId": "gvNG4YZ7JneL9pmQtN3Ma2bdV2LD0oRE",
-        "url": "https://alidocs.dingtalk.com/i/nodes/gvNG4YZ7JneL9pmQtN3Ma2bdV2LD0oRE?utm_scene=team_space",
-        "updateTime": 1781495274000,
-        "updateTimeText": "2026-06-15 11:47:54"
+        "nodeId": "R1zknDm0WR3Amzdgf0Mond4EVBQEx5rG",
+        "url": "https://alidocs.dingtalk.com/i/nodes/R1zknDm0WR3Amzdgf0Mond4EVBQEx5rG?utm_scene=team_space",
+        "updateTime": 1781680038000,
+        "updateTimeText": "2026-06-17 15:07:18"
       }
     },
     {
@@ -929,43 +966,45 @@
     {
       "id": "ai-screen-recording-skill",
       "slug": "ai-screen-recording-skill",
-      "name": "自动化 AI 录屏",
+      "name": "AI自动化录屏",
       "categoryId": "workflow-automation",
       "categoryIds": [
-        "workflow-automation"
+        "workflow-automation",
+        "video-audio"
       ],
       "type": "codex_skill",
-      "developer": "绮婷",
-      "status": "published",
+      "developer": "阿政、绮婷",
+      "status": "iterating",
       "difficulty": "工作流",
-      "summary": "给 Codex 提供录制地址和要求后，由AI在后台完成录制代码拼接和执行，减少人工盯屏。",
+      "summary": "用 KN 自动录屏小工具或 Codex Skill，把录制地址和要求交给 AI，后台完成录屏流程。",
       "targetUsers": [
-        "需要批量录制网页操作的人",
-        "需要制作工具演示和教程视频的人",
-        "希望把录屏流程交给AI执行的人"
+        "需要批量录制网页或工具操作的人。",
+        "需要制作工具演示、教程视频或操作素材的人。",
+        "希望把重复录屏流程交给 AI 后台完成的人。"
       ],
       "painPoints": [
-        "录制网页操作需要一直盯着。",
-        "重复录屏占用大量人工时间。",
-        "不同页面流程需要反复调整录制步骤。"
+        "录制网页操作需要一直盯着，容易占用制作时间。",
+        "重复录屏需要不断调参数、点按钮和重来。",
+        "不同页面流程需要反复拼接录制步骤。"
       ],
       "features": [
-        "支持通过Codex Skill驱动录制。",
-        "提供录制地址和要求即可开始规划。",
-        "后台完成代码拼接和录制执行。"
+        "方法一：使用 KN 自动录屏小工具进行录制。",
+        "方法二：有 Codex 的同学可以使用打包好的 Skill。",
+        "提供录制地址和要求后，让 AI 完成代码拼接。",
+        "录制过程可在后台完成，全程不需要一直盯着。"
       ],
       "usageSteps": [
-        "安装或导入自动化录屏Skill。",
-        "向Codex提供目标录制地址。",
-        "说明需要录制的操作流程和视频要求。",
-        "让Codex在后台完成录制任务。"
+        "选择 KN 自动录屏小工具，或使用打包好的 Codex Skill。",
+        "提供需要录制的页面地址和具体录制要求。",
+        "由 AI 根据要求完成录制代码拼接。",
+        "后台执行录制流程，输出演示或教程素材。"
       ],
       "resources": [
         {
-          "kind": "skill",
-          "label": "自动化AI录屏 Skill 包",
-          "storageKey": "pending/ai-screen-recording-skill",
-          "status": "pending_upload"
+          "kind": "source_doc",
+          "label": "图文文档 / 后续资源",
+          "url": "https://alidocs.dingtalk.com/i/nodes/lyQod3RxJK3gkQdwforrA6elJkb4Mw9r?utm_scene=team_space",
+          "status": "external_link"
         }
       ],
       "media": [],
@@ -973,9 +1012,137 @@
         "Codex Skill",
         "自动录屏",
         "教程视频",
+        "KN",
         "自动化"
       ],
-      "version": "待补充"
+      "version": "持续迭代",
+      "coverImage": {
+        "kind": "image",
+        "label": "KN 自动录屏小工具界面",
+        "src": "assets/doc-images/dingtalk-20260617/screen-recording/kn-recording-tool.png",
+        "status": "imported_from_dingtalk"
+      },
+      "featureMedia": [
+        {
+          "kind": "image",
+          "label": "KN 自动录屏小工具界面",
+          "src": "assets/doc-images/dingtalk-20260617/screen-recording/kn-recording-tool.png",
+          "status": "imported_from_dingtalk"
+        }
+      ],
+      "stepMedia": [],
+      "documentSections": [
+        {
+          "title": "方法一：KN 自动录屏小工具",
+          "paragraphs": [
+            "最新进展：2026.6.12 更新，更新频率预计每周五。",
+            "可以通过 KN 自动录屏小工具完成页面录制流程。"
+          ],
+          "images": [
+            {
+              "kind": "image",
+              "label": "KN 自动录屏小工具界面",
+              "src": "assets/doc-images/dingtalk-20260617/screen-recording/kn-recording-tool.png",
+              "status": "imported_from_dingtalk"
+            }
+          ]
+        },
+        {
+          "title": "方法二：KN 录制工具",
+          "paragraphs": [
+            "有 Codex 的同学可以使用打包好的 Skill，提供录制地址和要求，让 AI 帮你完成代码拼接。后台完成，全程不需要盯着。"
+          ]
+        }
+      ],
+      "sourceMeta": {
+        "provider": "dingtalk",
+        "nodeId": "lyQod3RxJK3gkQdwforrA6elJkb4Mw9r",
+        "url": "https://alidocs.dingtalk.com/i/nodes/lyQod3RxJK3gkQdwforrA6elJkb4Mw9r?utm_scene=team_space",
+        "updateTime": 1781685840000,
+        "updateTimeText": "2026-06-17 16:44:00"
+      }
+    },
+    {
+      "id": "ai-voice-redub-workflow",
+      "slug": "ai-voice-redub-workflow",
+      "name": "AI自动化配音补录",
+      "categoryId": "video-audio",
+      "categoryIds": [
+        "audio-processing",
+        "workflow-automation"
+      ],
+      "type": "workflow_package",
+      "developer": "阿政",
+      "status": "iterating",
+      "summary": "读取钉钉文档中的角色台词，自动提取并分类，为后续 AI 配音补录和音色克隆做准备。",
+      "detailStyle": "source_document",
+      "sourceMeta": {
+        "provider": "dingtalk",
+        "nodeId": "AR4GpnMqJzMvaO3QikYYmXaoVKe0xjE3",
+        "url": "https://alidocs.dingtalk.com/i/nodes/AR4GpnMqJzMvaO3QikYYmXaoVKe0xjE3?utm_scene=team_space",
+        "updateTime": 1781685447000,
+        "updateTimeText": "2026-06-17 16:37:27"
+      },
+      "targetUsers": [
+        "需要从剧本文档或制作文档里整理角色台词的配音制作同学。",
+        "需要把角色台词按人物分类，再进入 AI 配音补录流程的人。",
+        "希望减少手动复制、清理台词和整理音色素材时间的团队。"
+      ],
+      "painPoints": [
+        "角色台词分散在文档里，手动提取和分类耗时。",
+        "图片、视频附件、评论和动画剧情等非台词内容会干扰整理。",
+        "传统流程需要导出文档再导入其他工具，步骤较重。"
+      ],
+      "features": [
+        "读取钉钉文档，精准识别角色台词并按角色分类。",
+        "去除与台词无关的元素，包括图片、视频附件、评论和动画剧情等内容。",
+        "目标是接入 RunningHub 声音克隆模型，并预置常用角色音色。",
+        "后续计划支持筛选提取标红或标绿文字，一键 AI 补录导出。"
+      ],
+      "usageSteps": [
+        "将需要处理的台词内容整理在钉钉文档中。",
+        "工具读取文档后提取角色台词，过滤掉与台词无关的内容。",
+        "按角色把台词分类到一起，避免手动导出再导入其他工具。",
+        "后续接入声音克隆模型后，可继续完成 AI 配音补录和导出。"
+      ],
+      "featureMedia": [],
+      "stepMedia": [],
+      "methods": [],
+      "documentSections": [
+        {
+          "title": "核心能力",
+          "paragraphs": [
+            "同步制作一键 AI 补录：读取钉钉文档，精准识别角色台词并分好类。它类似 AES 的处理思路，但一个角色的台词会放在一起，并且不用导出文档再导入 AES。",
+            "目前已经实现第一步：提取角色台词，并去除与台词无关的元素，例如图片、视频附件、评论和动画剧情等。"
+          ]
+        },
+        {
+          "title": "迭代计划",
+          "bullets": [
+            "添加筛选提取能力，例如标红或标绿文字。",
+            "接入 RunningHub 声音克隆模型。",
+            "预置常用角色音色，一键 AI 补录导出。",
+            "继续美化 UI 并进行测试。"
+          ]
+        }
+      ],
+      "resources": [
+        {
+          "kind": "source_doc",
+          "label": "图文文档 / 后续资源",
+          "url": "https://alidocs.dingtalk.com/i/nodes/AR4GpnMqJzMvaO3QikYYmXaoVKe0xjE3?utm_scene=team_space",
+          "status": "external_link"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "配音",
+        "AI补录",
+        "声音克隆",
+        "钉钉文档",
+        "工作流"
+      ],
+      "version": "持续迭代"
     }
   ],
   "commentSchema": {

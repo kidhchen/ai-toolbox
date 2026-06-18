@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260617b";
+const seedUrl = "./content/tools.seed.json?v=20260617e";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -81,7 +81,8 @@ const toolCategoryAssignments = {
   "batch-cutout-upscale": ["image-processing"],
   "block-layout-tool": ["text-tools", "image-processing"],
   "finalcut-motion-html-bridge": ["video-processing", "workflow-automation"],
-  "ai-screen-recording-skill": ["workflow-automation"],
+  "ai-screen-recording-skill": ["workflow-automation", "video-processing"],
+  "ai-voice-redub-workflow": ["audio-processing", "workflow-automation"],
   "itv-auto-marker": ["video-processing", "workflow-automation"]
 };
 
@@ -103,7 +104,9 @@ const sourceDocumentLinks = {
   "auto-sound-html": "https://alidocs.dingtalk.com/i/nodes/amweZ92PV6v25O1jCKBnRg4xVxEKBD6p?utm_scene=team_space",
   "batch-cutout-upscale": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHZrRyAjpJxkXOEP2?utm_scene=team_space",
   "block-layout-tool": "https://alidocs.dingtalk.com/i/nodes/ZgpG2NdyVXrAYQbpIPNrOOd48MwvDqPk?utm_scene=team_space",
-  "finalcut-motion-html-bridge": "https://alidocs.dingtalk.com/i/nodes/gvNG4YZ7JneL9pmQtN3Ma2bdV2LD0oRE?utm_scene=team_space"
+  "finalcut-motion-html-bridge": "https://alidocs.dingtalk.com/i/nodes/R1zknDm0WR3Amzdgf0Mond4EVBQEx5rG?utm_scene=team_space",
+  "ai-voice-redub-workflow": "https://alidocs.dingtalk.com/i/nodes/AR4GpnMqJzMvaO3QikYYmXaoVKe0xjE3?utm_scene=team_space",
+  "ai-screen-recording-skill": "https://alidocs.dingtalk.com/i/nodes/lyQod3RxJK3gkQdwforrA6elJkb4Mw9r?utm_scene=team_space"
 };
 const authoritativeSeedTools = new Set([
   "dianmao-prompt-assistant",
@@ -2000,7 +2003,7 @@ function renderSubmissionPage() {
           </div>
           <span class="pixel-badge">待审核</span>
         </div>
-        <p class="muted">把工具说明整理到钉钉文档里，再把文档链接提交过来。内容会先进入审核收件箱，通过后才会加入正式工具大厅。</p>
+        <p class="muted">把工具说明整理到钉钉文档里，再把文档链接提交过来。建议正文内容写在同步块中，并确认文档对审核人可阅读；有同步块时会归档到工具箱知识库，没有同步块时会以投稿者原文作为后续更新源。</p>
         <form class="wish-form" id="submission-form">
           <div class="form-grid">
             <label class="field">
@@ -2037,11 +2040,14 @@ function renderSubmissionPage() {
             <h2>推荐文档格式</h2>
           </div>
         </div>
-        <p class="muted">建议投稿文档按下面的基础格式整理，越完整越容易被快速抓取、改写和发布。</p>
+        <p class="muted">建议投稿文档按下面的基础格式整理。正文请尽量放进同步块，图片、安装包和补充资源放在文档里；如果没有同步块，也可以直接提交原文链接。</p>
         <pre class="doc-template">工具名称
 
 一句话介绍
 用一句话说明它能帮大家在哪个制作环节省时间。
+
+同步块正文
+请把下面正式内容写在同步块中，方便归档后继续跟随原文更新。
 
 适合谁使用
 - 适合的人群 1
@@ -2065,7 +2071,13 @@ function renderSubmissionPage() {
 3. 第三步
 
 资源链接
-安装包、源码、网页入口或补充文档链接。</pre>
+安装包、源码、网页入口或补充文档链接。
+
+投稿提示
+- 请确认文档链接对审核人可阅读。
+- 如需归档后继续同步更新，请把正文写在同步块中。
+- 如果文档没有同步块，后续更新会以投稿者原文链接为准。
+- 不建议直接上传大视频文件，可放外部观看链接。</pre>
 
         ${submissionTestHints()}
       </aside>
