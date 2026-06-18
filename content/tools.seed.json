@@ -1080,8 +1080,8 @@
         "provider": "dingtalk",
         "nodeId": "AR4GpnMqJzMvaO3QikYYmXaoVKe0xjE3",
         "url": "https://alidocs.dingtalk.com/i/nodes/AR4GpnMqJzMvaO3QikYYmXaoVKe0xjE3?utm_scene=team_space",
-        "updateTime": 1781685447000,
-        "updateTimeText": "2026-06-17 16:37:27"
+        "updateTime": 1781778542000,
+        "updateTimeText": "2026-06-18 18:29:02"
       },
       "targetUsers": [
         "需要从剧本文档或制作文档里整理角色台词的配音制作同学。",
@@ -1105,7 +1105,14 @@
         "按角色把台词分类到一起，避免手动导出再导入其他工具。",
         "后续接入声音克隆模型后，可继续完成 AI 配音补录和导出。"
       ],
-      "featureMedia": [],
+      "featureMedia": [
+        {
+          "kind": "image",
+          "label": "AI 自动化配音补录界面",
+          "src": "assets/doc-images/dingtalk-20260618/voice-redub/cover.png",
+          "status": "imported_from_dingtalk"
+        }
+      ],
       "stepMedia": [],
       "methods": [],
       "documentSections": [
@@ -1114,6 +1121,14 @@
           "paragraphs": [
             "同步制作一键 AI 补录：读取钉钉文档，精准识别角色台词并分好类。它类似 AES 的处理思路，但一个角色的台词会放在一起，并且不用导出文档再导入 AES。",
             "目前已经实现第一步：提取角色台词，并去除与台词无关的元素，例如图片、视频附件、评论和动画剧情等。"
+          ],
+          "images": [
+            {
+              "kind": "image",
+              "label": "AI 自动化配音补录界面",
+              "src": "assets/doc-images/dingtalk-20260618/voice-redub/cover.png",
+              "status": "imported_from_dingtalk"
+            }
           ]
         },
         {
@@ -1142,7 +1157,13 @@
         "钉钉文档",
         "工作流"
       ],
-      "version": "持续迭代"
+      "version": "持续迭代",
+      "coverImage": {
+        "kind": "image",
+        "label": "AI 自动化配音补录界面",
+        "src": "assets/doc-images/dingtalk-20260618/voice-redub/cover.png",
+        "status": "imported_from_dingtalk"
+      }
     }
   ],
   "commentSchema": {
