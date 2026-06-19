@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260618a";
+const seedUrl = "./content/tools.seed.json?v=20260619b";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -83,6 +83,7 @@ const toolCategoryAssignments = {
   "finalcut-motion-html-bridge": ["video-processing", "workflow-automation"],
   "ai-screen-recording-skill": ["workflow-automation", "video-processing"],
   "ai-voice-redub-workflow": ["audio-processing", "workflow-automation"],
+  "interactive-video-course-tool": ["video-processing", "workflow-automation"],
   "itv-auto-marker": ["video-processing", "workflow-automation"]
 };
 
@@ -106,7 +107,8 @@ const sourceDocumentLinks = {
   "block-layout-tool": "https://alidocs.dingtalk.com/i/nodes/ZgpG2NdyVXrAYQbpIPNrOOd48MwvDqPk?utm_scene=team_space",
   "finalcut-motion-html-bridge": "https://alidocs.dingtalk.com/i/nodes/R1zknDm0WR3Amzdgf0Mond4EVBQEx5rG?utm_scene=team_space",
   "ai-voice-redub-workflow": "https://alidocs.dingtalk.com/i/nodes/AR4GpnMqJzMvaO3QikYYmXaoVKe0xjE3?utm_scene=team_space",
-  "ai-screen-recording-skill": "https://alidocs.dingtalk.com/i/nodes/lyQod3RxJK3gkQdwforrA6elJkb4Mw9r?utm_scene=team_space"
+  "ai-screen-recording-skill": "https://alidocs.dingtalk.com/i/nodes/lyQod3RxJK3gkQdwforrA6elJkb4Mw9r?utm_scene=team_space",
+  "interactive-video-course-tool": "https://alidocs.dingtalk.com/i/nodes/NZQYprEoWoe2DPmQtBjj9KPGJ1waOeDk?utm_scene=team_space"
 };
 const authoritativeSeedTools = new Set([
   "dianmao-prompt-assistant",
@@ -115,7 +117,10 @@ const authoritativeSeedTools = new Set([
   "auto-sound-html",
   "batch-cutout-upscale",
   "block-layout-tool",
-  "finalcut-motion-html-bridge"
+  "finalcut-motion-html-bridge",
+  "ai-voice-redub-workflow",
+  "ai-screen-recording-skill",
+  "interactive-video-course-tool"
 ]);
 
 function readJson(key, fallback) {
@@ -318,6 +323,21 @@ function setRouteActive(routeName) {
   });
 }
 
+function siteFooter() {
+  return `
+    <footer class="site-footer">
+      <span>原文链接：<a href="https://alidocs.dingtalk.com/i/nodes/P7QG4Yx2Jp7egOmQHgmlobKvV9dEq3XD?utm_scene=team_space" target="_blank" rel="noopener noreferrer">AI制作工具箱知识库</a></span>
+      <span>© 2026 猫厂课程制作部/视频组</span>
+      <span>联系方式：chenqiting@codemao.cn</span>
+      <span>网站为猫厂内部使用哦</span>
+    </footer>
+  `;
+}
+
+function setAppHtml(markup) {
+  app.innerHTML = `${markup}${siteFooter()}`;
+}
+
 async function init() {
   const params = new URLSearchParams(window.location.search);
   if (params.get("clearLocal") === "1") {
@@ -459,7 +479,6 @@ function mergeSeedUpdates(data) {
         "name",
         "summary",
         "developer",
-        "difficulty",
         "status",
         "type",
         "targetUsers",
@@ -979,9 +998,10 @@ function renderHome() {
   const tools = filteredTools();
   const categories = state.data.categories;
 
-  app.innerHTML = `
+  setAppHtml(`
     <section class="screen gallery-home">
       <section class="gallery-hero">
+        <video class="gallery-hero__video" src="./assets/hero/day-loop.mp4" autoplay muted loop playsinline aria-hidden="true"></video>
         <canvas class="strands-canvas" id="strands-canvas" aria-hidden="true"></canvas>
         <div class="gallery-hero__copy">
           <p class="eyebrow">AI TOOLBOX</p>
@@ -1014,7 +1034,7 @@ function renderHome() {
 
       ${homeResultsPanel(tools)}
     </section>
-  `;
+  `);
 
   document.querySelector("#search-input").addEventListener("input", (event) => {
     state.query = event.target.value;
@@ -1316,7 +1336,7 @@ function renderFeedbackBoard() {
   const toolsWithFeedback = new Set(allItems.map(({ tool }) => tool.id)).size;
   const usefulMarks = allItems.reduce((total, { comment }) => total + Number(comment.likes || 0), 0);
 
-  app.innerHTML = `
+  setAppHtml(`
     <section class="screen feedback-layout">
       <aside class="control-panel">
         <div class="panel-head">
@@ -1360,7 +1380,7 @@ function renderFeedbackBoard() {
         ${filteredItems.length ? `<div class="feedback-list">${filteredItems.map(feedbackItem).join("")}</div>` : emptyState("还没有这类反馈", "可以先进入某个工具详情页留下第一条。")}
       </section>
     </section>
-  `;
+  `);
 
   document.querySelectorAll("[data-feedback-filter]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -1423,7 +1443,7 @@ function renderTool(slug) {
   document.body.classList.add("tool-detail-page");
   const tool = state.data.tools.find((item) => item.slug === slug);
   if (!tool) {
-    app.innerHTML = emptyState("没有找到这个工具", "它可能被重命名或还没有上架。");
+    setAppHtml(emptyState("没有找到这个工具", "它可能被重命名或还没有上架。"));
     return;
   }
   if (tool.detailStyle === "source_document") {
@@ -1432,7 +1452,7 @@ function renderTool(slug) {
 
   const comments = state.comments[tool.id] || [];
 
-  app.innerHTML = `
+  setAppHtml(`
     <section class="screen tool-detail-screen">
       <a class="pixel-button detail-back" href="#/">返回工具大厅</a>
       <div class="detail-layout">
@@ -1491,7 +1511,7 @@ function renderTool(slug) {
         </aside>
       </div>
     </section>
-  `;
+  `);
 
   document.querySelector("#comment-form").addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -1509,17 +1529,7 @@ function renderTool(slug) {
     await saveComment(tool, slug, comment);
   });
 
-  document.querySelectorAll("[data-copy]").forEach((button) => {
-    button.addEventListener("click", async () => {
-      const text = button.closest(".method-item").querySelector(".prompt-box")?.textContent || "";
-      try {
-        await navigator.clipboard.writeText(text);
-        showToast("已复制提示词");
-      } catch {
-        showToast("复制失败，请手动选中文字");
-      }
-    });
-  });
+  bindCopyButtons();
 
   document.querySelectorAll("[data-like-comment]").forEach((button) => {
     button.addEventListener("click", async () => {
@@ -1686,6 +1696,23 @@ function documentSection(section, level = 2) {
       ${section.images.map((item) => mediaSlot(item)).join("")}
     </div>
   ` : "";
+  const mediaBlocks = section.mediaBlocks?.length ? `
+    <div class="doc-media-blocks">
+      ${section.mediaBlocks.map((block) => `
+        <article class="doc-media-block">
+          <div class="doc-media-block__text">
+            <h3>${escapeHtml(block.title)}</h3>
+            ${(block.paragraphs || []).map((text) => `<p>${escapeHtml(text)}</p>`).join("")}
+          </div>
+          ${(block.images || []).length ? `
+            <div class="doc-media-block__images">
+              ${block.images.map((item) => mediaSlot(item)).join("")}
+            </div>
+          ` : ""}
+        </article>
+      `).join("")}
+    </div>
+  ` : "";
   const subsections = section.subsections?.length ? `
     <div class="doc-subsections">
       ${section.subsections.map((item) => documentSection(item, level + 1)).join("")}
@@ -1697,6 +1724,7 @@ function documentSection(section, level = 2) {
       ${paragraphs}
       ${bullets}
       ${images}
+      ${mediaBlocks}
       ${subsections}
     </section>
   `;
@@ -1761,6 +1789,22 @@ function praiseTool(tool, slug) {
   writeJson(storageKeys.toolLikes, state.toolLikes);
   showToast("已夯一下");
   renderTool(slug);
+}
+
+function bindCopyButtons(root = document) {
+  root.querySelectorAll("[data-copy]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const targetSelector = button.dataset.copyTarget;
+      const target = targetSelector ? document.querySelector(targetSelector) : button.closest(".method-item")?.querySelector(".prompt-box");
+      const text = target?.textContent || "";
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast(button.dataset.copyToast || "已复制");
+      } catch {
+        showToast("复制失败，请手动选中文字");
+      }
+    });
+  });
 }
 
 function mediaSlot(item) {
@@ -1993,7 +2037,7 @@ function feedbackItem({ tool, comment, index }) {
 
 function renderSubmissionPage() {
   document.body.classList.add("app-page", "submit-page");
-  app.innerHTML = `
+  setAppHtml(`
     <section class="screen submit-layout">
       <article class="wish-panel">
         <div class="panel-head">
@@ -2001,9 +2045,9 @@ function renderSubmissionPage() {
             <p class="eyebrow">SUBMIT TOOL</p>
             <h1>工具投稿</h1>
           </div>
-          <span class="pixel-badge">待审核</span>
+          <span class="pixel-badge">待整理</span>
         </div>
-        <p class="muted">把工具说明整理到钉钉文档里，再把文档链接提交过来。建议正文内容写在同步块中，并确认文档对审核人可阅读；有同步块时会归档到工具箱知识库，没有同步块时会以投稿者原文作为后续更新源。</p>
+        <p class="muted">把工具说明整理到钉钉文档里，再把文档链接提交过来。建议正文内容写在同步块中，并确认文档具备可阅读权限；有同步块时会归档到工具箱知识库，没有同步块时会以投稿者原文作为后续更新源。</p>
         <form class="wish-form" id="submission-form">
           <div class="form-grid">
             <label class="field">
@@ -2027,6 +2071,7 @@ function renderSubmissionPage() {
           </label>
 
           <div class="submit-actions">
+            <a class="pixel-button" href="https://alidocs.dingtalk.com/i/nodes/P7QG4Yx2Jp7egOmQHgmlobKvV9dEq3XD?utm_scene=team_space" target="_blank" rel="noopener noreferrer">打开知识库</a>
             <button class="pixel-button primary" type="submit">提交审核</button>
             <span class="muted" id="submission-message" role="status"></span>
           </div>
@@ -2039,9 +2084,10 @@ function renderSubmissionPage() {
             <p class="eyebrow">DOC FORMAT</p>
             <h2>推荐文档格式</h2>
           </div>
+          <button class="copy-button" type="button" data-copy data-copy-target="#doc-template" data-copy-toast="已复制推荐文档格式">复制格式</button>
         </div>
         <p class="muted">建议投稿文档按下面的基础格式整理。正文请尽量放进同步块，图片、安装包和补充资源放在文档里；如果没有同步块，也可以直接提交原文链接。</p>
-        <pre class="doc-template">工具名称
+        <pre class="doc-template" id="doc-template">工具名称
 
 一句话介绍
 用一句话说明它能帮大家在哪个制作环节省时间。
@@ -2074,33 +2120,15 @@ function renderSubmissionPage() {
 安装包、源码、网页入口或补充文档链接。
 
 投稿提示
-- 请确认文档链接对审核人可阅读。
+- 请确认文档链接具备可阅读权限。
 - 如需归档后继续同步更新，请把正文写在同步块中。
-- 如果文档没有同步块，后续更新会以投稿者原文链接为准。
-- 不建议直接上传大视频文件，可放外部观看链接。</pre>
-
-        ${submissionTestHints()}
+- 如果文档没有同步块，后续更新会以投稿者原文链接为准。</pre>
       </aside>
     </section>
-  `;
+  `);
 
   document.querySelector("#submission-form").addEventListener("submit", saveSubmission);
-}
-
-function submissionTestHints() {
-  if (!isTestEnvironment()) return "";
-  return `
-    <div class="empty-state submission-note" data-test-only>
-      <h3>提交建议</h3>
-      <p>图片和安装包可以先放在钉钉文档里；视频不建议直接投稿上传，可以在文档里先放演示说明或外部观看链接。</p>
-    </div>
-
-    <div class="review-steps" data-test-only>
-      <div><strong>01</strong><span>投稿人提交钉钉文档链接。</span></div>
-      <div><strong>02</strong><span>你审核文档内容、资源和展示方式。</span></div>
-      <div><strong>03</strong><span>审核通过后再整理进正式工具大厅。</span></div>
-    </div>
-  `;
+  bindCopyButtons();
 }
 
 function isTestEnvironment() {
@@ -2163,7 +2191,7 @@ async function saveSubmission(event) {
     docUrl,
     packageUrl: "",
     imageUrls: [],
-    notes: notes ? `投稿备注：${notes}` : "投稿备注：仅提交钉钉文档链接，等待审核抓取。"
+    notes: notes ? `投稿备注：${notes}` : "投稿备注：仅提交钉钉文档链接，等待整理抓取。"
   };
 
   if (!supabaseApi) {
@@ -2187,7 +2215,7 @@ async function saveSubmission(event) {
 
 function renderWishbox() {
   document.body.classList.add("app-page", "wishbox-page");
-  app.innerHTML = `
+  setAppHtml(`
     <section class="screen wish-layout">
       <article class="wish-panel">
         <div class="panel-head">
@@ -2251,7 +2279,7 @@ function renderWishbox() {
         ${state.wishes.length ? `<div class="wish-list">${state.wishes.map(wishItem).join("")}</div>` : emptyState("还没有愿望", "第一条工具需求会显示在这里。")}
       </aside>
     </section>
-  `;
+  `);
 
   document.querySelector("#wish-form").addEventListener("submit", async (event) => {
     event.preventDefault();

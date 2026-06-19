@@ -50,7 +50,6 @@
       "type": "html_tool",
       "developer": "文帆",
       "status": "published",
-      "difficulty": "入门",
       "summary": "拖动积木图片，实现积木自动排版。",
       "targetUsers": [
         "需要整理积木图片或教程截图的人",
@@ -135,7 +134,6 @@
       "type": "workflow_package",
       "developer": "海欣",
       "status": "iterating",
-      "difficulty": "进阶",
       "summary": "上传原视频和 XML 文件，让 AI 自动分析 itv 节点并生成配置，目标是把交互视频配置压缩到几步完成。",
       "detailStyle": "source_document",
       "sourceMeta": {
@@ -144,8 +142,7 @@
         "url": "https://alidocs.dingtalk.com/i/nodes/YMyQA2dXW792qoPNI5Nd40n0JzlwrZgb?utm_scene=team_space",
         "updateTime": 1781495806000,
         "updateTimeText": "2026-06-15 11:56:46",
-        "primaryUpdateTime": 1781261842000,
-        "relatedDocument": "https://alidocs.dingtalk.com/i/nodes/G1DKw2zgV2R0xvb9Uql7zG0zVB5r9YAn?utm_scene=team_space"
+        "primaryUpdateTime": 1781261842000
       },
       "targetUsers": [],
       "painPoints": [],
@@ -336,7 +333,6 @@
       "type": "chrome_extension",
       "developer": "跃鹏",
       "status": "published",
-      "difficulty": "入门",
       "summary": "把常用AI网站、提示词模板和一键打开入口整合到浏览器里，减少找网址、复制提示词和切换页面的时间。",
       "sourceMeta": {
         "provider": "dingtalk",
@@ -575,7 +571,6 @@
       "type": "workflow_package",
       "developer": "文帆",
       "status": "published",
-      "difficulty": "工作流",
       "summary": "把 HTML 小程序或网页链接绑定到 Motion 项目里，通过 Motion 入口快速跳转网页工具。",
       "targetUsers": [
         "经常使用 Final Cut 或 Motion 的剪辑同学。",
@@ -722,7 +717,6 @@
       "type": "html_tool",
       "developer": "三盛",
       "status": "published",
-      "difficulty": "入门",
       "summary": "把批量抠图、背景替换和高清放大功能合在一个工具里，减少多个软件来回切换。",
       "targetUsers": [
         "需要批量处理角色、道具、素材图的人",
@@ -802,7 +796,6 @@
       "type": "html_tool",
       "developer": "文成",
       "status": "published",
-      "difficulty": "入门",
       "summary": "打开网页后拖入 XML 文件即可批量处理音效模板，不需要复制复杂代码。",
       "targetUsers": [
         "使用 Final Cut 进行视频制作的伙伴",
@@ -891,7 +884,6 @@
       "type": "codex_skill",
       "developer": "益达",
       "status": "published",
-      "difficulty": "进阶",
       "summary": "用 Codex 辅助匹配音效、转场和插件效果，最后重新导入 XML 文件完成制作。",
       "targetUsers": [
         "使用 Final Cut 进行视频制作的伙伴",
@@ -975,7 +967,6 @@
       "type": "codex_skill",
       "developer": "阿政、绮婷",
       "status": "iterating",
-      "difficulty": "工作流",
       "summary": "用 KN 自动录屏小工具或 Codex Skill，把录制地址和要求交给 AI，后台完成录屏流程。",
       "targetUsers": [
         "需要批量录制网页或工具操作的人。",
@@ -1163,6 +1154,214 @@
         "label": "AI 自动化配音补录界面",
         "src": "assets/doc-images/dingtalk-20260618/voice-redub/cover.png",
         "status": "imported_from_dingtalk"
+      }
+    },
+    {
+      "id": "interactive-video-course-tool",
+      "slug": "interactive-video-course-tool",
+      "name": "互动视频制课工具 3.0",
+      "categoryId": "video-audio",
+      "categoryIds": [
+        "video-audio",
+        "workflow-automation"
+      ],
+      "type": "workflow_package",
+      "developer": "侠在",
+      "status": "iterating",
+      "summary": "面向互动视频制课的桌面工具，优化时间轴、音频波形、分支跳转、多段视频和拖拽题编辑体验。",
+      "detailStyle": "source_document",
+      "sourceMeta": {
+        "provider": "dingtalk",
+        "nodeId": "NZQYprEoWoe2DPmQtBjj9KPGJ1waOeDk",
+        "url": "https://alidocs.dingtalk.com/i/nodes/NZQYprEoWoe2DPmQtBjj9KPGJ1waOeDk?utm_scene=team_space",
+        "updateTime": 1781685669000,
+        "updateTimeText": "2026-06-17 16:41:09"
+      },
+      "targetUsers": [
+        "需要制作互动视频课程的人。",
+        "需要配置分支故事、简单选择、拖拽题等互动节点的制作同学。",
+        "希望用更清晰时间轴和批量操作提升制课效率的人。"
+      ],
+      "painPoints": [
+        "时间轴定位和缩放不够顺手，容易停在帧与帧之间。",
+        "分支跳转选错后修改成本高。",
+        "多段视频、拖拽终点、答错反馈音效等配置需要更高效的编辑体验。"
+      ],
+      "features": [
+        "全新时间轴：秒数显示改为 25 帧进制，并显示具体帧数。",
+        "优化时间轴缩放，以鼠标指针为锚点进行缩放。",
+        "优化指针移动时预览画面的响应速度，减少预览延迟。",
+        "时间轴指针自动吸附到帧，不再停留在帧与帧之间。",
+        "新增音频波形可视化栏。",
+        "分支故事新增“修改跳转”按钮，跳转视频选错后可二次编辑。",
+        "新增分段视频自定义命名。",
+        "简单选择与拖拽题菜单新增参考线自动吸附开关。",
+        "预置 6 个答错反馈音效。",
+        "按住 Shift 可以框选多个节点，并批量移动、批量删除。",
+        "可同时添加多段视频片段。",
+        "拖拽题终点会显示 40% 透明度图片，并新增图片显示开关。"
+      ],
+      "usageSteps": [
+        "从钉钉原文下载对应系统安装包。",
+        "打开互动视频制课工具，导入或创建互动视频项目。",
+        "在时间轴上配置分支故事、简单选择、拖拽题等互动节点。",
+        "使用修改跳转、多段视频、参考线吸附、批量框选等功能优化配置效率。",
+        "检查音频波形、答错反馈音效和拖拽终点预览后导出或继续测试。"
+      ],
+      "featureMedia": [],
+      "stepMedia": [],
+      "methods": [],
+      "documentSections": [
+        {
+          "title": "一句话介绍",
+          "paragraphs": [
+            "面向互动视频制课的桌面工具，优化时间轴、音频波形、分支跳转、多段视频和拖拽题编辑体验。"
+          ]
+        },
+        {
+          "title": "已优化",
+          "bullets": [
+            "全新版本时间轴：秒数显示由十进制改为 25 帧进制，并显示具体帧数。",
+            "时间轴缩放以鼠标指针为锚点，指针移动时预览画面响应更快。",
+            "时间轴指针自动吸附到帧，不再出现停留在帧与帧之间的情况。",
+            "全新 UI 风格，并添加音频波形可视化栏。",
+            "分支故事新增“修改跳转”按钮，跳转视频选错后可以二次编辑修改。",
+            "分支故事跳转后各自结束播放：本地测试和苹果端 App 测试成功，安卓端暂未通过。",
+            "新增分段视频自定义命名。",
+            "简单选择与拖拽题菜单新增参考线自动吸附开关。",
+            "预置 6 个答错反馈音效。",
+            "按住 Shift 可以框选多个节点，同时批量移动、批量删除。",
+            "修改不合理的 UI 布局，将“开始运行”按钮移到合适位置。",
+            "支持同时添加多段视频片段。",
+            "拖拽题终点显示透明度 40% 的图片，并新增图片显示开关。"
+          ]
+        },
+        {
+          "title": "图文说明",
+          "mediaBlocks": [
+            {
+              "title": "时间轴与音频波形",
+              "paragraphs": [
+                "添加音频波形可视化栏，时间轴显示改为 25 帧进制，并优化缩放、预览响应和自动吸附到帧。"
+              ],
+              "images": [
+                {
+                  "kind": "image",
+                  "label": "音频波形可视化栏",
+                  "description": "时间轴下方可直接查看音频波形。",
+                  "src": "assets/doc-images/dingtalk-20260618/interactive-video-course/timeline-waveform.png",
+                  "status": "imported_from_local"
+                }
+              ]
+            },
+            {
+              "title": "分支故事修改跳转",
+              "paragraphs": [
+                "分支故事新增“修改跳转”按钮，跳转视频不小心选错后可以二次编辑修改。"
+              ],
+              "images": [
+                {
+                  "kind": "image",
+                  "label": "修改跳转按钮",
+                  "description": "按钮 A / B 可重新选择跳转视频。",
+                  "src": "assets/doc-images/dingtalk-20260618/interactive-video-course/edit-jump.png",
+                  "status": "imported_from_local"
+                }
+              ]
+            },
+            {
+              "title": "跳转后结束播放",
+              "paragraphs": [
+                "分支故事跳转后可以各自结束播放。本地测试和苹果端 App 测试成功，安卓端暂未通过。"
+              ],
+              "images": [
+                {
+                  "kind": "image",
+                  "label": "结束视频配置",
+                  "description": "分支片段可配置结束视频。",
+                  "src": "assets/doc-images/dingtalk-20260618/interactive-video-course/end-video-card.png",
+                  "status": "imported_from_local"
+                }
+              ]
+            },
+            {
+              "title": "分段视频自定义命名",
+              "paragraphs": [
+                "新增分段视频自定义命名，选项 A、选项 B 等节点可以更清晰地区分。"
+              ],
+              "images": [
+                {
+                  "kind": "image",
+                  "label": "分段视频自定义命名",
+                  "description": "多段视频片段列表支持命名展示。",
+                  "src": "assets/doc-images/dingtalk-20260618/interactive-video-course/segment-naming.png",
+                  "status": "imported_from_local"
+                }
+              ]
+            },
+            {
+              "title": "答错反馈音效",
+              "paragraphs": [
+                "预置 6 个答错反馈音效，制课时可以快速选择并应用到反馈环节。"
+              ],
+              "images": [
+                {
+                  "kind": "image",
+                  "label": "答错反馈音效",
+                  "description": "答错反馈区域可选择并使用音效。",
+                  "src": "assets/doc-images/dingtalk-20260618/interactive-video-course/wrong-answer-audio.png",
+                  "status": "imported_from_local"
+                }
+              ]
+            },
+            {
+              "title": "拖拽题终点预览",
+              "paragraphs": [
+                "拖拽题的拖拽终点会显示透明度 40% 的图片，并新增图片显示开关按钮。"
+              ],
+              "images": [
+                {
+                  "kind": "image",
+                  "label": "拖拽题终点预览与显示开关",
+                  "description": "左侧展示拖拽终点，右侧展示辅助功能开关。",
+                  "src": "assets/doc-images/dingtalk-20260618/interactive-video-course/drag-preview-settings.png",
+                  "status": "imported_from_local"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "资源说明",
+          "paragraphs": [
+            "钉钉原文中提供 macOS dmg 和 Windows exe 安装包。安装包和后续版本以钉钉原文为准。"
+          ]
+        }
+      ],
+      "resources": [
+        {
+          "kind": "source_doc",
+          "label": "图文文档 / 安装包入口",
+          "url": "https://alidocs.dingtalk.com/i/nodes/NZQYprEoWoe2DPmQtBjj9KPGJ1waOeDk?utm_scene=team_space",
+          "status": "external_link"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "互动视频",
+        "制课工具",
+        "ITV",
+        "时间轴",
+        "桌面工具",
+        "持续迭代"
+      ],
+      "version": "3.0 / 持续迭代",
+      "coverImage": {
+        "kind": "image",
+        "label": "互动视频制课工具界面",
+        "description": "分段视频自定义命名与多段配置界面。",
+        "src": "assets/doc-images/dingtalk-20260618/interactive-video-course/segment-naming.png",
+        "status": "imported_from_local"
       }
     }
   ],
