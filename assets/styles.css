@@ -1601,6 +1601,112 @@ body.has-lightbox {
   gap: 12px;
 }
 
+.review-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.34fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.review-toolbar {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(180px, 0.35fr) auto;
+  gap: 12px;
+  align-items: end;
+  margin-top: 18px;
+}
+
+.review-toolbar .field {
+  margin: 0;
+}
+
+.review-batchbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.review-select-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.review-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.review-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid rgba(92, 99, 112, 0.12);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.review-check {
+  padding-top: 3px;
+}
+
+.review-check input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--mint);
+}
+
+.review-item__body {
+  min-width: 0;
+}
+
+.review-item__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.review-item__head strong {
+  font-size: 18px;
+}
+
+.review-url {
+  display: block;
+  max-width: 100%;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(18, 18, 22, 0.05);
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.review-flow {
+  display: grid;
+  gap: 12px;
+  margin: 18px 0;
+  padding-left: 22px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+html[data-theme="night"] .review-item {
+  border-color: rgba(83, 255, 185, 0.13);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+html[data-theme="night"] .review-url {
+  background: rgba(0, 0, 0, 0.22);
+  color: rgba(237, 245, 238, 0.62);
+}
+
 .submission-note {
   margin-top: 14px;
 }
@@ -2443,7 +2549,8 @@ body.app-page .screen,
 
 body.app-page .feedback-layout,
 body.app-page .wish-layout,
-body.app-page .submit-layout {
+body.app-page .submit-layout,
+body.app-page .review-layout {
   gap: clamp(24px, 2.8vw, 44px);
 }
 
@@ -2457,6 +2564,10 @@ body.app-page .wish-layout {
 
 body.app-page .submit-layout {
   grid-template-columns: minmax(0, 1fr) minmax(320px, 0.78fr);
+}
+
+body.app-page .review-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.42fr);
 }
 
 body.app-page .control-panel,
@@ -2877,7 +2988,9 @@ html[data-theme="night"] .toast {
   .detail-layout,
   .feedback-layout,
   .wish-layout,
-  .submit-layout {
+  .submit-layout,
+  .review-layout,
+  .review-toolbar {
     grid-template-columns: 1fr;
   }
 
@@ -2907,7 +3020,8 @@ html[data-theme="night"] .toast {
   }
 
   body.app-page .feedback-item__head,
-  body.app-page .submit-actions {
+  body.app-page .submit-actions,
+  .review-item__head {
     align-items: flex-start;
     flex-direction: column;
   }

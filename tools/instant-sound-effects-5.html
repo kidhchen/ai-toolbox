@@ -1,0 +1,1826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>🎬 快速音 5.0｜短音效随机分配 UI 优化版</title>
+<style>
+*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+:root{--blue:#007aff;--blue2:#eaf4ff;--green:#10b981;--purple:#8b5cf6;--orange:#f59e0b;--red:#ef4444;--ink:#172033;--muted:#64748b;--line:#e5edf7;--bg:#f4f7fc;--card:#fff;--soft:#f8fbff}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);padding-bottom:94px}
+.app{max-width:1180px;margin:0 auto;padding:28px 22px 36px}
+.hero{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:18px}
+.hero h1{margin:0;font-size:26px;letter-spacing:.2px}
+.hero p{margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.6}
+.version-badge{background:#111827;color:#fff;border-radius:999px;padding:8px 12px;font-size:12px;white-space:nowrap}
+.stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0 18px}
+.step{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;gap:10px;align-items:center;box-shadow:0 1px 8px #00000005}
+.step-num{width:28px;height:28px;border-radius:999px;background:#edf2f7;color:#526177;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:0 0 auto}
+.step strong{display:block;font-size:13px}
+.step small{display:block;color:var(--muted);margin-top:2px;font-size:12px}
+.step.active{border-color:#b9d9ff;background:#f7fbff}
+.step.active .step-num{background:var(--blue);color:#fff}
+.step.done{border-color:#b7ebd7;background:#fbfffd}
+.step.done .step-num{background:var(--green);color:#fff}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px;align-items:start}
+.main-col,.side-col{min-width:0}
+.box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:18px;box-shadow:0 2px 12px #00000007}
+.box h2,.box h3{margin:0 0 12px}
+.box h2{font-size:18px}
+.box h3{font-size:16px;color:#243044}
+.tips{background:var(--soft);border:1px solid #dbeafe;border-radius:14px;padding:13px 14px;margin:12px 0;color:#31537a;font-size:13px;line-height:1.65}
+.tips.compact{margin:8px 0;padding:10px 12px}
+.muted{color:var(--muted)}
+.input{width:100%;padding:12px 13px;border:1px solid #d8e2ef;border-radius:12px;background:#fbfdff;font-size:14px}
+.label{display:block;margin:12px 0 7px;font-size:13px;color:#334155;font-weight:700}
+.btn{background:var(--blue);color:#fff;border:none;padding:12px 18px;border-radius:12px;cursor:pointer;font-size:14px;transition:.15s;font-weight:650}
+.btn:hover{filter:brightness(.96);transform:translateY(-1px)}
+.btn.secondary{background:#eef6ff;color:#0066d6;border:1px solid #cfe4ff}
+.btn.ghost{background:#fff;color:#31537a;border:1px solid #d9e5f5}
+.btn.warnbtn{background:#fff7ed;color:#b45309;border:1px solid #fed7aa}
+.btn.danger{background:#fff1f2;color:#be123c;border:1px solid #fecdd3}
+.btn.small{padding:8px 11px;border-radius:10px;font-size:12px}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.drop-big{border:2px dashed var(--blue);padding:30px 18px;border-radius:18px;text-align:center;cursor:pointer;background:#f0f8ff;color:#0f4c81;transition:.15s;margin:12px 0}
+.drop-big.active{background:#e1f1ff;transform:scale(1.01)}
+.drop-big strong{display:block;font-size:17px;margin-bottom:7px}
+.drop-big small{display:block;color:#476987;line-height:1.6}
+.file-info{margin-top:8px;font-size:13px;color:#666;line-height:1.65;word-break:break-word}
+.ok{color:#047857;font-weight:700}
+.warn{color:#b45309;font-weight:700}
+.error{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:12px;padding:12px 14px;margin-top:12px;display:none}
+code{background:#f1f5f9;padding:2px 6px;border-radius:6px}
+.hidden{display:none!important}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0 16px}
+.summary-card{border-radius:14px;padding:14px;background:#f8fafc;border:1px solid #edf2f7}
+.summary-card span{font-size:12px;color:var(--muted)}
+.summary-card strong{display:block;font-size:23px;margin-top:5px;color:#111827}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0 14px}
+.pill-filter{border:1px solid #d9e5f5;background:#fff;border-radius:999px;padding:8px 12px;cursor:pointer;color:#31537a}
+.pill-filter.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.search{max-width:220px;min-width:180px;padding:9px 11px;border:1px solid #d8e2ef;border-radius:999px;background:#fff}
+.setting-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0}
+.setting-row input[type="number"]{width:78px;padding:7px 8px;border:1px solid #cbd5e1;border-radius:9px;background:#fff}
+.setting-row label{font-size:13px;color:#334155}
+details.advanced{border:1px solid #e2e8f0;background:#fbfdff;border-radius:14px;padding:12px;margin-top:12px}
+details.advanced summary{cursor:pointer;font-weight:700;color:#334155}
+details.advanced .inner{margin-top:10px}
+.pool-panel{border:1px solid #e2e8f0;border-radius:16px;background:#fbfdff;padding:16px;margin:14px 0}
+.pool-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.pool-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.pool-list{max-height:170px;overflow:auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px;margin-top:10px;font-size:12px;color:#475569;line-height:1.7}
+.progress{height:8px;background:#e5edf7;border-radius:999px;overflow:hidden;margin-top:10px}
+.progress div{height:100%;width:0%;background:var(--blue);transition:.2s}
+.section-title{font-size:15px;margin:18px 0 10px;color:#334155;font-weight:800}
+.viewbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.viewbar .left{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.item{padding:16px;border:1px solid #edf2f7;border-radius:16px;margin-bottom:12px;background:#fff}
+.item.compound{border-left:5px solid var(--purple);background:#fbfaff}
+.item.outside{border-left:5px solid var(--green);background:#fbfffd}
+.item.mixed{border-left:5px solid var(--orange);background:#fffdf7}
+.item h4{margin:0 0 8px;font-size:15px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;line-height:1;padding:6px 9px;border-radius:999px;font-weight:700}
+.badge.compound{background:#ede9fe;color:#6d28d9}
+.badge.outside{background:#d1fae5;color:#047857}
+.badge.group{background:#fef3c7;color:#92400e}
+.badge.mixed{background:#ffedd5;color:#c2410c}
+.badge.auto{background:#f3e8ff;color:#7e22ce}
+.badge.manual{background:#dbeafe;color:#1d4ed8}
+.badge.none{background:#f1f5f9;color:#64748b}
+.meta{font-size:12px;color:#64748b;margin-bottom:12px;line-height:1.65;word-break:break-word}
+.drop-area{border:2px dashed var(--blue);padding:14px;border-radius:13px;text-align:center;cursor:pointer;background:#f8faff;color:#1d4ed8;transition:.15s}
+.drop-area.active{background:#e8f4ff;transform:scale(1.01)}
+.table-wrap{overflow:auto;border:1px solid #e5edf7;border-radius:14px;background:#fff}
+.template-table{width:100%;border-collapse:collapse;font-size:13px}
+.template-table th,.template-table td{border-bottom:1px solid #edf2f7;padding:11px 10px;text-align:left;vertical-align:top}
+.template-table th{background:#f8fafc;color:#475569;font-size:12px}
+.template-table tr:last-child td{border-bottom:none}
+.template-table .name{font-weight:800;color:#1f2937}
+.template-table .path{max-width:240px;word-break:break-word;color:#64748b;font-size:12px}
+.status-card{position:sticky;top:14px}
+.status-list{display:grid;gap:8px}
+.status-row{display:flex;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid #eef2f7;font-size:13px}
+.status-row:last-child{border-bottom:none}
+.status-row strong{color:#111827}
+.check-list{font-size:13px;line-height:1.7;color:#334155}
+.check-list div{padding:4px 0}
+.sticky-footer{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-top:1px solid #dbe5f1;box-shadow:0 -4px 18px #0000000b;z-index:30}
+.footer-inner{max-width:1180px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:12px;justify-content:space-between}
+.footer-stats{display:flex;gap:10px;flex-wrap:wrap;color:#475569;font-size:13px}
+.footer-stats b{color:#111827}
+.footer-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+@media(max-width:980px){.grid{grid-template-columns:1fr}.status-card{position:static}.stepper{grid-template-columns:repeat(2,1fr)}.footer-inner{align-items:flex-start;flex-direction:column}.footer-actions{justify-content:flex-start}.summary{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.app{padding:18px 14px 34px}.hero{display:block}.version-badge{display:inline-block;margin-top:10px}.stepper{grid-template-columns:1fr}.summary{grid-template-columns:1fr}.search{max-width:none;width:100%}}
+</style>
+</head>
+
+<body>
+<div class="app">
+<header class="hero">
+<div>
+<h1>🎬 快速音 5.0 UI 优化版</h1>
+<p>按步骤导入 FCPXML、扫描短音效池、自动随机分配、检查并导出。保留同模板只显示一个、防重复插入、同位置音效去重等功能。</p>
+</div>
+<span class="version-badge">Short SFX Randomizer / UI+</span>
+</header>
+
+<nav class="stepper">
+<div class="step" id="stepImport"><span class="step-num">1</span><div><strong>导入 XML</strong><small>读取 FCPXML</small></div></div>
+<div class="step" id="stepPool"><span class="step-num">2</span><div><strong>音效池</strong><small>扫描短音效</small></div></div>
+<div class="step" id="stepAssign"><span class="step-num">3</span><div><strong>分配音效</strong><small>自动或手动</small></div></div>
+<div class="step" id="stepExport"><span class="step-num">4</span><div><strong>导出 XML</strong><small>生成带音效项目</small></div></div>
+</nav>
+
+<div class="grid">
+<main class="main-col">
+<section class="box" id="importBox">
+<h2>1️⃣ 导入 FCPXML</h2>
+<div class="tips compact">拖入 Final Cut Pro 导出的 <code>.fcpxml</code> 或 <code>.xml</code>。工具会解析 <code>&lt;title&gt;</code> 模板，并把相同名称模板合并成一个模板组。</div>
+
+<label class="label">音效文件夹路径</label>
+<input id="soundRootInput" class="input" type="text" value="/Users/jio/Desktop/文成常用音效/" placeholder="例如：/Users/jio/Desktop/文成常用音效/">
+<div class="tips compact">浏览器无法读取真实绝对路径，所以这里需要填写 Final Cut Pro 能访问到的真实音效文件夹路径。选择音效文件夹后，XML 会使用这里的路径 + 文件相对路径。</div>
+
+<div id="fcpxmlDropArea" class="drop-big"
+onclick="document.getElementById('fcpxmlFileInput').click()"
+ondragover="dragOverFcpxml(event)"
+ondragleave="dragLeaveFcpxml(event)"
+ondrop="dropFcpxmlFile(event)">
+<strong>📂 拖入 .fcpxml / .xml 文件，或点击选择文件</strong>
+<small>文件只在浏览器本地读取，不会上传。</small>
+</div>
+
+<input class="hidden" id="fcpxmlFileInput" type="file" accept=".fcpxml,.fcpml,.xml,text/xml,application/xml" onchange="pickFcpxmlFile(event)">
+<div class="file-info" id="xmlFileInfo">未选择 FCPXML 文件</div>
+<button class="btn secondary" onclick="parseCurrentXml()">重新解析当前 XML</button>
+<div id="errorBox" class="error"></div>
+</section>
+
+<section class="box hidden" id="audioPanel">
+<h2>2️⃣ 音效池与模板分配</h2>
+<div id="summary" class="summary"></div>
+
+<div class="pool-panel">
+<div class="pool-head">
+<div>
+<h3 style="margin:0">短音效池随机分配</h3>
+<div class="muted" style="font-size:13px;margin-top:4px">扫描文件夹内短音效，随机分配给模板组。</div>
+</div>
+<span class="badge auto">🎲 自动</span>
+</div>
+
+<div class="setting-row">
+<label>短音效时长上限</label>
+<input id="poolMaxDuration" type="number" value="1.00" min="0.05" max="10" step="0.05">
+<span>秒</span>
+<label style="margin-left:12px">最小时长</label>
+<input id="poolMinDuration" type="number" value="0.03" min="0" max="1" step="0.01">
+<span>秒</span>
+</div>
+
+<div class="setting-row">
+<label><input id="autoOnlyUnassigned" type="checkbox" checked> 只给未添加音效的模板组分配</label>
+<label><input id="autoAvoidRepeat" type="checkbox" checked> 同一轮尽量不重复使用同一个短音效</label>
+</div>
+
+<div class="pool-actions">
+<input class="hidden" id="soundFolderInput" type="file" webkitdirectory directory multiple onchange="pickSoundFolder(event)">
+<button class="btn secondary" onclick="document.getElementById('soundFolderInput').click()">📁 选择音效文件夹</button>
+<button class="btn secondary" onclick="scanSoundPool()">扫描短音效</button>
+<button class="btn" onclick="randomAssignShortSounds(false)">随机分配</button>
+<button class="btn ghost" onclick="rerandomizeShortSounds()">重新随机</button>
+<button class="btn warnbtn" onclick="clearAutoAssignedSounds()">清除自动分配</button>
+</div>
+
+<div class="file-info" id="soundPoolInfo">未选择音效文件夹</div>
+<div class="progress hidden" id="scanProgress"><div id="scanProgressBar"></div></div>
+<div class="pool-list hidden" id="soundPoolList"></div>
+</div>
+
+<div class="viewbar">
+<div class="left">
+<button class="pill-filter active" onclick="setFilter('all', this)">全部模板组</button>
+<button class="pill-filter" onclick="setFilter('compound', this)">包含复合片段内</button>
+<button class="pill-filter" onclick="setFilter('outside', this)">包含复合片段外</button>
+</div>
+<div class="left">
+<input id="templateSearchInput" class="search" placeholder="搜索模板组" oninput="renderTemplateList()">
+<button class="btn small ghost" id="viewCardsBtn" onclick="setViewMode('cards')">卡片</button>
+<button class="btn small ghost" id="viewTableBtn" onclick="setViewMode('table')">表格</button>
+</div>
+</div>
+
+<div id="templateList"></div>
+</section>
+</main>
+
+<aside class="side-col">
+<section class="box status-card">
+<h3>📊 当前状态</h3>
+<div class="status-list" id="statusList"></div>
+
+<details class="advanced" open>
+<summary>生成前检查</summary>
+<div class="check-list inner" id="preflightList"></div>
+</details>
+
+<details class="advanced">
+<summary>高级设置</summary>
+<div class="inner">
+<div class="setting-row"><label><input id="dedupeSameTimeSameAudio" type="checkbox" checked onchange="updateWorkflowUI()"> 同一时间点相同音效只插入一次</label></div>
+<div class="setting-row"><label><input id="dedupeSameTimeAnyAudio" type="checkbox" onchange="updateWorkflowUI()"> 同一时间点只保留一个音效，即使音效文件不同</label></div>
+<div class="setting-row"><span>同时间点容差</span><input id="dedupeToleranceFrames" type="number" value="2" min="0" max="25" step="1" onchange="updateWorkflowUI()"><span>帧</span></div>
+<div class="setting-row"><span>按</span><input id="dedupeFrameRate" type="number" value="25" min="1" max="120" step="1" onchange="updateWorkflowUI()"><span>fps 计算</span></div>
+<div class="tips compact">开启“同一时间点只保留一个音效”后，不同音效文件也会只保留一个。主时间线和复合片段会分开判断，避免误删。</div>
+</div>
+</details>
+</section>
+</aside>
+</div>
+</div>
+
+<div class="sticky-footer hidden" id="stickyFooter">
+<div class="footer-inner">
+<div class="footer-stats" id="footerStats"></div>
+<div class="footer-actions">
+<button class="btn small ghost" onclick="rerandomizeShortSounds()">重新随机</button>
+<button class="btn small warnbtn" onclick="clearAutoAssignedSounds()">清除自动</button>
+<button class="btn" onclick="generateFinalXml()">✅ 生成带音效 XML</button>
+</div>
+</div>
+</div>
+
+<script>
+const DEFAULT_SOUND_ROOT="/Users/jio/Desktop/文成常用音效/";
+const DEFAULT_AUDIO_RATE=48000;
+const QUICK_AUDIO_PREFIX="快速音效__";
+
+let originalXml="";
+let currentXmlFileName="";
+let templateList=[];
+let soundData={};
+let currentFilter="all";
+let soundPool=[];
+let soundPoolFiles=[];
+let currentView="cards";
+
+function showError(msg){
+    const box=document.getElementById("errorBox");
+    box.textContent=msg;
+    box.style.display=msg?"block":"none";
+}
+
+function xmlAttr(value){
+    return String(value??"")
+        .replaceAll("&","&amp;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;");
+}
+
+function htmlText(value){
+    return String(value??"")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+
+function escapeRegExp(value){
+    return String(value).replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+}
+
+function getAttrFromXmlTag(tagText,attrName){
+    const re=new RegExp(`\\b${attrName}="([^"]*)"`);
+    const m=String(tagText||"").match(re);
+    return m?m[1]:"";
+}
+
+function collectQuickAudioAssetIds(xml){
+    const ids=new Set();
+    const prefix=escapeRegExp(QUICK_AUDIO_PREFIX);
+    const assetRe=new RegExp(`<asset\\b(?=[^>]*\\bname="${prefix})[\\s\\S]*?</asset>`,"g");
+    let m;
+    while((m=assetRe.exec(xml))!==null){
+        const id=getAttrFromXmlTag(m[0],"id");
+        if(id) ids.add(id);
+    }
+    return ids;
+}
+
+function countExistingQuickAudio(xml){
+    const quickAssetIds=collectQuickAudioAssetIds(xml);
+    let count=0;
+    const clipRe=/<asset-clip\b[\s\S]*?(?:<\/asset-clip>|\/)>/g;
+    let m;
+    while((m=clipRe.exec(xml))!==null){
+        const clip=m[0];
+        const name=getAttrFromXmlTag(clip,"name");
+        const ref=getAttrFromXmlTag(clip,"ref");
+        if((name&&name.startsWith(QUICK_AUDIO_PREFIX))||(ref&&quickAssetIds.has(ref))) count++;
+    }
+    return count;
+}
+
+function stripExistingQuickAudio(xml){
+    const removedRefs=new Set();
+    let removedClips=0;
+    let output=String(xml||"");
+    const quickAssetIdsBefore=collectQuickAudioAssetIds(output);
+
+    output=output.replace(/<!--\s*快速音效工具:[\s\S]*?-->\s*/g,"");
+
+    const clipRe=/<asset-clip\b[\s\S]*?(?:<\/asset-clip>|\/)>/g;
+    output=output.replace(clipRe,clip=>{
+        const name=getAttrFromXmlTag(clip,"name");
+        const ref=getAttrFromXmlTag(clip,"ref");
+        const shouldRemove=(name&&name.startsWith(QUICK_AUDIO_PREFIX))||(ref&&quickAssetIdsBefore.has(ref));
+        if(shouldRemove){
+            if(ref) removedRefs.add(ref);
+            removedClips++;
+            return "";
+        }
+        return clip;
+    });
+
+    let removedAssets=0;
+    removedRefs.forEach(ref=>{
+        const refEscaped=escapeRegExp(ref);
+        const stillUsed=new RegExp(`\\bref="${refEscaped}"`).test(output);
+        if(!stillUsed){
+            const before=output;
+            output=output.replace(new RegExp(`\\s*<asset\\b(?=[^>]*\\bid="${refEscaped}")[\\s\\S]*?</asset>`,"g"),"");
+            if(before!==output) removedAssets++;
+        }
+    });
+
+    return {xml:output,removedClips,removedAssets};
+}
+
+function cleanupQuickAudioBeforeParse(){
+    const count=countExistingQuickAudio(originalXml);
+    if(!count) return;
+    const result=stripExistingQuickAudio(originalXml);
+    originalXml=result.xml;
+
+    const info=document.getElementById("xmlFileInfo");
+    if(info){
+        info.innerHTML+=`<br><span class="warn">检测到已有快速音效 ${result.removedClips} 个，已自动清理，避免重复插入。</span>`;
+    }
+}
+
+function getSoundRoot(){
+    const input=document.getElementById("soundRootInput");
+    return (input&&input.value.trim())||DEFAULT_SOUND_ROOT;
+}
+
+function normalizeSoundRoot(root){
+    let value=String(root||"").trim();
+    if(!value) value=DEFAULT_SOUND_ROOT;
+    if(!value.endsWith("/")) value+="/";
+    return value;
+}
+
+function safeDecodeURIComponent(part){
+    try{return decodeURIComponent(part)}catch(e){return part}
+}
+
+function encodePathPart(part){
+    return encodeURIComponent(safeDecodeURIComponent(part));
+}
+
+function pathToFileUrl(root,filePath){
+    const normalizedRoot=normalizeSoundRoot(root);
+    const fullPath=normalizedRoot+filePath;
+
+    if(/^file:\/\//i.test(fullPath)){
+        const withoutScheme=fullPath.replace(/^file:\/\//i,"");
+        return "file://"+withoutScheme.split("/").map(part=>encodePathPart(part)).join("/");
+    }
+
+    return "file://"+fullPath.split("/").map((part,i)=>{
+        if(i===0&&part==="") return "";
+        return encodePathPart(part);
+    }).join("/");
+}
+
+function fcpxTimeToSeconds(value){
+    if(!value) return 0;
+    let s=String(value).trim();
+    if(s.endsWith("s")) s=s.slice(0,-1);
+
+    if(s.includes("/")){
+        const [a,b]=s.split("/").map(Number);
+        return b?a/b:0;
+    }
+
+    const n=Number(s);
+    return Number.isFinite(n)?n:0;
+}
+
+function secondsToFcpxTime(seconds,sampleRate=DEFAULT_AUDIO_RATE){
+    const frames=Math.max(1,Math.floor(Number(seconds||0)*sampleRate));
+    return `${frames}/${sampleRate}s`;
+}
+
+function framesToFcpxTime(frames,sampleRate=DEFAULT_AUDIO_RATE){
+    const safeFrames=Math.max(1,Math.floor(Number(frames||0)));
+    const safeRate=Math.max(1,Math.floor(Number(sampleRate||DEFAULT_AUDIO_RATE)));
+    return `${safeFrames}/${safeRate}s`;
+}
+
+function audioDataDuration(data){
+    if(data&&data.frames&&data.sample) return framesToFcpxTime(data.frames,data.sample);
+    return secondsToFcpxTime(data?data.duration:0,data?data.sample:DEFAULT_AUDIO_RATE);
+}
+
+function isAudioFile(file){
+    if(!file) return false;
+    if(file.type&&file.type.startsWith("audio/")) return true;
+    return /\.(wav|aif|aiff|mp3|m4a|aac|flac|caf|ogg)$/i.test(file.name||"");
+}
+
+function getRelativePathForXml(file){
+    const rel=file.webkitRelativePath||file.name;
+    if(rel&&rel.includes("/")){
+        const parts=rel.split("/").filter(Boolean);
+        if(parts.length>1) return parts.slice(1).join("/")||file.name;
+    }
+    return file.name;
+}
+
+function normalizeTemplateGroupName(name){
+    return String(name||"").trim().replace(/\s+/g," ").toLowerCase();
+}
+
+function buildTemplateGroupKey(name,index){
+    const normalized=normalizeTemplateGroupName(name);
+    return normalized?`template-name:${normalized}`:`template-unique:${index}`;
+}
+
+function updateTemplateGroupInfo(){
+    const groupMap=new Map();
+
+    templateList.forEach(tpl=>{
+        if(!groupMap.has(tpl.groupKey)) groupMap.set(tpl.groupKey,[]);
+        groupMap.get(tpl.groupKey).push(tpl);
+    });
+
+    templateList.forEach(tpl=>{
+        const group=groupMap.get(tpl.groupKey)||[tpl];
+        tpl.groupCount=group.length;
+        tpl.groupIndexes=group.map(t=>t.index);
+        tpl.groupFirstIndex=group[0].index;
+    });
+}
+
+function getVisibleTemplateGroups(){
+    const seen=new Set();
+    const result=[];
+
+    templateList.forEach(tpl=>{
+        if(seen.has(tpl.groupKey)) return;
+        seen.add(tpl.groupKey);
+
+        const members=templateList.filter(t=>t.groupKey===tpl.groupKey);
+        const compoundCount=members.filter(t=>t.isCompound).length;
+        const outsideCount=members.length-compoundCount;
+
+        let groupDisplayLocation="";
+        if(compoundCount&&outsideCount){
+            groupDisplayLocation=`复合片段内 ${compoundCount} 个 / 复合片段外 ${outsideCount} 个`;
+        }else if(compoundCount){
+            groupDisplayLocation=`复合片段内 ${compoundCount} 个`;
+        }else{
+            groupDisplayLocation=`复合片段外 ${outsideCount} 个`;
+        }
+
+        result.push({
+            ...tpl,
+            groupMembers:members,
+            groupCompoundCount:compoundCount,
+            groupOutsideCount:outsideCount,
+            groupDisplayLocation
+        });
+    });
+
+    return result;
+}
+
+function getSameTemplateMembers(index){
+    const tpl=templateList.find(t=>t.index===index);
+    if(!tpl) return [];
+    return templateList.filter(t=>t.groupKey===tpl.groupKey);
+}
+
+function getGroupSoundData(tpl){
+    const members=getSameTemplateMembers(tpl.index);
+    const found=members.find(m=>soundData[m.index]);
+    return found?soundData[found.index]:soundData[tpl.index];
+}
+
+function applyAudioToSameTemplateGroup(index,data){
+    const members=getSameTemplateMembers(index);
+
+    if(!members.length){
+        soundData[index]=data;
+        refreshFileInfo(index);
+        return 1;
+    }
+
+    members.forEach(member=>{
+        soundData[member.index]={...data,groupAppliedFrom:index};
+        refreshFileInfo(member.index);
+    });
+
+    return members.length;
+}
+
+function expandSoundDataToSameTemplateGroups(){
+    const selectedIndexes=Object.keys(soundData).map(Number).sort((a,b)=>a-b);
+    const expanded=new Set();
+
+    selectedIndexes.forEach(idx=>{
+        const data=soundData[idx];
+        const members=getSameTemplateMembers(idx);
+
+        if(!members.length){
+            expanded.add(idx);
+            return;
+        }
+
+        members.forEach(member=>{
+            if(!soundData[member.index]){
+                soundData[member.index]={...data,groupAppliedFrom:idx};
+            }
+            expanded.add(member.index);
+        });
+    });
+
+    return Array.from(expanded).sort((a,b)=>a-b);
+}
+
+function groupHasSound(tpl){
+    return getSameTemplateMembers(tpl.index).some(m=>!!soundData[m.index]);
+}
+
+function getTemplateContainerKey(tpl){
+    if(!tpl) return "unknown";
+    if(tpl.mediaId) return `media:${tpl.mediaId}`;
+    if(tpl.isCompound) return `compound:${tpl.whereName||tpl.mediaName||tpl.note||"unknown"}`;
+    return "main-project";
+}
+
+function makeAudioDedupeKey(data){
+    return String(data&&data.path?data.path:(data&&data.file?data.file:"")).trim().toLowerCase();
+}
+
+function isSameTimeSameAudioDedupeEnabled(){
+    const el=document.getElementById("dedupeSameTimeSameAudio");
+    return !el||el.checked;
+}
+
+function isSameTimeAnyAudioDedupeEnabled(){
+    const el=document.getElementById("dedupeSameTimeAnyAudio");
+    return !!(el&&el.checked);
+}
+
+function getDedupeToleranceFrames(){
+    const el=document.getElementById("dedupeToleranceFrames");
+    const value=el?Number(el.value):2;
+    return Number.isFinite(value)&&value>=0?value:2;
+}
+
+function getDedupeFrameRate(){
+    const el=document.getElementById("dedupeFrameRate");
+    const value=el?Number(el.value):25;
+    return Number.isFinite(value)&&value>0?value:25;
+}
+
+function getDedupeToleranceSeconds(){
+    return getDedupeToleranceFrames()/getDedupeFrameRate();
+}
+
+function buildAudioInsertionCandidates(usedIndexes){
+    return usedIndexes.map(idx=>{
+        const tpl=templateList.find(t=>t.index===idx);
+        const data=soundData[idx];
+
+        if(!tpl||!data) return null;
+
+        return {
+            idx,
+            tpl,
+            data,
+            duration:audioDataDuration(data),
+            containerKey:getTemplateContainerKey(tpl),
+            audioKey:makeAudioDedupeKey(data),
+            offsetSeconds:fcpxTimeToSeconds(tpl.offset),
+            offsetRaw:tpl.offset||"0s"
+        };
+    }).filter(Boolean);
+}
+
+function dedupeOverlappedAudioCandidates(candidates){
+    const dedupeAnyAudio=isSameTimeAnyAudioDedupeEnabled();
+    const dedupeSameAudio=isSameTimeSameAudioDedupeEnabled();
+
+    if(!dedupeAnyAudio&&!dedupeSameAudio){
+        return {kept:candidates,skipped:[],mode:"none"};
+    }
+
+    const toleranceSeconds=getDedupeToleranceSeconds();
+    const kept=[];
+    const skipped=[];
+
+    candidates.forEach(candidate=>{
+        const existing=kept.find(item=>{
+            const sameContainer=item.containerKey===candidate.containerKey;
+            const sameTime=Math.abs(item.offsetSeconds-candidate.offsetSeconds)<=toleranceSeconds;
+            const sameAudio=item.audioKey===candidate.audioKey;
+
+            if(!sameContainer||!sameTime) return false;
+            if(dedupeAnyAudio) return true;
+            return sameAudio;
+        });
+
+        if(existing){
+            skipped.push({
+                skipped:candidate,
+                kept:existing,
+                reason:dedupeAnyAudio?"same-time-any-audio":"same-time-same-audio"
+            });
+        }else{
+            kept.push(candidate);
+        }
+    });
+
+    return {
+        kept,
+        skipped,
+        mode:dedupeAnyAudio?"any-audio":"same-audio"
+    };
+}
+
+function getNodeName(node){
+    return (node&&(node.localName||node.nodeName)||"").toLowerCase();
+}
+
+function closestAncestor(node,tagName){
+    let p=node?node.parentNode:null;
+    tagName=tagName.toLowerCase();
+
+    while(p&&p.nodeType===1){
+        if(getNodeName(p)===tagName) return p;
+        p=p.parentNode;
+    }
+
+    return null;
+}
+
+function hasAncestor(node,tagName){
+    return !!closestAncestor(node,tagName);
+}
+
+function isInsideResourcesMedia(node){
+    const media=closestAncestor(node,"media");
+    return media&&hasAncestor(media,"resources")?media:null;
+}
+
+function buildResourceRefMap(doc){
+    const map=new Map();
+    const refs=Array.from(doc.getElementsByTagName("ref-clip"));
+
+    refs.forEach(refClip=>{
+        const ref=refClip.getAttribute("ref");
+        if(!ref) return;
+
+        if(!map.has(ref)) map.set(ref,[]);
+        map.get(ref).push({
+            name:refClip.getAttribute("name")||"未命名复合片段",
+            offset:refClip.getAttribute("offset")||"",
+            duration:refClip.getAttribute("duration")||""
+        });
+    });
+
+    return map;
+}
+
+function getTitleTagPositions(xml){
+    const positions=[];
+    const re=/<title(?=[\s/>])/g;
+    let m;
+
+    while((m=re.exec(xml))!==null) positions.push(m.index);
+    return positions;
+}
+
+function findElementEnd(xml,startIndex,tagName){
+    const firstEnd=xml.indexOf(">",startIndex);
+    if(firstEnd===-1) return startIndex;
+
+    if(/\/\s*>$/.test(xml.slice(startIndex,firstEnd+1))) return firstEnd+1;
+
+    const openRe=new RegExp(`<${tagName}(?=[\\s/>])`,"g");
+    const closeRe=new RegExp(`</${tagName}\\s*>`,"g");
+
+    openRe.lastIndex=firstEnd+1;
+    closeRe.lastIndex=firstEnd+1;
+
+    let depth=1;
+    let pos=firstEnd+1;
+
+    while(depth>0){
+        openRe.lastIndex=pos;
+        closeRe.lastIndex=pos;
+
+        const openMatch=openRe.exec(xml);
+        const closeMatch=closeRe.exec(xml);
+
+        if(!closeMatch) return firstEnd+1;
+
+        if(openMatch&&openMatch.index<closeMatch.index){
+            const openEnd=xml.indexOf(">",openMatch.index);
+            if(openEnd===-1) return firstEnd+1;
+
+            if(!/\/\s*>$/.test(xml.slice(openMatch.index,openEnd+1))) depth++;
+            pos=openEnd+1;
+        }else{
+            depth--;
+            pos=closeMatch.index+closeMatch[0].length;
+        }
+    }
+
+    return pos;
+}
+
+function collectExistingIds(xml){
+    const ids=new Set();
+    const re=/\bid="([^"]+)"/g;
+    let m;
+
+    while((m=re.exec(xml))!==null) ids.add(m[1]);
+    return ids;
+}
+
+function makeUniqueResourceId(existingIds,prefix="r"){
+    let max=0;
+
+    existingIds.forEach(id=>{
+        const m=id.match(/^r(\d+)$/);
+        if(m) max=Math.max(max,Number(m[1]));
+    });
+
+    let next=Math.max(1000,max+1);
+    while(existingIds.has(`${prefix}${next}`)) next++;
+
+    const id=`${prefix}${next}`;
+    existingIds.add(id);
+    return id;
+}
+
+function updateProjectUidAndName(xml){
+    return xml.replace(/<project\b([^>]*)>/,(full,attrs)=>{
+        const newUid="PROJ_"+Math.random().toString(36).slice(2,10).toUpperCase();
+        let newAttrs=attrs;
+
+        if(/\buid="[^"]*"/.test(newAttrs)){
+            newAttrs=newAttrs.replace(/\buid="[^"]*"/,`uid="${newUid}"`);
+        }else{
+            newAttrs+=` uid="${newUid}"`;
+        }
+
+        if(/\bname="[^"]*"/.test(newAttrs)){
+            newAttrs=newAttrs.replace(/\bname="([^"]*)"/,(m,name)=>`name="${xmlAttr(name)}_带音效"`);
+        }else{
+            newAttrs+=` name="带音效项目"`;
+        }
+
+        return `<project${newAttrs}>`;
+    });
+}
+
+function dragOverFcpxml(e){
+    e.preventDefault();
+    document.getElementById("fcpxmlDropArea").classList.add("active");
+}
+
+function dragLeaveFcpxml(e){
+    e.preventDefault();
+    document.getElementById("fcpxmlDropArea").classList.remove("active");
+}
+
+function dropFcpxmlFile(e){
+    e.preventDefault();
+    document.getElementById("fcpxmlDropArea").classList.remove("active");
+    handleFcpxmlFile(e.dataTransfer.files[0]);
+}
+
+function pickFcpxmlFile(e){
+    handleFcpxmlFile(e.target.files[0]);
+}
+
+async function handleFcpxmlFile(file){
+    showError("");
+    if(!file) return;
+
+    const okName=/\.(fcpxml|fcpml|xml)$/i.test(file.name);
+    if(!okName){
+        alert("请拖入 .fcpxml、.fcpml 或 .xml 文件。");
+        return;
+    }
+
+    const info=document.getElementById("xmlFileInfo");
+    if(info) info.innerHTML="正在读取 FCPXML 文件……";
+
+    try{
+        const text=await file.text();
+
+        if(!/<fcpxml[\s>]/i.test(text)){
+            showError("这个文件里没有识别到 <fcpxml> 根内容，请确认拖入的是 Final Cut Pro 导出的 FCPXML 文件。");
+            if(info) info.innerHTML="未选择有效 FCPXML 文件";
+            return;
+        }
+
+        originalXml=text;
+        currentXmlFileName=file.name;
+        templateList=[];
+        soundData={};
+
+        if(info){
+            info.innerHTML=`<span class="ok">✅ 已读取：${htmlText(file.name)}</span> ｜ 文件大小：${Math.round((file.size||0)/1024)} KB`;
+        }
+
+        parseTemplate();
+    }catch(err){
+        console.error(err);
+        showError("读取文件失败。请确认浏览器有权限读取该文件，或者重新导出 FCPXML 后再拖入。");
+        if(info) info.innerHTML="读取失败";
+    }
+}
+
+function parseCurrentXml(){
+    if(!originalXml.trim()){
+        alert("请先拖入 FCPXML 文件！");
+        return;
+    }
+
+    parseTemplate();
+}
+
+function parseTemplate(){
+    showError("");
+
+    if(!originalXml.trim()) return alert("请先拖入 FCPXML 文件！");
+
+    cleanupQuickAudioBeforeParse();
+
+    const parser=new DOMParser();
+    const doc=parser.parseFromString(originalXml,"application/xml");
+    const parseError=doc.getElementsByTagName("parsererror")[0];
+
+    if(parseError){
+        showError("XML 解析失败：请确认拖入的是完整、未损坏的 FCPXML。建议从 Final Cut Pro 重新导出 XML 后再试。");
+        return;
+    }
+
+    const titles=Array.from(doc.getElementsByTagName("title"));
+    const titlePositions=getTitleTagPositions(originalXml);
+    const refMap=buildResourceRefMap(doc);
+
+    templateList=[];
+    soundData={};
+
+    titles.forEach((node,index)=>{
+        const startIndex=titlePositions[index]??-1;
+        const endIndex=startIndex>=0?findElementEnd(originalXml,startIndex,"title"):-1;
+
+        const media=isInsideResourcesMedia(node);
+        const ancestorRefClip=closestAncestor(node,"ref-clip");
+        const isCompound=!!media||(!!ancestorRefClip&&hasAncestor(ancestorRefClip,"project"));
+
+        const mediaId=media?(media.getAttribute("id")||""):"";
+        const mediaName=media?(media.getAttribute("name")||"未命名复合片段"):"";
+        const refUsages=mediaId&&refMap.has(mediaId)?refMap.get(mediaId):[];
+        const firstUsage=refUsages[0];
+        const refClipName=firstUsage?firstUsage.name:(ancestorRefClip?ancestorRefClip.getAttribute("name"):"");
+        const whereName=media?(mediaName||refClipName||mediaId):(refClipName||"主项目时间线");
+
+        const rawTemplateName=node.getAttribute("name")||"";
+        const displayTemplateName=rawTemplateName||`未命名模板 ${index+1}`;
+        const groupKey=rawTemplateName.trim()
+            ?buildTemplateGroupKey(rawTemplateName,index)
+            :`template-unique:${index}`;
+
+        templateList.push({
+            index,
+            name:displayTemplateName,
+            groupKey,
+            groupName:rawTemplateName||displayTemplateName,
+            offset:node.getAttribute("offset")||"0s",
+            duration:node.getAttribute("duration")||"",
+            startIndex,
+            endIndex,
+            isCompound,
+            mediaId,
+            mediaName,
+            refCount:refUsages.length,
+            whereName,
+            locationLabel:isCompound?"复合片段内":"复合片段外",
+            note:media
+                ?`资源序列：${whereName}${mediaId?`（${mediaId}）`:""}${refUsages.length?`，主时间线引用 ${refUsages.length} 次`:""}`
+                :(ancestorRefClip?`位于 ref-clip：${whereName}`:"位于主项目时间线")
+        });
+    });
+
+    updateTemplateGroupInfo();
+
+    if(templateList.length===0){
+        alert("未识别到任何模板，请检查 XML 中是否包含 <title> 标签！");
+        return;
+    }
+
+    document.getElementById("audioPanel").classList.remove("hidden");
+    document.getElementById("stickyFooter").classList.remove("hidden");
+
+    renderTemplateList();
+    updateWorkflowUI();
+
+    const inside=templateList.filter(t=>t.isCompound).length;
+    const outside=templateList.length-inside;
+    const groupCount=new Set(templateList.map(t=>t.groupKey)).size;
+
+    alert(`✅ ${currentXmlFileName?"文件「"+currentXmlFileName+"」":"当前 XML"}解析完成：识别到 ${templateList.length} 个模板，显示为 ${groupCount} 个模板组；复合片段内 ${inside} 个，复合片段外 ${outside} 个。`);
+}
+
+function setFilter(filter,btn){
+    currentFilter=filter;
+    document.querySelectorAll(".pill-filter").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    renderTemplateList();
+}
+
+function setViewMode(mode){
+    currentView=mode;
+    renderTemplateList();
+}
+
+function getFilteredVisibleGroups(){
+    const query=(document.getElementById("templateSearchInput")?.value||"").trim().toLowerCase();
+
+    return getVisibleTemplateGroups().filter(tpl=>{
+        if(currentFilter==="compound"&&tpl.groupCompoundCount<=0) return false;
+        if(currentFilter==="outside"&&tpl.groupOutsideCount<=0) return false;
+
+        if(query){
+            const hay=[tpl.name,tpl.note,tpl.groupDisplayLocation,tpl.offset].join(" ").toLowerCase();
+            if(!hay.includes(query)) return false;
+        }
+
+        return true;
+    });
+}
+
+function renderTemplateList(){
+    if(!templateList.length) return;
+
+    const inside=templateList.filter(t=>t.isCompound).length;
+    const outside=templateList.length-inside;
+    const visibleGroups=getVisibleTemplateGroups();
+    const assignedGroups=visibleGroups.filter(groupHasSound).length;
+    const autoGroups=visibleGroups.filter(t=>{
+        const d=getGroupSoundData(t);
+        return d&&d.autoAssigned;
+    }).length;
+
+    document.getElementById("summary").innerHTML=`
+        <div class="summary-card"><span>总模板数</span><strong>${templateList.length}</strong></div>
+        <div class="summary-card"><span>显示模板组</span><strong>${visibleGroups.length}</strong></div>
+        <div class="summary-card"><span>已分配组</span><strong>${assignedGroups}</strong></div>
+        <div class="summary-card"><span>短音效池</span><strong>${soundPool.length}</strong></div>
+    `;
+
+    document.getElementById("viewCardsBtn")?.classList.toggle("active",currentView==="cards");
+    document.getElementById("viewTableBtn")?.classList.toggle("active",currentView==="table");
+
+    const container=document.getElementById("templateList");
+    container.innerHTML="";
+
+    const heading=document.createElement("div");
+    heading.className="section-title";
+    heading.textContent=`模板组列表：共 ${visibleGroups.length} 组，复合片段内 ${inside} 个模板，复合片段外 ${outside} 个模板，自动分配 ${autoGroups} 组`;
+    container.appendChild(heading);
+
+    const list=getFilteredVisibleGroups();
+
+    if(!list.length){
+        container.insertAdjacentHTML("beforeend",`<div class="tips">没有符合当前筛选条件的模板组。</div>`);
+        updateWorkflowUI();
+        return;
+    }
+
+    if(currentView==="table"){
+        renderTemplateTable(container,list);
+    }else{
+        renderTemplateCards(container,list);
+    }
+
+    updateWorkflowUI();
+}
+
+function templateVisualClass(tpl){
+    if(tpl.groupCompoundCount>0&&tpl.groupOutsideCount>0) return "mixed";
+    if(tpl.groupCompoundCount>0) return "compound";
+    return "outside";
+}
+
+function soundBadge(data){
+    if(!data) return `<span class="badge none">⚠ 未添加</span>`;
+    return data.autoAssigned
+        ?`<span class="badge auto">🎲 自动</span>`
+        :`<span class="badge manual">🖐 手动</span>`;
+}
+
+function renderTemplateCards(container,list){
+    list.forEach(tpl=>{
+        const data=getGroupSoundData(tpl);
+        const item=document.createElement("div");
+        const visual=templateVisualClass(tpl);
+
+        item.className=`item ${visual}`;
+        item.dataset.hasCompound=tpl.groupCompoundCount>0?"1":"0";
+        item.dataset.hasOutside=tpl.groupOutsideCount>0?"1":"0";
+
+        const refText=tpl.isCompound&&tpl.refCount?`｜复合片段引用次数：${tpl.refCount}`:"";
+        const audioText=data
+            ?`当前音效：<span class="ok">${htmlText(data.file)}</span>${data.path&&data.path!==data.file?` ｜ 相对路径：<code>${htmlText(data.path)}</code>`:""}`
+            :"当前音效：未选择";
+
+        item.innerHTML=`
+            <h4>
+                <span>📌 模板组：${htmlText(tpl.name)}</span>
+                <span class="badge ${visual}">${tpl.groupDisplayLocation}</span>
+                ${tpl.groupCount>1?`<span class="badge group">🔁 同模板 ×${tpl.groupCount}</span>`:""}
+                ${soundBadge(data)}
+            </h4>
+            <div class="meta">
+                代表位置：${htmlText(tpl.note)}<br>
+                模板 offset：<code>${htmlText(tpl.offset)}</code>${tpl.duration?`｜模板 duration：<code>${htmlText(tpl.duration)}</code>`:""}${refText}<br>
+                ${audioText}
+                ${tpl.groupCount>1?`<br><span class="ok">给这个模板组添加一次音效后，会同步到全部 ${tpl.groupCount} 个位置。</span>`:""}
+            </div>
+            <div class="drop-area" id="drop_${tpl.index}"
+                 onclick="document.getElementById('file_${tpl.index}').click()"
+                 ondragover="dragOver(event)"
+                 ondragleave="dragLeave(event)"
+                 ondrop="dropFile(event, ${tpl.index})">
+                ${tpl.groupCount>1?`拖入音效文件，自动同步到同模板 ${tpl.groupCount} 个位置`:"拖入音效文件，或点击选择音效"}
+            </div>
+            <input class="hidden" id="file_${tpl.index}" type="file" accept="audio/*" onchange="pickFile(event, ${tpl.index})">
+            <div class="file-info" id="info_${tpl.index}">${data?"已选择音效":"未选择音效"}</div>
+        `;
+
+        container.appendChild(item);
+        refreshFileInfo(tpl.index);
+    });
+}
+
+function renderTemplateTable(container,list){
+    const wrap=document.createElement("div");
+    wrap.className="table-wrap";
+
+    wrap.innerHTML=`
+        <table class="template-table">
+            <thead>
+                <tr>
+                    <th>模板组</th>
+                    <th>数量</th>
+                    <th>位置</th>
+                    <th>Offset</th>
+                    <th>音效</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    `;
+
+    const tbody=wrap.querySelector("tbody");
+
+    list.forEach(tpl=>{
+        const data=getGroupSoundData(tpl);
+        const visual=templateVisualClass(tpl);
+        const tr=document.createElement("tr");
+
+        tr.innerHTML=`
+            <td>
+                <div class="name">${htmlText(tpl.name)}</div>
+                <div class="path">${htmlText(tpl.note)}</div>
+            </td>
+            <td>${tpl.groupCount>1?`<span class="badge group">×${tpl.groupCount}</span>`:"1"}</td>
+            <td><span class="badge ${visual}">${tpl.groupDisplayLocation}</span></td>
+            <td><code>${htmlText(tpl.offset)}</code></td>
+            <td>${soundBadge(data)}<br>${data?`<span class="ok">${htmlText(data.file)}</span>`:`<span class="muted">未添加</span>`}</td>
+            <td>
+                <button class="btn small secondary" onclick="document.getElementById('file_${tpl.index}').click()">选择音效</button>
+                <input class="hidden" id="file_${tpl.index}" type="file" accept="audio/*" onchange="pickFile(event, ${tpl.index})">
+                <div class="file-info hidden" id="info_${tpl.index}"></div>
+            </td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+
+    container.appendChild(wrap);
+}
+
+function dragOver(e){
+    e.preventDefault();
+    e.currentTarget.classList.add("active");
+}
+
+function dragLeave(e){
+    e.currentTarget.classList.remove("active");
+}
+
+function dropFile(e,index){
+    e.preventDefault();
+    e.currentTarget.classList.remove("active");
+    handleAudioFile(e.dataTransfer.files[0],index);
+}
+
+function pickFile(e,index){
+    handleAudioFile(e.target.files[0],index);
+}
+
+function readAscii(view,offset,length){
+    let out="";
+    for(let i=0;i<length;i++) out+=String.fromCharCode(view.getUint8(offset+i));
+    return out;
+}
+
+function parseWavMetadata(arrayBuffer){
+    const view=new DataView(arrayBuffer);
+
+    if(view.byteLength<44) return null;
+    if(readAscii(view,0,4)!=="RIFF"||readAscii(view,8,4)!=="WAVE") return null;
+
+    let pos=12;
+    let sampleRate=0;
+    let channels=1;
+    let blockAlign=0;
+    let dataBytes=0;
+
+    while(pos+8<=view.byteLength){
+        const id=readAscii(view,pos,4);
+        const size=view.getUint32(pos+4,true);
+        const dataStart=pos+8;
+
+        if(id==="fmt "&&size>=16){
+            channels=view.getUint16(dataStart+2,true)||1;
+            sampleRate=view.getUint32(dataStart+4,true)||DEFAULT_AUDIO_RATE;
+            blockAlign=view.getUint16(dataStart+12,true)||0;
+        }else if(id==="data"){
+            dataBytes=size;
+        }
+
+        pos=dataStart+size+(size%2);
+    }
+
+    if(!sampleRate) return null;
+
+    let frames=0;
+    if(dataBytes&&blockAlign) frames=Math.floor(dataBytes/blockAlign);
+
+    return {
+        sample:sampleRate,
+        channels,
+        frames,
+        duration:frames?frames/sampleRate:0,
+        source:"WAV 真实采样数"
+    };
+}
+
+function readAiffExtended80(view,offset){
+    const expon=view.getUint16(offset,false)&0x7fff;
+    const hiMant=view.getUint32(offset+2,false);
+    const loMant=view.getUint32(offset+6,false);
+
+    if(expon===0&&hiMant===0&&loMant===0) return 0;
+
+    const value=(hiMant*Math.pow(2,expon-16383-31))+(loMant*Math.pow(2,expon-16383-63));
+    return Math.round(value);
+}
+
+function parseAiffMetadata(arrayBuffer){
+    const view=new DataView(arrayBuffer);
+
+    if(view.byteLength<54) return null;
+
+    const form=readAscii(view,0,4);
+    const kind=readAscii(view,8,4);
+
+    if(form!=="FORM"||(kind!=="AIFF"&&kind!=="AIFC")) return null;
+
+    let pos=12;
+
+    while(pos+8<=view.byteLength){
+        const id=readAscii(view,pos,4);
+        const size=view.getUint32(pos+4,false);
+        const dataStart=pos+8;
+
+        if(id==="COMM"&&size>=18){
+            const channels=view.getUint16(dataStart,false)||1;
+            const frames=view.getUint32(dataStart+2,false)||0;
+            const sampleRate=readAiffExtended80(view,dataStart+8)||DEFAULT_AUDIO_RATE;
+
+            return {
+                sample:sampleRate,
+                channels,
+                frames,
+                duration:frames?frames/sampleRate:0,
+                source:"AIFF 真实采样数"
+            };
+        }
+
+        pos=dataStart+size+(size%2);
+    }
+
+    return null;
+}
+
+async function decodeAudioMetadata(arrayBuffer){
+    const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+    if(!AudioContextClass) return null;
+
+    const ctx=new AudioContextClass();
+
+    try{
+        const buffer=await ctx.decodeAudioData(arrayBuffer.slice(0));
+        const sample=buffer.sampleRate||DEFAULT_AUDIO_RATE;
+        const frames=Math.max(1,Math.floor(buffer.duration*sample));
+
+        return {
+            sample,
+            channels:buffer.numberOfChannels||1,
+            frames,
+            duration:frames/sample,
+            source:"浏览器解码估算"
+        };
+    }finally{
+        if(ctx&&ctx.close) ctx.close();
+    }
+}
+
+async function getAudioMetadata(file){
+    const arrayBuffer=await file.arrayBuffer();
+
+    const parsed=parseWavMetadata(arrayBuffer)||parseAiffMetadata(arrayBuffer);
+    if(parsed&&parsed.frames) return parsed;
+
+    const decoded=await decodeAudioMetadata(arrayBuffer);
+    if(decoded) return decoded;
+
+    return await new Promise((resolve,reject)=>{
+        const audio=new Audio();
+        const url=URL.createObjectURL(file);
+
+        audio.src=url;
+
+        audio.onloadedmetadata=function(){
+            const sample=DEFAULT_AUDIO_RATE;
+            const frames=Math.max(1,Math.floor(audio.duration*sample));
+
+            URL.revokeObjectURL(url);
+
+            resolve({
+                sample,
+                channels:1,
+                frames,
+                duration:frames/sample,
+                source:"HTML Audio 兜底估算"
+            });
+        };
+
+        audio.onerror=function(){
+            URL.revokeObjectURL(url);
+            reject(new Error("无法读取音频时长"));
+        };
+    });
+}
+
+function audioDataFromFile(file,meta,extra={}){
+    return {
+        file:file.name,
+        path:extra.path||file.name,
+        duration:meta.duration,
+        sample:meta.sample||DEFAULT_AUDIO_RATE,
+        frames:meta.frames||Math.floor((meta.duration||0)*(meta.sample||DEFAULT_AUDIO_RATE)),
+        channels:meta.channels||1,
+        source:meta.source||"未知方式",
+        size:file.size||0,
+        autoAssigned:!!extra.autoAssigned,
+        fromPool:!!extra.fromPool
+    };
+}
+
+async function handleAudioFile(file,index){
+    if(!file) return;
+    if(!isAudioFile(file)) return alert("请拖入或选择音频文件！");
+
+    const info=document.getElementById(`info_${index}`);
+    if(info) info.innerHTML="正在读取音效真实时长和采样率……";
+
+    try{
+        const meta=await getAudioMetadata(file);
+        const audioData=audioDataFromFile(file,meta,{
+            path:file.name,
+            autoAssigned:false,
+            fromPool:false
+        });
+
+        const syncedCount=applyAudioToSameTemplateGroup(index,audioData);
+
+        renderTemplateList();
+
+        if(syncedCount>1){
+            alert(`✅ 已同步到同模板 ${syncedCount} 个位置。`);
+        }
+    }catch(err){
+        console.error(err);
+        if(info) info.innerHTML="未选择音效";
+        alert("无法读取这个音频的真实时长，请换一个标准音频文件再试。建议优先使用 WAV 或 AIFF。");
+    }
+}
+
+function refreshFileInfo(index){
+    const info=document.getElementById(`info_${index}`);
+    if(!info) return;
+
+    const data=soundData[index];
+    const tpl=templateList.find(t=>t.index===index);
+
+    if(!data){
+        info.innerHTML="未选择音效";
+        return;
+    }
+
+    const filePath=data.path||data.file;
+    const pathPreview=normalizeSoundRoot(getSoundRoot())+filePath;
+    const encodedUrl=pathToFileUrl(getSoundRoot(),filePath);
+
+    const groupTip=tpl&&tpl.groupCount>1
+        ?`<br><span class="ok">🔁 同模板自动同步：共 ${tpl.groupCount} 个位置都会添加这个音效。</span>`
+        :"";
+
+    const autoTip=data.autoAssigned
+        ?`<br><span class="warn">🎲 自动随机分配的短音效</span>`
+        :"";
+
+    info.innerHTML=`<span class="ok">✅ ${htmlText(data.file)}</span> ｜ 音效时长：${Number(data.duration).toFixed(6)}s ｜ ${htmlText(data.source||"读取完成")}${groupTip}${autoTip}<br>FCP 查找路径：<code>${htmlText(pathPreview)}</code><br>XML file URL：<code>${htmlText(encodedUrl)}</code>`;
+}
+
+function pickSoundFolder(e){
+    const files=Array.from(e.target.files||[]).filter(isAudioFile);
+    soundPoolFiles=files;
+    soundPool=[];
+
+    const info=document.getElementById("soundPoolInfo");
+    const list=document.getElementById("soundPoolList");
+
+    if(info){
+        info.innerHTML=files.length
+            ?`已选择音效文件夹，检测到音频文件 ${files.length} 个。请点击“扫描短音效”。`
+            :"这个文件夹里没有检测到可用音频文件。";
+    }
+
+    if(list){
+        list.classList.add("hidden");
+        list.innerHTML="";
+    }
+
+    document.getElementById("scanProgress")?.classList.add("hidden");
+    updateWorkflowUI();
+}
+
+function getPoolMaxDuration(){
+    const el=document.getElementById("poolMaxDuration");
+    const value=el?Number(el.value):1;
+    return Number.isFinite(value)&&value>0?value:1;
+}
+
+function getPoolMinDuration(){
+    const el=document.getElementById("poolMinDuration");
+    const value=el?Number(el.value):0.03;
+    return Number.isFinite(value)&&value>=0?value:0.03;
+}
+
+async function scanSoundPool(){
+    const info=document.getElementById("soundPoolInfo");
+    const list=document.getElementById("soundPoolList");
+    const progress=document.getElementById("scanProgress");
+    const bar=document.getElementById("scanProgressBar");
+
+    if(!soundPoolFiles.length){
+        alert("请先选择一个音效文件夹。");
+        return;
+    }
+
+    const maxDuration=getPoolMaxDuration();
+    const minDuration=getPoolMinDuration();
+
+    soundPool=[];
+    let failed=0;
+
+    progress?.classList.remove("hidden");
+    if(bar) bar.style.width="0%";
+
+    for(let i=0;i<soundPoolFiles.length;i++){
+        const file=soundPoolFiles[i];
+
+        if(info){
+            info.innerHTML=`正在扫描音效：${i+1} / ${soundPoolFiles.length} ｜ 已符合条件：${soundPool.length} 个 ｜ 失败：${failed} 个`;
+        }
+
+        if(bar){
+            bar.style.width=`${Math.round(((i+1)/soundPoolFiles.length)*100)}%`;
+        }
+
+        try{
+            const meta=await getAudioMetadata(file);
+
+            if(meta.duration>=minDuration&&meta.duration<=maxDuration){
+                const relativePath=getRelativePathForXml(file);
+
+                soundPool.push(audioDataFromFile(file,meta,{
+                    path:relativePath,
+                    autoAssigned:true,
+                    fromPool:true
+                }));
+            }
+        }catch(err){
+            console.warn("扫描音效失败：",file.name,err);
+            failed++;
+        }
+
+        await new Promise(resolve=>setTimeout(resolve,0));
+    }
+
+    if(info){
+        info.innerHTML=`<span class="ok">✅ 扫描完成：</span>音频文件 ${soundPoolFiles.length} 个，符合 ${minDuration.toFixed(2)}s - ${maxDuration.toFixed(2)}s 的短音效 ${soundPool.length} 个，失败 ${failed} 个。`;
+    }
+
+    if(list){
+        if(soundPool.length){
+            list.classList.remove("hidden");
+
+            const preview=soundPool.slice(0,80).map((s,i)=>{
+                return `${i+1}. ${htmlText(s.path||s.file)} ｜ ${Number(s.duration).toFixed(4)}s ｜ ${htmlText(s.source)}`;
+            }).join("<br>");
+
+            list.innerHTML=preview+(soundPool.length>80?`<br>……还有 ${soundPool.length-80} 个未显示`:"");
+        }else{
+            list.classList.add("hidden");
+            list.innerHTML="";
+        }
+    }
+
+    updateWorkflowUI();
+}
+
+function shuffleArray(arr){
+    const out=arr.slice();
+
+    for(let i=out.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [out[i],out[j]]=[out[j],out[i]];
+    }
+
+    return out;
+}
+
+function clearAutoAssignedSounds(render=true){
+    let count=0;
+
+    Object.keys(soundData).forEach(key=>{
+        if(soundData[key]&&soundData[key].autoAssigned){
+            delete soundData[key];
+            count++;
+        }
+    });
+
+    if(render&&templateList.length){
+        renderTemplateList();
+        alert(`已清除自动分配的音效 ${count} 个。`);
+    }else{
+        updateWorkflowUI();
+    }
+}
+
+function randomAssignShortSounds(skipClear){
+    if(!templateList.length){
+        alert("请先拖入并解析 FCPXML。");
+        return;
+    }
+
+    if(!soundPool.length){
+        alert("请先扫描音效文件夹，生成短音效池。");
+        return;
+    }
+
+    const onlyUnassigned=document.getElementById("autoOnlyUnassigned")?.checked??true;
+    const avoidRepeat=document.getElementById("autoAvoidRepeat")?.checked??true;
+    const groups=getVisibleTemplateGroups();
+
+    const targets=groups.filter(tpl=>{
+        if(!onlyUnassigned) return true;
+        return !groupHasSound(tpl);
+    });
+
+    if(!targets.length){
+        alert("没有需要自动分配的模板组。可以取消“只给未添加音效的模板组分配”后再试。");
+        return;
+    }
+
+    let bag=shuffleArray(soundPool);
+    let bagIndex=0;
+
+    function nextSound(){
+        if(!avoidRepeat){
+            return soundPool[Math.floor(Math.random()*soundPool.length)];
+        }
+
+        if(bagIndex>=bag.length){
+            bag=shuffleArray(soundPool);
+            bagIndex=0;
+        }
+
+        return bag[bagIndex++];
+    }
+
+    let assignedGroups=0;
+    let assignedPositions=0;
+
+    targets.forEach(tpl=>{
+        const picked=nextSound();
+        if(!picked) return;
+
+        const data={
+            ...picked,
+            autoAssigned:true,
+            fromPool:true
+        };
+
+        const synced=applyAudioToSameTemplateGroup(tpl.index,data);
+        assignedGroups++;
+        assignedPositions+=synced;
+    });
+
+    renderTemplateList();
+
+    alert(`✅ 随机分配完成：已给 ${assignedGroups} 个模板组分配短音效，实际同步到 ${assignedPositions} 个模板位置。`);
+}
+
+function rerandomizeShortSounds(){
+    clearAutoAssignedSounds(false);
+    randomAssignShortSounds(true);
+}
+
+function makeSoundAssetXml(id,data,duration){
+    const baseName=(data.file||"audio").replace(/\.[^.]+$/,"");
+    const markerAssetName=`${QUICK_AUDIO_PREFIX}${baseName}`;
+    const src=pathToFileUrl(getSoundRoot(),data.path||data.file);
+
+    return `
+<asset id="${xmlAttr(id)}" name="${xmlAttr(markerAssetName)}" start="0s" duration="${duration}" hasAudio="1" audioSources="1" audioChannels="${data.channels||1}" audioRate="${data.sample}">
+    <media-rep kind="original-media" src="${xmlAttr(src)}"/>
+</asset>`;
+}
+
+function makeAudioClipXml(assetId,tpl,data,duration){
+    const markerName=`${QUICK_AUDIO_PREFIX}${data.file}`;
+
+    return `
+<!-- 快速音效工具: template="${xmlAttr(tpl.name)}" file="${xmlAttr(data.file)}" -->
+<asset-clip ref="${xmlAttr(assetId)}" lane="-1" offset="${xmlAttr(tpl.offset||"0s")}" name="${xmlAttr(markerName)}" start="0s" duration="${duration}" audioRole="effects"/>`;
+}
+
+function generateFinalXml(){
+    showError("");
+
+    if(!templateList.length) return alert("请先解析模板！");
+
+    const usedIndexes=expandSoundDataToSameTemplateGroups();
+
+    if(!usedIndexes.length) return alert("请至少给一个模板组添加音效，或使用短音效池随机分配。");
+
+    const root=normalizeSoundRoot(getSoundRoot());
+    if(!root||root==="/"){
+        return alert("请先填写正确的音效文件夹路径。");
+    }
+
+    const badTemplates=usedIndexes
+        .map(i=>templateList.find(t=>t.index===i))
+        .filter(t=>!t||t.endIndex<0);
+
+    if(badTemplates.length){
+        showError("有模板无法定位到原始 XML 位置，已停止生成。建议重新拖入完整 FCPXML 文件后再解析。");
+        return;
+    }
+
+    const allCandidates=buildAudioInsertionCandidates(usedIndexes);
+    const dedupeResult=dedupeOverlappedAudioCandidates(allCandidates);
+    const finalCandidates=dedupeResult.kept;
+
+    if(!finalCandidates.length){
+        showError("所有音效候选都被去重规则跳过了，请检查去重设置。");
+        return;
+    }
+
+    let xml=originalXml;
+    const resourcesClose=xml.indexOf("</resources>");
+
+    if(resourcesClose===-1){
+        showError("未找到 </resources>，无法写入音效资源。请确认是完整 FCPXML。");
+        return;
+    }
+
+    const existingIds=collectExistingIds(xml);
+    let resourcesToInsert="";
+    const indexToAssetId={};
+    const reusableAssets=new Map();
+
+    finalCandidates.forEach(candidate=>{
+        const idx=candidate.idx;
+        const data=candidate.data;
+        const duration=candidate.duration;
+        const assetKey=[pathToFileUrl(getSoundRoot(),data.path||data.file),data.size||0,duration,data.sample,data.channels||1].join("|");
+
+        if(reusableAssets.has(assetKey)){
+            indexToAssetId[idx]=reusableAssets.get(assetKey);
+            return;
+        }
+
+        const assetId=makeUniqueResourceId(existingIds);
+        reusableAssets.set(assetKey,assetId);
+        indexToAssetId[idx]=assetId;
+        resourcesToInsert+=makeSoundAssetXml(assetId,data,duration);
+    });
+
+    xml=xml.slice(0,resourcesClose)+resourcesToInsert+"\n"+xml.slice(resourcesClose);
+    const shift=resourcesToInsert.length+1;
+
+    const insertions=[];
+
+    finalCandidates.forEach(candidate=>{
+        const tpl=candidate.tpl;
+        const data=candidate.data;
+        const duration=candidate.duration;
+        const audioClipXml=makeAudioClipXml(indexToAssetId[candidate.idx],tpl,data,duration);
+        const pos=tpl.endIndex+(tpl.endIndex>resourcesClose?shift:0);
+
+        insertions.push({
+            pos,
+            text:audioClipXml
+        });
+    });
+
+    insertions.sort((a,b)=>b.pos-a.pos).forEach(ins=>{
+        xml=xml.slice(0,ins.pos)+ins.text+xml.slice(ins.pos);
+    });
+
+    xml=updateProjectUidAndName(xml);
+
+    const finalIndexes=finalCandidates.map(c=>c.idx);
+    const inside=finalIndexes.filter(idx=>templateList.find(t=>t.index===idx)?.isCompound).length;
+    const outside=finalIndexes.length-inside;
+    const groupUsed=new Set(finalIndexes.map(idx=>templateList.find(t=>t.index===idx)?.groupKey).filter(Boolean)).size;
+    const skippedCount=dedupeResult.skipped.length;
+
+    const modeLabel=dedupeResult.mode==="any-audio"
+        ?"同位置只保留一个"
+        :dedupeResult.mode==="same-audio"
+            ?"相同音效去重"
+            :"不去重";
+
+    const autoCount=finalCandidates.filter(c=>c.data&&c.data.autoAssigned).length;
+
+    downloadXml(xml,`带音效项目_UI优化_短音效随机${autoCount}_跳过${skippedCount}_模板组${groupUsed}_复合片段内${inside}_外${outside}.fcpxml`);
+
+    if(skippedCount>0){
+        setTimeout(()=>{
+            alert(`✅ 已生成 XML。\n已自动跳过 ${skippedCount} 个同一时间点重叠音效。\n当前去重模式：${modeLabel}`);
+        },0);
+    }
+}
+
+function downloadXml(xml,filename){
+    const blob=new Blob([xml],{type:"text/xml;charset=utf-8"});
+    const a=document.createElement("a");
+
+    a.href=URL.createObjectURL(blob);
+    a.download=filename;
+
+    document.body.appendChild(a);
+    a.click();
+
+    URL.revokeObjectURL(a.href);
+    a.remove();
+}
+
+function copyDebugInfo(){
+    if(!templateList.length) return alert("请先解析模板！");
+
+    const visibleGroups=getVisibleTemplateGroups();
+
+    const lines=visibleGroups.map(t=>{
+        const data=getGroupSoundData(t);
+        return `模板组｜${t.name}｜同模板×${t.groupCount}｜${t.groupDisplayLocation}｜代表offset=${t.offset}${data?`｜音效=${data.file}${data.autoAssigned?"（自动）":""}`:"｜未选择音效"}`;
+    });
+
+    navigator.clipboard.writeText(lines.join("\n")).then(()=>{
+        alert("已复制模板组识别提示。 ");
+    }).catch(()=>{
+        alert(lines.join("\n"));
+    });
+}
+
+function getStats(){
+    const groups=getVisibleTemplateGroups();
+    const assignedGroups=groups.filter(groupHasSound).length;
+    const autoGroups=groups.filter(t=>{
+        const d=getGroupSoundData(t);
+        return d&&d.autoAssigned;
+    }).length;
+    const manualGroups=assignedGroups-autoGroups;
+
+    return {
+        groups,
+        totalTemplates:templateList.length,
+        groupCount:groups.length,
+        assignedGroups,
+        autoGroups,
+        manualGroups,
+        poolCount:soundPool.length,
+        xmlLoaded:!!originalXml,
+        canGenerate:templateList.length>0&&assignedGroups>0
+    };
+}
+
+function updateWorkflowUI(){
+    const s=getStats();
+
+    setStep("stepImport",s.xmlLoaded);
+    setStep("stepPool",s.poolCount>0);
+    setStep("stepAssign",s.assignedGroups>0);
+    setStep("stepExport",s.canGenerate);
+
+    const status=document.getElementById("statusList");
+    if(status){
+        status.innerHTML=`
+            <div class="status-row"><span>FCPXML</span><strong>${s.xmlLoaded?"已读取":"未读取"}</strong></div>
+            <div class="status-row"><span>模板组</span><strong>${s.groupCount}</strong></div>
+            <div class="status-row"><span>模板位置</span><strong>${s.totalTemplates}</strong></div>
+            <div class="status-row"><span>已分配组</span><strong>${s.assignedGroups}</strong></div>
+            <div class="status-row"><span>自动 / 手动</span><strong>${s.autoGroups} / ${s.manualGroups}</strong></div>
+            <div class="status-row"><span>短音效池</span><strong>${s.poolCount}</strong></div>
+        `;
+    }
+
+    const footer=document.getElementById("footerStats");
+    if(footer){
+        footer.innerHTML=`
+            <span>模板组 <b>${s.groupCount}</b></span>
+            <span>已分配 <b>${s.assignedGroups}</b></span>
+            <span>短音效池 <b>${s.poolCount}</b></span>
+            <span>去重 <b>${isSameTimeAnyAudioDedupeEnabled()?"同位置唯一":(isSameTimeSameAudioDedupeEnabled()?"相同音效":"关闭")}</b></span>
+        `;
+    }
+
+    const preflight=document.getElementById("preflightList");
+    if(preflight){
+        const root=normalizeSoundRoot(getSoundRoot());
+        preflight.innerHTML=`
+            <div>${s.xmlLoaded?"✅":"⚠️"} FCPXML：${s.xmlLoaded?"已读取":"未读取"}</div>
+            <div>${templateList.length?"✅":"⚠️"} 模板识别：${templateList.length?`${templateList.length} 个位置 / ${s.groupCount} 组`:"暂无模板"}</div>
+            <div>${root&&root!=="/"?"✅":"⚠️"} 音效路径：${htmlText(root||"未填写")}</div>
+            <div>${s.assignedGroups?"✅":"⚠️"} 音效分配：${s.assignedGroups?`${s.assignedGroups} 个模板组已分配`:"还没有分配音效"}</div>
+            <div>ℹ️ 去重模式：${isSameTimeAnyAudioDedupeEnabled()?"同一时间点只保留一个音效":(isSameTimeSameAudioDedupeEnabled()?"同一时间点相同音效只插入一次":"不去重")}</div>
+        `;
+    }
+}
+
+function setStep(id,done){
+    const el=document.getElementById(id);
+    if(!el) return;
+
+    el.classList.toggle("done",!!done);
+    el.classList.toggle("active",!done);
+}
+
+updateWorkflowUI();
+</script>
+</body>
+</html>

@@ -54,7 +54,7 @@ returns table (
 )
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 begin
   return query
@@ -181,3 +181,163 @@ grant insert (
   notes,
   status
 ) on public.tool_submissions to anon, authenticated;
+
+create table if not exists public.toolbox_admin_settings (
+  key text primary key,
+  value text not null,
+  updated_at timestamptz not null default now()
+);
+
+revoke all on public.toolbox_admin_settings from anon, authenticated;
+
+-- Run this once in Supabase SQL Editor, replacing the text inside crypt(...)
+-- with your private review passcode. Do not put the passcode in website code.
+-- insert into public.toolbox_admin_settings (key, value, updated_at)
+-- values ('review_passcode_hash', crypt('replace-with-your-review-passcode', gen_salt('bf')), now())
+-- on conflict (key) do update
+--   set value = excluded.value,
+--       updated_at = now();
+
+create or replace function public.ensure_review_passcode(review_passcode text)
+returns void
+language plpgsql
+security definer
+set search_path = public, extensions
+as $$
+declare
+  stored_hash text;
+begin
+  select value
+    into stored_hash
+    from public.toolbox_admin_settings
+   where key = 'review_passcode_hash';
+
+  if stored_hash is null then
+    raise exception 'review_passcode_not_configured';
+  end if;
+
+  if review_passcode is null
+     or char_length(review_passcode) < 1
+     or stored_hash <> crypt(review_passcode, stored_hash) then
+    raise exception 'invalid_review_passcode';
+  end if;
+end;
+$$;
+
+revoke all on function public.ensure_review_passcode(text) from anon, authenticated;
+
+create or replace function public.review_tool_submissions(
+  review_passcode text,
+  status_filter text default 'pending'
+)
+returns table (
+  id uuid,
+  nickname text,
+  contact text,
+  tool_name text,
+  category_id text,
+  tool_type text,
+  summary text,
+  pain_point text,
+  usage_steps text,
+  tool_url text,
+  doc_url text,
+  package_url text,
+  image_urls jsonb,
+  notes text,
+  status text,
+  created_at timestamptz
+)
+language plpgsql
+security definer
+set search_path = public, extensions
+as $$
+begin
+  perform public.ensure_review_passcode(review_passcode);
+
+  return query
+  select
+    s.id,
+    s.nickname,
+    s.contact,
+    s.tool_name,
+    s.category_id,
+    s.tool_type,
+    s.summary,
+    s.pain_point,
+    s.usage_steps,
+    s.tool_url,
+    s.doc_url,
+    s.package_url,
+    s.image_urls,
+    s.notes,
+    s.status,
+    s.created_at
+  from public.tool_submissions as s
+  where status_filter = 'all'
+     or s.status = status_filter
+  order by s.created_at desc;
+end;
+$$;
+
+grant execute on function public.review_tool_submissions(text, text) to anon, authenticated;
+
+create or replace function public.update_tool_submission_status(
+  review_passcode text,
+  submission_ids uuid[],
+  next_status text
+)
+returns table (
+  id uuid,
+  nickname text,
+  contact text,
+  tool_name text,
+  category_id text,
+  tool_type text,
+  summary text,
+  pain_point text,
+  usage_steps text,
+  tool_url text,
+  doc_url text,
+  package_url text,
+  image_urls jsonb,
+  notes text,
+  status text,
+  created_at timestamptz
+)
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  perform public.ensure_review_passcode(review_passcode);
+
+  if next_status not in ('pending', 'approved', 'rejected', 'archived') then
+    raise exception 'invalid_submission_status';
+  end if;
+
+  return query
+  update public.tool_submissions as s
+     set status = next_status
+   where s.id = any(submission_ids)
+  returning
+    s.id,
+    s.nickname,
+    s.contact,
+    s.tool_name,
+    s.category_id,
+    s.tool_type,
+    s.summary,
+    s.pain_point,
+    s.usage_steps,
+    s.tool_url,
+    s.doc_url,
+    s.package_url,
+    s.image_urls,
+    s.notes,
+    s.status,
+    s.created_at;
+end;
+$$;
+
+grant execute on function public.update_tool_submission_status(text, uuid[], text) to anon, authenticated;

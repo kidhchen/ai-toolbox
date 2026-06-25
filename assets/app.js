@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260619b";
+const seedUrl = "./content/tools.seed.json?v=20260625c";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -20,6 +20,7 @@ let lightboxKeyHandler = null;
 let homeStrandsAnimation = null;
 let spaceBackgroundAnimation = null;
 let brandLogoAnimation = null;
+let lastApprovedSubmissionLinks = [];
 
 const state = {
   seed: null,
@@ -73,14 +74,24 @@ const issueTypeLabels = {
   improvement: "改进建议",
   question: "使用疑问"
 };
+const reviewSessionKey = "ai_toolbox_review_passcode";
+const submissionStatusLabels = {
+  all: "全部状态",
+  pending: "待审核",
+  approved: "已通过",
+  rejected: "已退回",
+  archived: "已归档"
+};
 
 const toolCategoryAssignments = {
   "dianmao-prompt-assistant": ["text-tools", "workflow-automation"],
+  "promptpilot-prompt-assistant": ["text-tools", "workflow-automation"],
   "codex-sound-effect-method": ["audio-processing", "workflow-automation"],
   "auto-sound-html": ["audio-processing", "video-processing"],
   "batch-cutout-upscale": ["image-processing"],
   "block-layout-tool": ["text-tools", "image-processing"],
   "finalcut-motion-html-bridge": ["video-processing", "workflow-automation"],
+  "fcpx-align-distribute-tool": ["video-processing", "workflow-automation"],
   "ai-screen-recording-skill": ["workflow-automation", "video-processing"],
   "ai-voice-redub-workflow": ["audio-processing", "workflow-automation"],
   "interactive-video-course-tool": ["video-processing", "workflow-automation"],
@@ -100,24 +111,28 @@ const legacyCategoryMap = {
 const legacyDocumentHost = String.fromCharCode(109, 121, 46, 102, 101, 105, 115, 104, 117, 46, 99, 110);
 const sourceDocumentLinks = {
   "itv-auto-marker": "https://alidocs.dingtalk.com/i/nodes/YMyQA2dXW792qoPNI5Nd40n0JzlwrZgb?utm_scene=team_space",
-  "dianmao-prompt-assistant": "https://alidocs.dingtalk.com/i/nodes/ZX6GRezwJl7ZrYdQHr4AjmNrVdqbropQ?utm_scene=team_space",
+  "dianmao-prompt-assistant": "https://alidocs.dingtalk.com/i/nodes/amweZ92PV6v25O1jCM0Gzq5bVxEKBD6p?utm_scene=team_space",
+  "promptpilot-prompt-assistant": "https://alidocs.dingtalk.com/i/nodes/Y1OQX0akWm3ZvBRQfbGG4jmQJGlDd3mE?utm_scene=person_space",
   "codex-sound-effect-method": "https://alidocs.dingtalk.com/i/nodes/gwva2dxOW4K2Pkbgf0MLdQ5z8bkz3BRL?utm_scene=team_space",
   "auto-sound-html": "https://alidocs.dingtalk.com/i/nodes/amweZ92PV6v25O1jCKBnRg4xVxEKBD6p?utm_scene=team_space",
-  "batch-cutout-upscale": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHZrRyAjpJxkXOEP2?utm_scene=team_space",
+  "batch-cutout-upscale": "https://alidocs.dingtalk.com/i/nodes/20eMKjyp81RkyMbvUeNlzzlxWxAZB1Gv?utm_scene=person_space",
   "block-layout-tool": "https://alidocs.dingtalk.com/i/nodes/ZgpG2NdyVXrAYQbpIPNrOOd48MwvDqPk?utm_scene=team_space",
   "finalcut-motion-html-bridge": "https://alidocs.dingtalk.com/i/nodes/R1zknDm0WR3Amzdgf0Mond4EVBQEx5rG?utm_scene=team_space",
+  "fcpx-align-distribute-tool": "https://alidocs.dingtalk.com/i/nodes/mExel2BLV542wgbMtPMx9apOWgk9rpMq?utm_scene=team_space",
   "ai-voice-redub-workflow": "https://alidocs.dingtalk.com/i/nodes/AR4GpnMqJzMvaO3QikYYmXaoVKe0xjE3?utm_scene=team_space",
   "ai-screen-recording-skill": "https://alidocs.dingtalk.com/i/nodes/lyQod3RxJK3gkQdwforrA6elJkb4Mw9r?utm_scene=team_space",
   "interactive-video-course-tool": "https://alidocs.dingtalk.com/i/nodes/NZQYprEoWoe2DPmQtBjj9KPGJ1waOeDk?utm_scene=team_space"
 };
 const authoritativeSeedTools = new Set([
   "dianmao-prompt-assistant",
+  "promptpilot-prompt-assistant",
   "itv-auto-marker",
   "codex-sound-effect-method",
   "auto-sound-html",
   "batch-cutout-upscale",
   "block-layout-tool",
   "finalcut-motion-html-bridge",
+  "fcpx-align-distribute-tool",
   "ai-voice-redub-workflow",
   "ai-screen-recording-skill",
   "interactive-video-course-tool"
@@ -238,6 +253,27 @@ function createSupabaseApi(config) {
         })
       });
       return true;
+    },
+    async listToolSubmissions(reviewPasscode, statusFilter = "pending") {
+      const rows = await request("rpc/review_tool_submissions", {
+        method: "POST",
+        body: JSON.stringify({
+          review_passcode: reviewPasscode,
+          status_filter: statusFilter
+        })
+      });
+      return rows.map(mapSubmissionRow);
+    },
+    async updateToolSubmissionStatus(reviewPasscode, submissionIds, nextStatus) {
+      const rows = await request("rpc/update_tool_submission_status", {
+        method: "POST",
+        body: JSON.stringify({
+          review_passcode: reviewPasscode,
+          submission_ids: submissionIds,
+          next_status: nextStatus
+        })
+      });
+      return rows.map(mapSubmissionRow);
     }
   };
 }
@@ -265,6 +301,27 @@ function mapWishRow(row) {
     priority: row.priority || "normal",
     createdAt: row.created_at || new Date().toISOString(),
     status: row.status || "new"
+  };
+}
+
+function mapSubmissionRow(row) {
+  return {
+    id: row.id,
+    nickname: row.nickname || "匿名投稿",
+    contact: row.contact || "",
+    toolName: row.tool_name || "待抓取工具",
+    categoryId: row.category_id || "workflow-automation",
+    toolType: row.tool_type || "method",
+    summary: row.summary || "",
+    painPoint: row.pain_point || "",
+    usageSteps: row.usage_steps || "",
+    toolUrl: row.tool_url || "",
+    docUrl: row.doc_url || "",
+    packageUrl: row.package_url || "",
+    imageUrls: row.image_urls || [],
+    notes: row.notes || "",
+    status: row.status || "pending",
+    createdAt: row.created_at || new Date().toISOString()
   };
 }
 
@@ -576,7 +633,24 @@ function cleanSourceResources(resources) {
 function bindChrome() {
   bindThemeToggle();
   startBrandLogo();
+  mountReviewShortcut();
   mountLocalMaintenance();
+}
+
+function isReviewAccessRequested() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("admin") === "1";
+}
+
+function mountReviewShortcut() {
+  if (!isReviewAccessRequested() || document.querySelector('[data-route="review"]')) return;
+  const themeToggle = document.querySelector("#theme-toggle");
+  const html = '<a href="#/review" class="nav-link" data-route="review">投稿审核</a>';
+  if (themeToggle) {
+    themeToggle.insertAdjacentHTML("beforebegin", html);
+    return;
+  }
+  document.querySelector(".topnav")?.insertAdjacentHTML("beforeend", html);
 }
 
 function startBrandLogo() {
@@ -962,7 +1036,7 @@ function startSpaceBackground() {
 
 function render() {
   stopHomeStrands();
-  document.body.classList.remove("home-page", "tool-detail-page", "source-doc-page", "app-page", "feedback-page", "submit-page", "wishbox-page");
+  document.body.classList.remove("home-page", "tool-detail-page", "source-doc-page", "app-page", "feedback-page", "submit-page", "wishbox-page", "review-page");
   const hash = window.location.hash || "#/";
   if (hash.startsWith("#/tool/")) {
     setRouteActive("home");
@@ -974,6 +1048,12 @@ function render() {
   if (hash.startsWith("#/submit")) {
     setRouteActive("submit");
     renderSubmissionPage();
+    return;
+  }
+
+  if (hash.startsWith("#/review")) {
+    setRouteActive("review");
+    renderSubmissionReviewPage();
     return;
   }
 
@@ -2210,6 +2290,211 @@ async function saveSubmission(event) {
     message.textContent = "提交失败，请稍后重试。";
   } finally {
     button.disabled = false;
+  }
+}
+
+function renderSubmissionReviewPage() {
+  document.body.classList.add("app-page", "review-page");
+
+  if (!isReviewAccessRequested()) {
+    setAppHtml(`
+      <section class="screen">
+        ${emptyState("入口未开启", "审核入口需要使用专门的管理链接打开。")}
+      </section>
+    `);
+    return;
+  }
+
+  const savedPasscode = sessionStorage.getItem(reviewSessionKey) || "";
+  setAppHtml(`
+    <section class="screen review-layout">
+      <article class="wish-panel review-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">SUBMISSION REVIEW</p>
+            <h1>投稿审核</h1>
+          </div>
+          <span class="pixel-badge">隐藏入口</span>
+        </div>
+        <p class="muted">这里集中查看投稿文档，批量标记通过或退回。通过后，把已通过链接发给我，我会用钉钉 MCP 读取原文并归档到工具箱知识库。</p>
+
+        <div class="review-toolbar">
+          <label class="field">
+            <span>审核口令</span>
+            <input id="review-passcode" type="password" autocomplete="current-password" placeholder="输入审核口令" value="${escapeHtml(savedPasscode)}">
+          </label>
+          <label class="field">
+            <span>状态筛选</span>
+            <select id="review-status-filter">
+              ${Object.entries(submissionStatusLabels).map(([value, label]) => `
+                <option value="${escapeHtml(value)}" ${value === "pending" ? "selected" : ""}>${escapeHtml(label)}</option>
+              `).join("")}
+            </select>
+          </label>
+          <button class="pixel-button primary" type="button" id="load-submissions">刷新投稿</button>
+        </div>
+
+        <div class="review-batchbar">
+          <label class="review-select-all">
+            <input type="checkbox" id="select-all-submissions">
+            <span>全选当前列表</span>
+          </label>
+          <button class="pixel-button primary" type="button" data-review-status="approved">批量通过</button>
+          <button class="pixel-button" type="button" data-review-status="rejected">批量退回</button>
+          <button class="pixel-button" type="button" data-review-status="archived">归档</button>
+          <button class="pixel-button" type="button" id="copy-approved-links">复制已通过链接</button>
+        </div>
+
+        <p class="admin-message" id="review-message" role="status"></p>
+        <div class="review-list" id="review-list">
+          ${emptyState("等待加载", "输入审核口令后点击刷新投稿。")}
+        </div>
+      </article>
+
+      <aside class="wish-panel review-help">
+        <p class="eyebrow">ARCHIVE FLOW</p>
+        <h2>通过后怎么归档</h2>
+        <ol class="review-flow">
+          <li>在这里批量通过投稿。</li>
+          <li>复制已通过文档链接并发给我。</li>
+          <li>我读取钉钉原文，识别标题、正文、图片和资源链接。</li>
+          <li>我在 AI制作工具箱知识库中创建同名文档，并把站内工具入口接好。</li>
+        </ol>
+        <p class="muted">说明：网站前端不会保存钉钉写权限。创建知识库文档由我在当前会话里通过钉钉 MCP 执行，更稳也更安全。</p>
+      </aside>
+    </section>
+  `);
+
+  document.querySelector("#load-submissions").addEventListener("click", loadReviewSubmissions);
+  document.querySelector("#review-status-filter").addEventListener("change", loadReviewSubmissions);
+  document.querySelector("#select-all-submissions").addEventListener("change", toggleSubmissionSelection);
+  document.querySelectorAll("[data-review-status]").forEach((button) => {
+    button.addEventListener("click", () => updateReviewSubmissionStatus(button.dataset.reviewStatus));
+  });
+  document.querySelector("#copy-approved-links").addEventListener("click", copyApprovedSubmissionLinks);
+}
+
+function getReviewPasscode() {
+  const passcode = String(document.querySelector("#review-passcode")?.value || "").trim();
+  if (passcode) sessionStorage.setItem(reviewSessionKey, passcode);
+  return passcode;
+}
+
+function setReviewMessage(message) {
+  const target = document.querySelector("#review-message");
+  if (target) target.textContent = message;
+}
+
+async function loadReviewSubmissions() {
+  const passcode = getReviewPasscode();
+  const statusFilter = document.querySelector("#review-status-filter")?.value || "pending";
+  const list = document.querySelector("#review-list");
+  if (!list) return;
+
+  if (!supabaseApi) {
+    setReviewMessage("投稿后台暂未连接。");
+    return;
+  }
+  if (!passcode) {
+    setReviewMessage("请先输入审核口令。");
+    return;
+  }
+
+  try {
+    setReviewMessage("正在读取投稿...");
+    list.innerHTML = emptyState("读取中", "正在从投稿后台拉取数据。");
+    const rows = await supabaseApi.listToolSubmissions(passcode, statusFilter);
+    list.innerHTML = rows.length
+      ? rows.map(reviewSubmissionItem).join("")
+      : emptyState("暂无投稿", "当前状态下没有投稿记录。");
+    document.querySelector("#select-all-submissions").checked = false;
+    setReviewMessage(`已加载 ${rows.length} 条投稿。`);
+  } catch (error) {
+    list.innerHTML = emptyState("读取失败", "请检查审核口令，或确认 Supabase 已执行审核函数 SQL。");
+    setReviewMessage("读取失败：审核口令无效，或审核函数还未配置。");
+  }
+}
+
+function reviewSubmissionItem(item) {
+  const date = new Date(item.createdAt).toLocaleString("zh-CN");
+  return `
+    <article class="review-item" data-submission-id="${escapeHtml(item.id)}" data-status="${escapeHtml(item.status)}">
+      <label class="review-check">
+        <input type="checkbox" value="${escapeHtml(item.id)}" data-submission-check>
+        <span></span>
+      </label>
+      <div class="review-item__body">
+        <div class="review-item__head">
+          <div>
+            <strong>${escapeHtml(item.toolName)}</strong>
+            <div class="wish-meta">
+              <span>${escapeHtml(submissionStatusLabels[item.status] || item.status)}</span>
+              <span>${escapeHtml(item.nickname)}</span>
+              <span>${escapeHtml(date)}</span>
+            </div>
+          </div>
+          ${item.docUrl ? `<a class="feedback-tool-link" href="${escapeHtml(item.docUrl)}" target="_blank" rel="noopener noreferrer">打开文档</a>` : ""}
+        </div>
+        ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
+        ${item.notes ? `<p class="muted">${escapeHtml(item.notes)}</p>` : ""}
+        ${item.contact ? `<p class="muted">联系方式：${escapeHtml(item.contact)}</p>` : ""}
+        ${item.docUrl ? `<code class="review-url">${escapeHtml(item.docUrl)}</code>` : ""}
+      </div>
+    </article>
+  `;
+}
+
+function selectedSubmissionIds() {
+  return Array.from(document.querySelectorAll("[data-submission-check]:checked")).map((item) => item.value);
+}
+
+function toggleSubmissionSelection(event) {
+  document.querySelectorAll("[data-submission-check]").forEach((item) => {
+    item.checked = event.currentTarget.checked;
+  });
+}
+
+async function updateReviewSubmissionStatus(nextStatus) {
+  const passcode = getReviewPasscode();
+  const ids = selectedSubmissionIds();
+  if (!ids.length) {
+    setReviewMessage("请先选择要处理的投稿。");
+    return;
+  }
+  if (!passcode) {
+    setReviewMessage("请先输入审核口令。");
+    return;
+  }
+
+  try {
+    setReviewMessage("正在更新投稿状态...");
+    const rows = await supabaseApi.updateToolSubmissionStatus(passcode, ids, nextStatus);
+    if (nextStatus === "approved") {
+      lastApprovedSubmissionLinks = rows.map((item) => item.docUrl).filter(Boolean);
+    }
+    showToast(`已更新为${submissionStatusLabels[nextStatus] || nextStatus}`);
+    await loadReviewSubmissions();
+  } catch (error) {
+    setReviewMessage("更新失败：请检查审核口令或 Supabase 审核函数配置。");
+  }
+}
+
+async function copyApprovedSubmissionLinks() {
+  const links = Array.from(new Set([
+    ...Array.from(document.querySelectorAll('.review-item[data-status="approved"] .review-url'))
+    .map((item) => item.textContent.trim())
+    .filter(Boolean),
+    ...lastApprovedSubmissionLinks
+  ]));
+  if (!links.length) {
+    setReviewMessage("当前列表里没有已通过链接。可以先切到“已通过”状态再刷新。");
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(links.join("\n"));
+    showToast("已复制已通过链接");
+  } catch {
+    setReviewMessage("复制失败，请手动复制文档链接。");
   }
 }
 
