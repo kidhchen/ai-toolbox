@@ -143,6 +143,381 @@
       ]
     },
     {
+      "id": "elementtap-web-element-picker",
+      "slug": "elementtap-web-element-picker",
+      "name": "ElementTap - 网页元素点取器",
+      "categoryId": "image-processing",
+      "categoryIds": [
+        "image-processing",
+        "workflow-automation"
+      ],
+      "type": "chrome_extension",
+      "developer": "三盛",
+      "status": "iterating",
+      "summary": "一键从网页中截取需要的角色图标，减少截图、裁剪和导出素材的重复操作。",
+      "detailStyle": "source_document",
+      "sourceMeta": {
+        "provider": "dingtalk",
+        "nodeId": "oP0MALyR8k7AKn3QHYz69vdB83bzYmDO",
+        "url": "https://alidocs.dingtalk.com/i/nodes/oP0MALyR8k7AKn3QHYz69vdB83bzYmDO?utm_scene=team_space",
+        "updateTime": 1782382266000,
+        "updateTimeText": "2026-06-25 18:11:06"
+      },
+      "targetUsers": [
+        "需要从 KN 项目或网页里快速截取角色图标、素材图标的制作同学。",
+        "经常需要把网页素材导入视频制作流程的人。"
+      ],
+      "painPoints": [
+        "制作 KN 项目时经常需要截取角色图标，用于后续视频制作。",
+        "以往流程需要截取网页图片、导入 PS 裁剪、再导出到剪辑软件，步骤繁琐且耗时。"
+      ],
+      "features": [
+        "一键从网页中截取对应图标。",
+        "减少截图、裁剪、导出的重复操作。",
+        "适合把网页图标快速转为可用素材。"
+      ],
+      "usageSteps": [
+        "从钉钉原文获取 ElementTap 插件包和安装说明。",
+        "按安装说明完成浏览器插件安装。",
+        "在需要截取图标的网页中使用插件点选元素。",
+        "将截取到的图标用于后续视频制作或素材整理。"
+      ],
+      "coverImage": {
+        "kind": "image",
+        "label": "ElementTap 网页元素点取器示意",
+        "description": "从网页中快速点取并截取角色图标。",
+        "src": "assets/doc-images/dingtalk-20260625/elementtap/cover.png",
+        "status": "site_asset"
+      },
+      "featureMedia": [
+        {
+          "kind": "image",
+          "label": "ElementTap 网页元素点取器示意",
+          "description": "从网页中快速点取并截取角色图标。",
+          "src": "assets/doc-images/dingtalk-20260625/elementtap/cover.png",
+          "status": "site_asset"
+        }
+      ],
+      "documentSections": [
+        {
+          "title": "安装说明",
+          "paragraphs": [
+            "原文提供 ElementTap 插件包、ElementTap-v0.1.0 安装说明和功能演示视频。安装包与演示资源以钉钉原文为准。"
+          ]
+        },
+        {
+          "title": "解决痛点",
+          "bullets": [
+            "制作 KN 项目总是需要截取角色图标用于视频制作。",
+            "以往流程是截取网页图片、导入 PS 裁剪，再导出放进剪辑软件。",
+            "现在可以一键从网页中截取对应图标，省去手动处理时间。"
+          ],
+          "images": [
+            {
+              "kind": "image",
+              "label": "网页元素点取示意",
+              "src": "assets/doc-images/dingtalk-20260625/elementtap/cover.png",
+              "status": "site_asset"
+            }
+          ]
+        }
+      ],
+      "resources": [
+        {
+          "kind": "source_doc",
+          "label": "钉钉原文 / 安装包与演示",
+          "url": "https://alidocs.dingtalk.com/i/nodes/oP0MALyR8k7AKn3QHYz69vdB83bzYmDO?utm_scene=team_space",
+          "status": "external_link"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "Chrome插件",
+        "网页元素",
+        "素材截取",
+        "图标"
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "id": "black-screen-splitcut",
+      "slug": "black-screen-splitcut",
+      "name": "黑场自动拆分压缩视频工具 1.0",
+      "categoryId": "video-processing",
+      "categoryIds": [
+        "video-processing",
+        "workflow-automation"
+      ],
+      "type": "workflow_package",
+      "developer": "文帆",
+      "status": "published",
+      "summary": "在视频中插入空白帧或纯黑色块，工具自动检测分段、拆分片段并压缩导出。",
+      "detailStyle": "source_document",
+      "sourceMeta": {
+        "provider": "dingtalk",
+        "nodeId": "kDnRL6jAJM3jpNdKfq4ppoyaWyMoPYe1",
+        "url": "https://alidocs.dingtalk.com/i/nodes/kDnRL6jAJM3jpNdKfq4ppoyaWyMoPYe1?utm_scene=team_space",
+        "updateTime": 1782373973000,
+        "updateTimeText": "2026-06-25 15:52:53"
+      },
+      "targetUsers": [
+        "需要把长视频课程按节点拆分成多个片段的制作同学。",
+        "需要同时完成视频拆分和压缩导出的剪辑制作同学。"
+      ],
+      "painPoints": [
+        "课程视频按节点拆分时，手动找分段位置和导出片段很耗时。",
+        "分段后还需要设置压缩参数并逐段导出，重复操作多。"
+      ],
+      "features": [
+        "通过空白帧或纯黑色块标记需要拆分的节点。",
+        "点击检测分段后自动切分视频段落。",
+        "支持选择需要导出的分段。",
+        "可选择导出路径和压缩参数后导出。"
+      ],
+      "usageSteps": [
+        "在需要拆分的节点插入空白帧或纯黑色块。",
+        "打开工具并导入视频。",
+        "点击检测分段，自动识别并切分分段。",
+        "选择需要导出的分段。",
+        "选择导出路径和压缩参数后导出。"
+      ],
+      "coverImage": {
+        "kind": "image",
+        "label": "黑场自动拆分压缩视频工具封面",
+        "description": "通过黑场节点自动拆分并压缩导出视频。",
+        "src": "assets/doc-images/dingtalk-20260625/black-splitcut/cover.png",
+        "status": "site_asset"
+      },
+      "featureMedia": [
+        {
+          "kind": "image",
+          "label": "黑场自动拆分压缩视频工具封面",
+          "description": "通过黑场节点自动拆分并压缩导出视频。",
+          "src": "assets/doc-images/dingtalk-20260625/black-splitcut/cover.png",
+          "status": "site_asset"
+        }
+      ],
+      "documentSections": [
+        {
+          "title": "资源说明",
+          "paragraphs": [
+            "原文提供 macOS 一键安装包，也提供网页旧版压缩包，适合 Windows 系统或缺少 ffmpeg 后端时使用。安装包和版本更新以钉钉原文为准。",
+            "文档备注：已经自行测试拆过两节课，并找其他伙伴测试，能用好用。"
+          ]
+        },
+        {
+          "title": "使用方法",
+          "mediaBlocks": [
+            {
+              "title": "插入拆分标记",
+              "paragraphs": [
+                "导出前在需要拆分的节点插入空白帧或纯黑色块。"
+              ],
+              "images": [
+                {
+                  "kind": "image",
+                  "label": "插入空白帧或纯黑色块",
+                  "src": "assets/doc-images/dingtalk-20260625/black-splitcut/black-frame.png",
+                  "status": "site_asset"
+                }
+              ]
+            },
+            {
+              "title": "检测分段",
+              "paragraphs": [
+                "点击检测分段，工具会自动切分分段。"
+              ],
+              "images": [
+                {
+                  "kind": "image",
+                  "label": "检测分段",
+                  "src": "assets/doc-images/dingtalk-20260625/black-splitcut/detect-segments.png",
+                  "status": "site_asset"
+                }
+              ]
+            },
+            {
+              "title": "选择导出分段",
+              "paragraphs": [
+                "选择需要导出的分段。"
+              ],
+              "images": [
+                {
+                  "kind": "image",
+                  "label": "选择需要导出的分段",
+                  "src": "assets/doc-images/dingtalk-20260625/black-splitcut/select-segments.png",
+                  "status": "site_asset"
+                }
+              ]
+            },
+            {
+              "title": "设置导出参数",
+              "paragraphs": [
+                "选择导出路径和压缩参数后导出。"
+              ],
+              "images": [
+                {
+                  "kind": "image",
+                  "label": "导出路径和压缩参数",
+                  "src": "assets/doc-images/dingtalk-20260625/black-splitcut/export-settings.png",
+                  "status": "site_asset"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "resources": [
+        {
+          "kind": "source_doc",
+          "label": "钉钉原文 / 安装包入口",
+          "url": "https://alidocs.dingtalk.com/i/nodes/kDnRL6jAJM3jpNdKfq4ppoyaWyMoPYe1?utm_scene=team_space",
+          "status": "external_link"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "视频拆分",
+        "压缩导出",
+        "黑场检测",
+        "课程制作"
+      ],
+      "version": "1.0"
+    },
+    {
+      "id": "fcpx-quick-portal",
+      "slug": "fcpx-quick-portal",
+      "name": "FCPX 超快速任意门",
+      "categoryId": "video-processing",
+      "categoryIds": [
+        "video-processing",
+        "workflow-automation"
+      ],
+      "type": "workflow_package",
+      "developer": "文帆",
+      "status": "in_development",
+      "summary": "在 FCPX 中用快捷面板集中搜索素材、添加效果、打开网页入口，并快速调用最近素材。",
+      "detailStyle": "source_document",
+      "sourceMeta": {
+        "provider": "dingtalk",
+        "nodeId": "r1R7q3QmWe7OGlxyHNbPNxoeJxkXOEP2",
+        "url": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHNbPNxoeJxkXOEP2?utm_scene=team_space",
+        "updateTime": 1782372719000,
+        "updateTimeText": "2026-06-25 15:31:59"
+      },
+      "targetUsers": [
+        "高频使用 Final Cut Pro，并需要快速搜索素材、添加效果和打开网页工具的人。",
+        "希望把近期素材、网页入口和素材文件夹集中管理的剪辑制作同学。"
+      ],
+      "painPoints": [
+        "FCPX 里同名素材过多时，搜索和定位占用空间，也容易爆红。",
+        "常用网页、HTML 工具、下载和截图素材分散在不同位置，切换成本高。"
+      ],
+      "features": [
+        "目前需要挂载 CommandPost 使用。",
+        "面板分为搜索框、文件夹、网页栏三个可折叠版面。",
+        "在 FCPX 内按 Shift+空格打开界面，中间是快速搜索框，Enter 可快速添加选中效果到时间轴。",
+        "增加层级标签、按照使用次数排序和收藏标签，减少同名素材管理压力。",
+        "左侧快速网页支持添加最多 9 个网页或 HTML 快捷跳转。",
+        "右侧近期素材窗口默认自动读取下载和截图系统文件夹里的最新图片/视频素材，可直接从面板拖出，也可添加额外文件夹。"
+      ],
+      "usageSteps": [
+        "按原文说明挂载 CommandPost。",
+        "在 FCPX 内使用 Shift+空格打开快速任意门界面。",
+        "通过搜索框查找素材或效果，按 Enter 快速添加到时间轴。",
+        "按需使用网页栏打开常用网页或 HTML 工具。",
+        "从近期素材窗口拖出下载、截图或额外文件夹里的素材。"
+      ],
+      "coverImage": {
+        "kind": "image",
+        "label": "FCPX 超快速任意门占位图",
+        "description": "成品正在打包和 UI 调试中。",
+        "src": "assets/doc-images/dingtalk-20260625/fcpx-portal/cover.png",
+        "status": "site_asset"
+      },
+      "featureMedia": [
+        {
+          "kind": "image",
+          "label": "FCPX 快速搜索面板",
+          "description": "Shift+空格打开界面，中间是快速搜索框。",
+          "src": "assets/doc-images/dingtalk-20260625/fcpx-portal/search.png",
+          "status": "site_asset"
+        },
+        {
+          "kind": "image",
+          "label": "FCPX 近期素材窗口",
+          "description": "自动读取下载和截图文件夹中的最新图片/视频素材。",
+          "src": "assets/doc-images/dingtalk-20260625/fcpx-portal/recent-assets.png",
+          "status": "site_asset"
+        }
+      ],
+      "documentSections": [
+        {
+          "title": "当前状态",
+          "paragraphs": [
+            "成品还差 UI 和打包，目前需要挂载 CommandPost 使用。文档说明：分为搜索框、文件夹、网页栏三个可折叠版面。"
+          ],
+          "images": [
+            {
+              "kind": "image",
+              "label": "FCPX 超快速任意门占位图",
+              "src": "assets/doc-images/dingtalk-20260625/fcpx-portal/cover.png",
+              "status": "site_asset"
+            }
+          ]
+        },
+        {
+          "title": "核心功能",
+          "mediaBlocks": [
+            {
+              "title": "快速搜索与添加效果",
+              "paragraphs": [
+                "FCPX 内 Shift+空格打开界面，中间是快速搜索框，Enter 可以快速添加选中效果到时间轴，并增加层级标签、使用次数排序和收藏标签功能。"
+              ],
+              "images": [
+                {
+                  "kind": "image",
+                  "label": "快速搜索面板",
+                  "src": "assets/doc-images/dingtalk-20260625/fcpx-portal/search.png",
+                  "status": "site_asset"
+                }
+              ]
+            },
+            {
+              "title": "网页入口与近期素材",
+              "paragraphs": [
+                "左侧支持添加最多 9 个网页或 HTML 快捷跳转；右侧近期素材窗口会自动读取下载和截图系统文件夹里的最新图片/视频素材。"
+              ],
+              "images": [
+                {
+                  "kind": "image",
+                  "label": "近期素材窗口",
+                  "src": "assets/doc-images/dingtalk-20260625/fcpx-portal/recent-assets.png",
+                  "status": "site_asset"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "resources": [
+        {
+          "kind": "source_doc",
+          "label": "钉钉原文 / 功能说明",
+          "url": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHNbPNxoeJxkXOEP2?utm_scene=team_space",
+          "status": "external_link"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "FCPX",
+        "CommandPost",
+        "素材管理",
+        "快捷入口"
+      ],
+      "version": "测试中"
+    },
+    {
       "id": "batch-cutout-upscale",
       "slug": "batch-cutout-upscale",
       "name": "图片&视频后期处理工具",
@@ -282,7 +657,7 @@
         "workflow-automation"
       ],
       "type": "workflow_package",
-      "developer": "待补充",
+      "developer": "海欣",
       "status": "in_development",
       "summary": "制作漂浮窗口，实现 FCP 可实时编辑的对齐和分布功能，目标是做出类似 AE 和 PS 的对齐工具。",
       "detailStyle": "source_document",
@@ -644,15 +1019,6 @@
             "有codex的小伙伴可以使用打包好的skill，提供录制地址和要求，让ai帮你完成代码拼接（后台完成，全场不需要盯着）。",
             "第一个场景，给到预置bcm，ai可以通过规则要求，完成图形化代码的顺序拼接，ai顺利完成，虽然效果还有瑕疵，如音画同步问题还在迭代中。",
             "第二个场景，让ai给不同的角色进行编程，并且在过程中进行效果运行，ai顺利完成。"
-          ],
-          "images": [
-            {
-              "kind": "image",
-              "label": "自动化录屏工作流示意",
-              "src": "assets/doc-images/dingtalk-20260618/voice-redub/cover.png",
-              "description": "AI 自动化录屏与文档处理示意。",
-              "status": "uploaded"
-            }
           ]
         }
       ],

@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260625c";
+const seedUrl = "./content/tools.seed.json?v=20260626b";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -86,6 +86,9 @@ const submissionStatusLabels = {
 const toolCategoryAssignments = {
   "dianmao-prompt-assistant": ["text-tools", "workflow-automation"],
   "promptpilot-prompt-assistant": ["text-tools", "workflow-automation"],
+  "elementtap-web-element-picker": ["image-processing", "workflow-automation"],
+  "black-screen-splitcut": ["video-processing", "workflow-automation"],
+  "fcpx-quick-portal": ["video-processing", "workflow-automation"],
   "codex-sound-effect-method": ["audio-processing", "workflow-automation"],
   "auto-sound-html": ["audio-processing", "video-processing"],
   "batch-cutout-upscale": ["image-processing"],
@@ -113,6 +116,9 @@ const sourceDocumentLinks = {
   "itv-auto-marker": "https://alidocs.dingtalk.com/i/nodes/YMyQA2dXW792qoPNI5Nd40n0JzlwrZgb?utm_scene=team_space",
   "dianmao-prompt-assistant": "https://alidocs.dingtalk.com/i/nodes/amweZ92PV6v25O1jCM0Gzq5bVxEKBD6p?utm_scene=team_space",
   "promptpilot-prompt-assistant": "https://alidocs.dingtalk.com/i/nodes/Y1OQX0akWm3ZvBRQfbGG4jmQJGlDd3mE?utm_scene=person_space",
+  "elementtap-web-element-picker": "https://alidocs.dingtalk.com/i/nodes/oP0MALyR8k7AKn3QHYz69vdB83bzYmDO?utm_scene=team_space",
+  "black-screen-splitcut": "https://alidocs.dingtalk.com/i/nodes/kDnRL6jAJM3jpNdKfq4ppoyaWyMoPYe1?utm_scene=team_space",
+  "fcpx-quick-portal": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHNbPNxoeJxkXOEP2?utm_scene=team_space",
   "codex-sound-effect-method": "https://alidocs.dingtalk.com/i/nodes/gwva2dxOW4K2Pkbgf0MLdQ5z8bkz3BRL?utm_scene=team_space",
   "auto-sound-html": "https://alidocs.dingtalk.com/i/nodes/amweZ92PV6v25O1jCKBnRg4xVxEKBD6p?utm_scene=team_space",
   "batch-cutout-upscale": "https://alidocs.dingtalk.com/i/nodes/20eMKjyp81RkyMbvUeNlzzlxWxAZB1Gv?utm_scene=person_space",
@@ -126,6 +132,9 @@ const sourceDocumentLinks = {
 const authoritativeSeedTools = new Set([
   "dianmao-prompt-assistant",
   "promptpilot-prompt-assistant",
+  "elementtap-web-element-picker",
+  "black-screen-splitcut",
+  "fcpx-quick-portal",
   "itv-auto-marker",
   "codex-sound-effect-method",
   "auto-sound-html",
