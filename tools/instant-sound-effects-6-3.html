@@ -1,0 +1,7172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>快速音 6.3｜随机结果可试听替换锁定版</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif
+}
+
+:root{
+    --blue:#1677ff;
+    --blue-soft:#eef6ff;
+    --green:#10b981;
+    --purple:#8b5cf6;
+    --purple-soft:#f5f3ff;
+    --orange:#f59e0b;
+    --red:#ef4444;
+    --ink:#172033;
+    --muted:#64748b;
+    --line:#dfe8f3;
+    --bg:#f3f6fb;
+    --card:#ffffff;
+    --shadow:0 12px 34px rgba(15,23,42,.08)
+}
+
+html{
+    scroll-behavior:smooth
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:var(--bg);
+    color:var(--ink);
+    padding-bottom:92px
+}
+
+button,
+input,
+select{
+    font:inherit
+}
+
+.hidden{
+    display:none!important
+}
+
+.app{
+    width:min(1240px,calc(100% - 28px));
+    margin:auto;
+    padding:26px 0 40px
+}
+
+.card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:22px;
+    box-shadow:var(--shadow);
+    margin-bottom:18px
+}
+
+.hero,
+.tool-header,
+.path-head,
+.toolbar,
+.footer-inner,
+.modal-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px
+}
+
+.hero{
+    align-items:flex-start;
+    margin-bottom:20px
+}
+
+.hero h1,
+.tool-title h1{
+    margin:0
+}
+
+.hero h1{
+    font-size:29px
+}
+
+.hero p{
+    margin:8px 0 0;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.7
+}
+
+.version{
+    background:#111827;
+    color:#fff;
+    border-radius:999px;
+    padding:8px 13px;
+    font-size:12px;
+    white-space:nowrap
+}
+
+h2{
+    margin:0 0 12px;
+    font-size:20px
+}
+
+h3{
+    margin:0 0 10px;
+    font-size:16px
+}
+
+.tip{
+    background:#f8fbff;
+    border:1px solid #dbeafe;
+    border-radius:14px;
+    padding:12px 14px;
+    color:#31537a;
+    font-size:13px;
+    line-height:1.7;
+    margin:10px 0
+}
+
+.ok{
+    color:#047857;
+    font-weight:800
+}
+
+.warn{
+    color:#b45309;
+    font-weight:800
+}
+
+.muted{
+    color:var(--muted)
+}
+
+code{
+    background:#f1f5f9;
+    padding:2px 6px;
+    border-radius:6px
+}
+
+.btn{
+    border:0;
+    border-radius:12px;
+    padding:10px 15px;
+    cursor:pointer;
+    font-weight:750;
+    transition:.15s
+}
+
+.btn:hover{
+    transform:translateY(-1px);
+    filter:brightness(.98)
+}
+
+.btn.primary{
+    background:var(--blue);
+    color:#fff
+}
+
+.btn.secondary{
+    background:var(--blue-soft);
+    color:#075ec7;
+    border:1px solid #cfe4ff
+}
+
+.btn.ghost{
+    background:#fff;
+    color:#40536d;
+    border:1px solid #d7e2ef
+}
+
+.btn.purple{
+    background:#7c3aed;
+    color:#fff
+}
+
+.btn.warn{
+    background:#fff7ed;
+    color:#b45309;
+    border:1px solid #fed7aa
+}
+
+.btn.danger{
+    background:#fff1f2;
+    color:#be123c;
+    border:1px solid #fecdd3
+}
+
+.btn.small{
+    padding:7px 10px;
+    border-radius:10px;
+    font-size:12px
+}
+
+.btn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+    transform:none
+}
+
+.input,
+.select,
+.search{
+    border:1px solid #d6e1ee;
+    background:#fbfdff;
+    color:#243044
+}
+
+.input,
+.select{
+    width:100%;
+    border-radius:12px;
+    padding:10px 12px
+}
+
+.search{
+    min-width:190px;
+    border-radius:999px;
+    padding:9px 12px
+}
+
+/* 路径 */
+
+.path-row{
+    display:grid;
+    grid-template-columns:220px minmax(0,1fr) auto;
+    gap:9px;
+    margin-top:14px;
+    align-items:center
+}
+
+.path-view{
+    min-height:42px;
+    border:1px solid #d6e1ee;
+    background:#f8fbff;
+    border-radius:12px;
+    padding:10px 12px;
+    color:#475569;
+    font-size:13px;
+    word-break:break-all
+}
+
+/* 模式选择 */
+
+.mode-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px
+}
+
+.mode-card{
+    position:relative;
+    min-height:250px;
+    padding:28px;
+    border:1px solid var(--line);
+    border-radius:24px;
+    box-shadow:var(--shadow);
+    cursor:pointer;
+    transition:.18s;
+    overflow:hidden
+}
+
+.mode-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 18px 44px rgba(15,23,42,.12)
+}
+
+.mode-card.manual{
+    background:linear-gradient(145deg,#fff,#eef6ff)
+}
+
+.mode-card.random{
+    background:linear-gradient(145deg,#fff,#f5f3ff)
+}
+
+.mode-icon{
+    width:58px;
+    height:58px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    margin-bottom:20px
+}
+
+.manual .mode-icon{
+    background:#dbeafe
+}
+
+.random .mode-icon{
+    background:#ede9fe
+}
+
+.mode-card h2{
+    font-size:23px
+}
+
+.mode-card p{
+    color:#526177;
+    font-size:14px;
+    line-height:1.7
+}
+
+.mode-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin-top:18px
+}
+
+.tag{
+    background:rgba(255,255,255,.8);
+    border:1px solid rgba(148,163,184,.25);
+    color:#526177;
+    border-radius:999px;
+    padding:6px 9px;
+    font-size:12px
+}
+
+.mode-enter{
+    position:absolute;
+    right:24px;
+    bottom:24px;
+    font-weight:800;
+    color:var(--blue)
+}
+
+.random .mode-enter{
+    color:#7c3aed
+}
+
+/* 工具标题 */
+
+.tool-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap
+}
+
+.mode-badge{
+    border-radius:999px;
+    padding:7px 10px;
+    font-size:12px;
+    font-weight:800
+}
+
+.mode-badge.manual{
+    background:#dbeafe;
+    color:#1d4ed8
+}
+
+.mode-badge.random{
+    background:#ede9fe;
+    color:#7c3aed
+}
+
+.tool-path{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    min-width:0
+}
+
+.tool-path select{
+    width:180px
+}
+
+.tool-path-text{
+    max-width:320px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    color:var(--muted);
+    font-size:12px
+}
+
+/* 主布局 */
+
+.layout{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 320px;
+    gap:18px;
+    align-items:start
+}
+
+.status-card{
+    position:sticky;
+    top:14px
+}
+
+/* XML 导入 */
+
+.drop-big{
+    border:2px dashed var(--blue);
+    padding:28px 18px;
+    border-radius:18px;
+    text-align:center;
+    background:#f3f9ff;
+    color:#0f4c81;
+    cursor:pointer;
+    transition:.15s
+}
+
+.drop-big.active{
+    background:#e2f1ff;
+    transform:scale(1.005)
+}
+
+.drop-big strong{
+    display:block;
+    font-size:17px;
+    margin-bottom:6px
+}
+
+.drop-big small{
+    color:#5e7890;
+    line-height:1.6
+}
+
+.support-list,
+.drop-actions,
+.pool-actions,
+.row-actions,
+.folder-actions{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:7px
+}
+
+.support-list,
+.drop-actions{
+    justify-content:center;
+    margin-top:12px
+}
+
+.support-item{
+    background:#fff;
+    color:#31537a;
+    border:1px solid #cfe4ff;
+    border-radius:999px;
+    padding:5px 8px;
+    font-size:11px
+}
+
+.file-info{
+    margin-top:9px;
+    color:#64748b;
+    font-size:13px;
+    line-height:1.65;
+    word-break:break-word
+}
+
+.scan-info{
+    margin-top:10px;
+    padding:10px 12px;
+    border-radius:12px;
+    background:#f5f3ff;
+    border:1px solid #e9ddff;
+    color:#6d28d9;
+    font-size:13px
+}
+
+.error{
+    display:none;
+    margin-top:10px;
+    padding:12px 14px;
+    border-radius:12px;
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+    color:#9a3412;
+    font-size:13px
+}
+
+/* 统计 */
+
+.summary{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-bottom:14px
+}
+
+.stat{
+    background:#f8fafc;
+    border:1px solid #edf2f7;
+    border-radius:14px;
+    padding:13px
+}
+
+.stat span{
+    color:var(--muted);
+    font-size:12px
+}
+
+.stat strong{
+    display:block;
+    margin-top:4px;
+    font-size:22px
+}
+
+/* 筛选 */
+
+.toolbar{
+    flex-wrap:wrap;
+    margin:12px 0
+}
+
+.toolbar-group{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px
+}
+
+.pill{
+    background:#fff;
+    color:#40536d;
+    border:1px solid #d6e1ee;
+    border-radius:999px;
+    padding:8px 12px;
+    cursor:pointer
+}
+
+.pill.active{
+    color:#fff;
+    background:var(--blue);
+    border-color:var(--blue)
+}
+
+/* 模板卡片 */
+
+.template-card{
+    background:#fff;
+    border:1px solid #e5edf7;
+    border-left:5px solid var(--green);
+    border-radius:15px;
+    padding:15px;
+    margin-bottom:11px
+}
+
+.template-card.compound{
+    border-left-color:var(--purple);
+    background:#fdfcff
+}
+
+.template-card.mixed{
+    border-left-color:var(--orange);
+    background:#fffefb
+}
+
+.template-card h4{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:7px;
+    margin:0 0 8px;
+    font-size:14px
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    padding:6px 8px;
+    border-radius:999px;
+    font-size:11px;
+    line-height:1;
+    font-weight:800
+}
+
+.badge.outside{
+    background:#d1fae5;
+    color:#047857
+}
+
+.badge.compound{
+    background:#ede9fe;
+    color:#6d28d9
+}
+
+.badge.mixed{
+    background:#ffedd5;
+    color:#c2410c
+}
+
+.badge.group{
+    background:#fef3c7;
+    color:#92400e
+}
+
+.badge.manual{
+    background:#dbeafe;
+    color:#1d4ed8
+}
+
+.badge.auto{
+    background:#f3e8ff;
+    color:#7e22ce
+}
+
+.badge.locked{
+    background:#fee2e2;
+    color:#b91c1c
+}
+
+.badge.none{
+    background:#f1f5f9;
+    color:#64748b
+}
+
+.meta{
+    color:#64748b;
+    font-size:12px;
+    line-height:1.65;
+    margin-bottom:10px;
+    word-break:break-word
+}
+
+.drop-audio{
+    border:2px dashed #6aaeff;
+    background:#f8fbff;
+    color:#1d4ed8;
+    border-radius:12px;
+    padding:13px;
+    text-align:center;
+    cursor:pointer
+}
+
+.drop-audio.active{
+    background:#e7f3ff
+}
+
+/* 音效池 */
+
+.pool{
+    background:#fbfaff;
+    border:1px solid #e9ddff;
+    border-radius:16px;
+    padding:16px
+}
+
+.folder-memory{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:12px;
+    align-items:start;
+    border:1px solid #ddd6fe;
+    background:#fff;
+    border-radius:14px;
+    padding:14px;
+    margin:12px 0
+}
+
+.folder-memory-title{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    font-weight:800
+}
+
+.folder-memory-meta{
+    margin-top:6px;
+    color:#64748b;
+    font-size:12px;
+    line-height:1.65
+}
+
+.folder-actions{
+    justify-content:flex-end
+}
+
+.setting-row{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:8px 0;
+    font-size:13px
+}
+
+.setting-row input[type="number"]{
+    width:76px;
+    padding:7px 8px;
+    border:1px solid #d6e1ee;
+    border-radius:9px
+}
+
+.pool-actions{
+    margin-top:12px
+}
+
+.progress{
+    height:8px;
+    margin-top:10px;
+    overflow:hidden;
+    background:#e8edf5;
+    border-radius:999px
+}
+
+.progress div{
+    width:0;
+    height:100%;
+    background:var(--purple);
+    transition:.15s
+}
+
+.pool-list{
+    max-height:190px;
+    overflow:auto;
+    margin-top:10px;
+    padding:10px;
+    border:1px solid #e5edf7;
+    border-radius:12px;
+    background:#fff;
+    color:#526177;
+    font-size:12px;
+    line-height:1.7
+}
+
+/* 随机结果表格 */
+
+.table-wrap{
+    overflow:auto;
+    border:1px solid #e5edf7;
+    border-radius:14px;
+    background:#fff
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px
+}
+
+th,
+td{
+    padding:11px 10px;
+    border-bottom:1px solid #edf2f7;
+    text-align:left;
+    vertical-align:top
+}
+
+th{
+    background:#f8fafc;
+    color:#526177;
+    font-size:12px
+}
+
+tr:last-child td{
+    border-bottom:0
+}
+
+.sound-name{
+    color:#047857;
+    font-weight:800;
+    word-break:break-word
+}
+
+.row-actions{
+    min-width:255px
+}
+
+.row-actions .btn{
+    padding:6px 8px;
+    font-size:11px
+}
+
+.lock-row{
+    background:#fffdfd
+}
+
+/* 状态 */
+
+.status-row{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:9px 0;
+    border-bottom:1px solid #eef2f7;
+    font-size:13px
+}
+
+.status-row:last-child{
+    border-bottom:0
+}
+
+.status-row strong{
+    max-width:175px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
+}
+
+details{
+    margin-top:12px;
+    padding:11px;
+    border:1px solid #e5edf7;
+    border-radius:13px;
+    background:#fbfdff
+}
+
+summary{
+    cursor:pointer;
+    font-weight:800;
+    color:#334155
+}
+
+.details-body{
+    margin-top:10px;
+    font-size:13px;
+    line-height:1.7
+}
+
+/* 底栏 */
+
+.footer{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:40;
+    background:rgba(255,255,255,.94);
+    backdrop-filter:blur(14px);
+    border-top:1px solid #dbe5f1;
+    box-shadow:0 -5px 20px rgba(15,23,42,.07)
+}
+
+.footer-inner{
+    width:min(1240px,calc(100% - 28px));
+    margin:auto;
+    padding:11px 0
+}
+
+.footer-stats,
+.footer-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+    align-items:center
+}
+
+.footer-stats{
+    color:#526177;
+    font-size:13px
+}
+
+.footer-stats b{
+    color:#111827
+}
+
+/* 弹窗 */
+
+.modal-layer{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    background:rgba(15,23,42,.48)
+}
+
+.modal{
+    width:min(820px,100%);
+    max-height:88vh;
+    overflow:auto;
+    padding:22px;
+    background:#fff;
+    border-radius:20px;
+    box-shadow:0 26px 76px rgba(15,23,42,.28)
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:180px minmax(0,1fr) auto;
+    gap:9px;
+    align-items:end;
+    margin:16px 0
+}
+
+.form-grid label{
+    display:block;
+    margin-bottom:6px;
+    color:#64748b;
+    font-size:12px
+}
+
+.saved-path{
+    display:grid;
+    grid-template-columns:170px minmax(0,1fr) auto;
+    gap:10px;
+    align-items:center;
+    padding:11px 0;
+    border-top:1px solid #edf2f7
+}
+
+.saved-path:first-child{
+    border-top:0
+}
+
+.saved-path-name{
+    font-weight:800
+}
+
+.saved-path-value{
+    color:#64748b;
+    font-size:12px;
+    word-break:break-all
+}
+
+.saved-path-actions{
+    display:flex;
+    justify-content:flex-end;
+    flex-wrap:wrap;
+    gap:6px
+}
+
+.xml-choice,
+.pool-choice{
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr) auto;
+    gap:12px;
+    align-items:center;
+    padding:12px;
+    margin-top:9px;
+    background:#fff;
+    border:1px solid #e5edf7;
+    border-radius:13px
+}
+
+.xml-choice{
+    cursor:pointer
+}
+
+.xml-choice:hover,
+.pool-choice:hover{
+    background:#f8fbff
+}
+
+.choice-name{
+    font-weight:800
+}
+
+.choice-path{
+    margin-top:4px;
+    color:#64748b;
+    font-size:12px;
+    word-break:break-all
+}
+
+.choice-side{
+    color:#64748b;
+    font-size:12px;
+    white-space:nowrap
+}
+
+.pool-choice-actions{
+    display:flex;
+    gap:7px;
+    align-items:center
+}
+
+.empty{
+    padding:24px;
+    color:#64748b;
+    text-align:center;
+    border:1px dashed #cbd5e1;
+    border-radius:13px
+}
+
+@media(max-width:1000px){
+    .layout{
+        grid-template-columns:1fr
+    }
+
+    .status-card{
+        position:static
+    }
+
+    .mode-grid{
+        grid-template-columns:1fr
+    }
+
+    .path-row{
+        grid-template-columns:1fr
+    }
+
+    .tool-header{
+        align-items:flex-start;
+        flex-direction:column
+    }
+
+    .tool-path{
+        width:100%;
+        flex-wrap:wrap
+    }
+
+    .summary{
+        grid-template-columns:repeat(2,1fr)
+    }
+
+    .folder-memory{
+        grid-template-columns:1fr
+    }
+
+    .folder-actions{
+        justify-content:flex-start
+    }
+}
+
+@media(max-width:650px){
+    .app{
+        width:min(100% - 20px,1240px);
+        padding-top:18px
+    }
+
+    .hero{
+        display:block
+    }
+
+    .version{
+        display:inline-block;
+        margin-top:10px
+    }
+
+    .summary{
+        grid-template-columns:1fr
+    }
+
+    .form-grid,
+    .saved-path{
+        grid-template-columns:1fr
+    }
+
+    .saved-path-actions{
+        justify-content:flex-start
+    }
+
+    .footer-inner{
+        align-items:flex-start;
+        flex-direction:column
+    }
+
+    .xml-choice,
+    .pool-choice{
+        grid-template-columns:auto minmax(0,1fr)
+    }
+
+    .choice-side,
+    .pool-choice-actions{
+        grid-column:2
+    }
+
+    .row-actions{
+        min-width:220px
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- 首页 -->
+    <section id="homeView">
+
+        <header class="hero">
+
+            <div>
+                <h1>🎬 快速音 6.3</h1>
+
+                <p>
+                    支持 FCPXML / FCPXMLD、手动音效、随机短音效、
+                    文件夹记忆，以及随机结果逐条试听、替换与锁定。
+                </p>
+            </div>
+
+            <span class="version">
+                试听 · 单独换音 · 锁定 · 缓存
+            </span>
+
+        </header>
+
+        <section class="card">
+
+            <div class="path-head">
+
+                <h2>📁 FCPXML 写入路径</h2>
+
+                <button class="btn secondary small"
+                        onclick="openPathManager()">
+                    管理路径
+                </button>
+
+            </div>
+
+            <div class="path-row">
+
+                <select id="homePathSelect"
+                        class="select"
+                        onchange="selectSavedPath(this.value)">
+                </select>
+
+                <div id="homePathView"
+                     class="path-view">
+                </div>
+
+                <button class="btn ghost"
+                        onclick="openPathManager()">
+                    新增 / 编辑
+                </button>
+
+            </div>
+
+            <div class="file-info">
+                这里保存的是 Final Cut Pro 查找音效时使用的绝对路径。
+            </div>
+
+        </section>
+
+        <div class="mode-grid">
+
+            <article class="mode-card manual"
+                     onclick="enterMode('manual')">
+
+                <div class="mode-icon">🖐</div>
+
+                <h2>手动添加音效</h2>
+
+                <p>
+                    逐个模板组指定音效，同名称模板自动同步。
+                </p>
+
+                <div class="mode-tags">
+                    <span class="tag">逐个指定</span>
+                    <span class="tag">同模板同步</span>
+                    <span class="tag">搜索筛选</span>
+                </div>
+
+                <div class="mode-enter">
+                    进入手动模式 →
+                </div>
+
+            </article>
+
+            <article class="mode-card random"
+                     onclick="enterMode('random')">
+
+                <div class="mode-icon">🎲</div>
+
+                <h2>随机添加音效</h2>
+
+                <p>
+                    随机完成后，可以逐行试听、换一个、手动选择音效并锁定满意结果。
+                </p>
+
+                <div class="mode-tags">
+                    <span class="tag">随机分配</span>
+                    <span class="tag">逐行试听</span>
+                    <span class="tag">锁定满意项</span>
+                    <span class="tag">只重随机未锁定</span>
+                </div>
+
+                <div class="mode-enter">
+                    进入随机模式 →
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+    <!-- 工具页 -->
+    <section id="toolView" class="hidden">
+
+        <header class="tool-header">
+
+            <div class="tool-title">
+
+                <button class="btn ghost small"
+                        onclick="backHome()">
+                    ← 返回模式选择
+                </button>
+
+                <h1 id="toolTitle">快速音</h1>
+
+                <span id="modeBadge"
+                      class="mode-badge">
+                </span>
+
+            </div>
+
+            <div class="tool-path">
+
+                <select id="toolPathSelect"
+                        class="select"
+                        onchange="selectSavedPath(this.value)">
+                </select>
+
+                <span id="toolPathText"
+                      class="tool-path-text">
+                </span>
+
+                <button class="btn secondary small"
+                        onclick="openPathManager()">
+                    管理路径
+                </button>
+
+            </div>
+
+        </header>
+
+        <div class="layout">
+
+            <main>
+
+                <!-- XML -->
+                <section class="card">
+
+                    <h2>1️⃣ 导入 FCPXML / FCPXMLD</h2>
+
+                    <div class="tip">
+                        支持 <code>.fcpxml</code>、<code>.xml</code>
+                        和 macOS 的 <code>.fcpxmld</code> 项目包。
+                        拖入项目包后会递归查找内部 FCPXML。
+                    </div>
+
+                    <div id="xmlDrop"
+                         class="drop-big"
+                         onclick="document.getElementById('xmlFileInput').click()"
+                         ondragover="xmlDragOver(event)"
+                         ondragleave="xmlDragLeave(event)"
+                         ondrop="xmlDrop(event)">
+
+                        <strong>
+                            📂 拖入 FCPXML 文件或 FCPXMLD 项目包
+                        </strong>
+
+                        <small>
+                            从 Finder 直接拖入 .fcpxmld 最稳定。
+                        </small>
+
+                        <div class="support-list">
+                            <span class="support-item">.fcpxml</span>
+                            <span class="support-item">.xml</span>
+                            <span class="support-item">.fcpxmld</span>
+                            <span class="support-item">普通文件夹</span>
+                        </div>
+
+                        <div class="drop-actions">
+
+                            <button type="button"
+                                    class="btn secondary small"
+                                    onclick="event.stopPropagation();document.getElementById('xmlFileInput').click()">
+                                选择 FCPXML
+                            </button>
+
+                            <button type="button"
+                                    class="btn ghost small"
+                                    onclick="event.stopPropagation();document.getElementById('xmlFolderInput').click()">
+                                选择文件夹
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <input id="xmlFileInput"
+                           class="hidden"
+                           type="file"
+                           accept=".fcpxml,.fcpml,.xml,text/xml,application/xml"
+                           onchange="chooseXmlFile(event)">
+
+                    <input id="xmlFolderInput"
+                           class="hidden"
+                           type="file"
+                           webkitdirectory
+                           directory
+                           multiple
+                           onchange="chooseXmlFolder(event)">
+
+                    <div id="xmlInfo"
+                         class="file-info">
+                        未选择 FCPXML 或 FCPXMLD
+                    </div>
+
+                    <div id="xmlScanInfo"
+                         class="scan-info hidden">
+                    </div>
+
+                    <div id="errorBox"
+                         class="error">
+                    </div>
+
+                </section>
+
+                <!-- 手动 -->
+                <section id="manualPanel"
+                         class="card hidden">
+
+                    <h2>2️⃣ 逐个模板添加音效</h2>
+
+                    <div id="manualSummary"
+                         class="summary">
+                    </div>
+
+                    <div class="toolbar">
+
+                        <div class="toolbar-group">
+
+                            <button class="pill active"
+                                    data-manual-filter="all"
+                                    onclick="setManualFilter('all',this)">
+                                全部
+                            </button>
+
+                            <button class="pill"
+                                    data-manual-filter="compound"
+                                    onclick="setManualFilter('compound',this)">
+                                含复合片段内
+                            </button>
+
+                            <button class="pill"
+                                    data-manual-filter="outside"
+                                    onclick="setManualFilter('outside',this)">
+                                含复合片段外
+                            </button>
+
+                        </div>
+
+                        <input id="manualSearch"
+                               class="search"
+                               placeholder="搜索模板组"
+                               oninput="renderManual()">
+
+                    </div>
+
+                    <div id="manualList"></div>
+
+                </section>
+
+                <!-- 随机 -->
+                <section id="randomPanel"
+                         class="card hidden">
+
+                    <h2>2️⃣ 扫描并随机添加短音效</h2>
+
+                    <div id="randomSummary"
+                         class="summary">
+                    </div>
+
+                    <div class="pool">
+
+                        <h3>短音效池</h3>
+
+                        <div id="folderMemoryCard"
+                             class="folder-memory">
+
+                            <div>
+
+                                <div class="folder-memory-title">
+
+                                    <span>📁</span>
+
+                                    <span id="rememberedFolderTitle">
+                                        尚未记住音效文件夹
+                                    </span>
+
+                                    <span id="folderPermissionBadge"
+                                          class="badge none">
+                                        未连接
+                                    </span>
+
+                                </div>
+
+                                <div id="rememberedFolderMeta"
+                                     class="folder-memory-meta">
+                                    首次点击“选择并记住文件夹”。
+                                    工具只保存目录句柄和音效元数据，不复制音频文件。
+                                </div>
+
+                            </div>
+
+                            <div class="folder-actions">
+
+                                <button id="chooseRememberFolderBtn"
+                                        class="btn purple small"
+                                        onclick="chooseAndRememberFolder()">
+                                    选择并记住文件夹
+                                </button>
+
+                                <button id="restoreFolderBtn"
+                                        class="btn secondary small hidden"
+                                        onclick="restoreSavedFolderPermission()">
+                                    恢复权限
+                                </button>
+
+                                <button id="rescanFolderBtn"
+                                        class="btn ghost small hidden"
+                                        onclick="rescanRememberedFolder()">
+                                    重新扫描
+                                </button>
+
+                                <button id="forgetFolderBtn"
+                                        class="btn danger small hidden"
+                                        onclick="forgetRememberedFolder()">
+                                    忘记文件夹
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div id="apiWarning"
+                             class="tip hidden">
+                        </div>
+
+                        <div class="setting-row">
+
+                            <span>时长范围</span>
+
+                            <input id="poolMin"
+                                   type="number"
+                                   min="0"
+                                   max="10"
+                                   step="0.01"
+                                   value="0.03"
+                                   onchange="handlePoolRangeChange()">
+
+                            <span>至</span>
+
+                            <input id="poolMax"
+                                   type="number"
+                                   min="0.01"
+                                   max="10"
+                                   step="0.05"
+                                   value="1.00"
+                                   onchange="handlePoolRangeChange()">
+
+                            <span>秒</span>
+
+                        </div>
+
+                        <div class="setting-row">
+
+                            <label>
+                                <input id="avoidRepeat"
+                                       type="checkbox"
+                                       checked
+                                       onchange="saveSettings()">
+
+                                同一轮尽量不重复使用同一个音效
+                            </label>
+
+                        </div>
+
+                        <div class="tip">
+                            随机结果操作：
+                            <b>试听</b>检查音效，
+                            <b>换一个</b>只替换当前模板组，
+                            <b>手动选择</b>从短音效池挑选，
+                            满意后可<b>锁定</b>。
+                            “随机未锁定”不会改变已锁定结果。
+                        </div>
+
+                        <div class="pool-actions">
+
+                            <input id="soundFolderInput"
+                                   class="hidden"
+                                   type="file"
+                                   webkitdirectory
+                                   directory
+                                   multiple
+                                   onchange="chooseSoundFolderFallback(event)">
+
+                            <button id="fallbackFolderBtn"
+                                    class="btn secondary hidden"
+                                    onclick="document.getElementById('soundFolderInput').click()">
+                                兼容模式选择文件夹
+                            </button>
+
+                            <button class="btn primary"
+                                    onclick="randomizeUnlocked()">
+                                🎲 随机未锁定
+                            </button>
+
+                            <button class="btn ghost"
+                                    onclick="randomizeAll()">
+                                全部重随机
+                            </button>
+
+                            <button class="btn warn"
+                                    onclick="clearUnlockedAssignments()">
+                                清除未锁定
+                            </button>
+
+                            <button class="btn ghost"
+                                    onclick="stopPreview()">
+                                停止试听
+                            </button>
+
+                            <button class="btn ghost"
+                                    onclick="clearCurrentFolderCache()">
+                                清除缓存
+                            </button>
+
+                        </div>
+
+                        <div id="soundPoolInfo"
+                             class="file-info">
+                            尚未恢复音效池
+                        </div>
+
+                        <div id="poolProgress"
+                             class="progress hidden">
+                            <div id="poolProgressBar"></div>
+                        </div>
+
+                        <div id="soundPoolList"
+                             class="pool-list hidden">
+                        </div>
+
+                    </div>
+
+                    <div class="toolbar">
+
+                        <div class="toolbar-group">
+
+                            <button class="pill active"
+                                    data-random-filter="all"
+                                    onclick="setRandomFilter('all',this)">
+                                全部
+                            </button>
+
+                            <button class="pill"
+                                    data-random-filter="assigned"
+                                    onclick="setRandomFilter('assigned',this)">
+                                已分配
+                            </button>
+
+                            <button class="pill"
+                                    data-random-filter="locked"
+                                    onclick="setRandomFilter('locked',this)">
+                                已锁定
+                            </button>
+
+                            <button class="pill"
+                                    data-random-filter="unassigned"
+                                    onclick="setRandomFilter('unassigned',this)">
+                                未分配
+                            </button>
+
+                        </div>
+
+                        <input id="randomSearch"
+                               class="search"
+                               placeholder="搜索模板组或音效"
+                               oninput="renderRandom()">
+
+                    </div>
+
+                    <div id="randomResults"></div>
+
+                </section>
+
+            </main>
+
+            <!-- 状态 -->
+            <aside>
+
+                <section class="card status-card">
+
+                    <h3>📊 当前状态</h3>
+
+                    <div id="statusList"></div>
+
+                    <details open>
+
+                        <summary>生成前检查</summary>
+
+                        <div id="preflight"
+                             class="details-body">
+                        </div>
+
+                    </details>
+
+                    <details>
+
+                        <summary>高级去重设置</summary>
+
+                        <div class="details-body">
+
+                            <div class="setting-row">
+
+                                <label>
+                                    <input id="dedupeSameAudio"
+                                           type="checkbox"
+                                           checked
+                                           onchange="saveSettings();updateStatus()">
+
+                                    同一时间点相同音效只插入一次
+                                </label>
+
+                            </div>
+
+                            <div class="setting-row">
+
+                                <label>
+                                    <input id="dedupeAnyAudio"
+                                           type="checkbox"
+                                           onchange="saveSettings();updateStatus()">
+
+                                    同一时间点只保留一个音效，即使文件不同
+                                </label>
+
+                            </div>
+
+                            <div class="setting-row">
+
+                                <span>容差</span>
+
+                                <input id="dedupeFrames"
+                                       type="number"
+                                       min="0"
+                                       max="25"
+                                       step="1"
+                                       value="2"
+                                       onchange="saveSettings();updateStatus()">
+
+                                <span>帧，按</span>
+
+                                <input id="dedupeFps"
+                                       type="number"
+                                       min="1"
+                                       max="120"
+                                       step="1"
+                                       value="25"
+                                       onchange="saveSettings();updateStatus()">
+
+                                <span>fps</span>
+
+                            </div>
+
+                        </div>
+
+                    </details>
+
+                </section>
+
+            </aside>
+
+        </div>
+
+    </section>
+
+</div>
+
+<!-- 底栏 -->
+<div id="footer"
+     class="footer hidden">
+
+    <div class="footer-inner">
+
+        <div id="footerStats"
+             class="footer-stats">
+        </div>
+
+        <div class="footer-actions">
+
+            <button id="secondaryFooterButton"
+                    class="btn ghost small"
+                    onclick="footerSecondaryAction()">
+            </button>
+
+            <button class="btn primary"
+                    onclick="generateXml()">
+                ✅ 生成带音效 XML
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- 路径管理 -->
+<div id="pathModal"
+     class="modal-layer hidden"
+     onclick="closePathModalByLayer(event)">
+
+    <div class="modal">
+
+        <div class="modal-head">
+
+            <h2>FCPXML 写入路径管理</h2>
+
+            <button class="btn ghost small"
+                    onclick="closePathManager()">
+                关闭
+            </button>
+
+        </div>
+
+        <div class="tip">
+            路径保存在当前浏览器 localStorage。
+        </div>
+
+        <div class="form-grid">
+
+            <div>
+
+                <label>路径名称</label>
+
+                <input id="pathNameInput"
+                       class="input"
+                       placeholder="例如：常用点击音效">
+
+            </div>
+
+            <div>
+
+                <label>绝对路径</label>
+
+                <input id="pathValueInput"
+                       class="input"
+                       placeholder="/Users/xxx/Desktop/音效/">
+
+            </div>
+
+            <button id="savePathButton"
+                    class="btn primary"
+                    onclick="savePathForm()">
+                保存路径
+            </button>
+
+        </div>
+
+        <div id="savedPathList"></div>
+
+    </div>
+
+</div>
+
+<!-- XML 选择 -->
+<div id="xmlModal"
+     class="modal-layer hidden"
+     onclick="closeXmlModalByLayer(event)">
+
+    <div class="modal">
+
+        <div class="modal-head">
+
+            <h2>选择要读取的 FCPXML</h2>
+
+            <button class="btn ghost small"
+                    onclick="closeXmlModal()">
+                取消
+            </button>
+
+        </div>
+
+        <div id="xmlChoiceSummary"
+             class="tip">
+        </div>
+
+        <div id="xmlChoiceList"></div>
+
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px">
+
+            <button class="btn ghost"
+                    onclick="closeXmlModal()">
+                取消
+            </button>
+
+            <button class="btn primary"
+                    onclick="confirmXmlChoice()">
+                读取选中文件
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- 音效池手动选择 -->
+<div id="poolModal"
+     class="modal-layer hidden"
+     onclick="closePoolModalByLayer(event)">
+
+    <div class="modal">
+
+        <div class="modal-head">
+
+            <h2 id="poolModalTitle">
+                从短音效池选择
+            </h2>
+
+            <button class="btn ghost small"
+                    onclick="closePoolModal()">
+                关闭
+            </button>
+
+        </div>
+
+        <div class="tip">
+            使用后会替换整个同名模板组，并自动锁定该结果。
+        </div>
+
+        <input id="poolSearch"
+               class="input"
+               placeholder="搜索文件名或相对路径"
+               oninput="renderPoolChoices()">
+
+        <div id="poolChoiceList"
+             style="margin-top:12px">
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+const DEFAULT_SOUND_ROOT="/Users/jio/Desktop/文成常用音效/";
+const DEFAULT_AUDIO_RATE=48000;
+const QUICK_AUDIO_PREFIX="快速音效__";
+
+const STORAGE_PATHS="quickSound63.paths";
+const STORAGE_PATH_ID="quickSound63.pathId";
+const STORAGE_SETTINGS="quickSound63.settings";
+
+const DB_NAME="quickSound63.db";
+const DB_VERSION=1;
+const HANDLE_STORE="folderHandles";
+const CACHE_STORE="audioCache";
+const ACTIVE_FOLDER_KEY="activeAudioFolder";
+
+let currentMode="";
+
+let originalXml="";
+let xmlFileName="";
+let xmlSourceLabel="";
+let xmlInternalPath="";
+let pendingXmlChoices=[];
+
+let templates=[];
+let groups=[];
+
+const assignments=new Map();
+const lockedGroups=new Set();
+
+let manualFilter="all";
+let randomFilter="all";
+
+let soundPool=[];
+let allCachedAudio=[];
+
+let savedFolderRecord=null;
+let rememberedDirectoryHandle=null;
+let folderPermissionState="none";
+
+let savedPaths=[];
+let currentPathId="";
+let editingPathId="";
+
+const runtimeAudioFileMap=new Map();
+
+let currentPreviewAudio=null;
+let currentPreviewUrl="";
+
+let poolTargetGroupId=null;
+
+/* =========================================================
+   基础工具
+========================================================= */
+
+function makeId(prefix="id"){
+    return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,8)}`;
+}
+
+function htmlEscape(value){
+    return String(value??"")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+
+function xmlEscape(value){
+    return String(value??"")
+        .replaceAll("&","&amp;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;");
+}
+
+function escapeRegex(value){
+    return String(value)
+        .replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+}
+
+function normalizeRoot(path){
+    let value=String(path||"").trim();
+
+    if(!value){
+        return "";
+    }
+
+    return value.endsWith("/")
+        ?value
+        :value+"/";
+}
+
+function formatBytes(bytes){
+    const value=Number(bytes||0);
+
+    if(value<1024){
+        return `${value} B`;
+    }
+
+    if(value<1024*1024){
+        return `${(value/1024).toFixed(1)} KB`;
+    }
+
+    return `${(value/1024/1024).toFixed(2)} MB`;
+}
+
+function showError(message){
+    const element=document.getElementById("errorBox");
+
+    element.textContent=message||"";
+    element.style.display=message?"block":"none";
+}
+
+function setXmlScan(message){
+    const element=document.getElementById("xmlScanInfo");
+
+    element.textContent=message;
+    element.classList.remove("hidden");
+}
+
+function hideXmlScan(){
+    document.getElementById("xmlScanInfo")
+        .classList.add("hidden");
+}
+
+function supportsPersistentDirectory(){
+    return window.isSecureContext
+        &&typeof window.showDirectoryPicker==="function"
+        &&"indexedDB" in window;
+}
+
+/* =========================================================
+   IndexedDB
+========================================================= */
+
+function openDatabase(){
+    return new Promise((resolve,reject)=>{
+
+        const request=indexedDB.open(
+            DB_NAME,
+            DB_VERSION
+        );
+
+        request.onupgradeneeded=()=>{
+
+            const database=request.result;
+
+            if(!database.objectStoreNames.contains(HANDLE_STORE)){
+                database.createObjectStore(
+                    HANDLE_STORE,
+                    {
+                        keyPath:"id"
+                    }
+                );
+            }
+
+            if(!database.objectStoreNames.contains(CACHE_STORE)){
+
+                const store=database.createObjectStore(
+                    CACHE_STORE,
+                    {
+                        keyPath:"key"
+                    }
+                );
+
+                store.createIndex(
+                    "folderId",
+                    "folderId",
+                    {
+                        unique:false
+                    }
+                );
+            }
+        };
+
+        request.onsuccess=()=>resolve(request.result);
+        request.onerror=()=>reject(request.error);
+    });
+}
+
+async function idbGet(storeName,key){
+    const database=await openDatabase();
+
+    return new Promise((resolve,reject)=>{
+
+        const transaction=database.transaction(
+            storeName,
+            "readonly"
+        );
+
+        const request=transaction
+            .objectStore(storeName)
+            .get(key);
+
+        request.onsuccess=()=>resolve(request.result||null);
+        request.onerror=()=>reject(request.error);
+
+        transaction.oncomplete=()=>database.close();
+    });
+}
+
+async function idbPut(storeName,value){
+    const database=await openDatabase();
+
+    return new Promise((resolve,reject)=>{
+
+        const transaction=database.transaction(
+            storeName,
+            "readwrite"
+        );
+
+        transaction
+            .objectStore(storeName)
+            .put(value);
+
+        transaction.oncomplete=()=>{
+            database.close();
+            resolve();
+        };
+
+        transaction.onerror=()=>{
+            database.close();
+            reject(transaction.error);
+        };
+    });
+}
+
+async function idbDelete(storeName,key){
+    const database=await openDatabase();
+
+    return new Promise((resolve,reject)=>{
+
+        const transaction=database.transaction(
+            storeName,
+            "readwrite"
+        );
+
+        transaction
+            .objectStore(storeName)
+            .delete(key);
+
+        transaction.oncomplete=()=>{
+            database.close();
+            resolve();
+        };
+
+        transaction.onerror=()=>{
+            database.close();
+            reject(transaction.error);
+        };
+    });
+}
+
+async function idbGetFolderCache(folderId){
+    const database=await openDatabase();
+
+    return new Promise((resolve,reject)=>{
+
+        const transaction=database.transaction(
+            CACHE_STORE,
+            "readonly"
+        );
+
+        const request=transaction
+            .objectStore(CACHE_STORE)
+            .index("folderId")
+            .getAll(
+                IDBKeyRange.only(folderId)
+            );
+
+        request.onsuccess=()=>resolve(request.result||[]);
+        request.onerror=()=>reject(request.error);
+
+        transaction.oncomplete=()=>database.close();
+    });
+}
+
+async function idbDeleteFolderCache(folderId){
+    const database=await openDatabase();
+
+    return new Promise((resolve,reject)=>{
+
+        const transaction=database.transaction(
+            CACHE_STORE,
+            "readwrite"
+        );
+
+        const store=transaction.objectStore(CACHE_STORE);
+
+        const request=store
+            .index("folderId")
+            .openKeyCursor(
+                IDBKeyRange.only(folderId)
+            );
+
+        request.onsuccess=()=>{
+
+            const cursor=request.result;
+
+            if(cursor){
+                store.delete(cursor.primaryKey);
+                cursor.continue();
+            }
+        };
+
+        transaction.oncomplete=()=>{
+            database.close();
+            resolve();
+        };
+
+        transaction.onerror=()=>{
+            database.close();
+            reject(transaction.error);
+        };
+    });
+}
+
+async function idbDeleteStaleCache(folderId,seenKeys){
+    const database=await openDatabase();
+
+    return new Promise((resolve,reject)=>{
+
+        const transaction=database.transaction(
+            CACHE_STORE,
+            "readwrite"
+        );
+
+        const store=transaction.objectStore(CACHE_STORE);
+
+        const request=store
+            .index("folderId")
+            .openKeyCursor(
+                IDBKeyRange.only(folderId)
+            );
+
+        request.onsuccess=()=>{
+
+            const cursor=request.result;
+
+            if(cursor){
+
+                if(!seenKeys.has(cursor.primaryKey)){
+                    store.delete(cursor.primaryKey);
+                }
+
+                cursor.continue();
+            }
+        };
+
+        transaction.oncomplete=()=>{
+            database.close();
+            resolve();
+        };
+
+        transaction.onerror=()=>{
+            database.close();
+            reject(transaction.error);
+        };
+    });
+}
+
+/* =========================================================
+   写入路径
+========================================================= */
+
+function getCurrentSavedPath(){
+    return savedPaths.find(
+        item=>item.id===currentPathId
+    )
+    ||savedPaths[0]
+    ||null;
+}
+
+function getSoundRoot(){
+    return normalizeRoot(
+        getCurrentSavedPath()?.path
+        ||DEFAULT_SOUND_ROOT
+    );
+}
+
+function loadSavedPaths(){
+    try{
+        savedPaths=JSON.parse(
+            localStorage.getItem(STORAGE_PATHS)
+            ||"[]"
+        );
+
+        if(!Array.isArray(savedPaths)){
+            savedPaths=[];
+        }
+    }catch(error){
+        savedPaths=[];
+    }
+
+    if(!savedPaths.length){
+        savedPaths=[
+            {
+                id:makeId("path"),
+                name:"文成常用音效",
+                path:DEFAULT_SOUND_ROOT
+            }
+        ];
+
+        localStorage.setItem(
+            STORAGE_PATHS,
+            JSON.stringify(savedPaths)
+        );
+    }
+
+    currentPathId=
+        localStorage.getItem(STORAGE_PATH_ID)
+        ||savedPaths[0].id;
+
+    if(!savedPaths.some(item=>item.id===currentPathId)){
+        currentPathId=savedPaths[0].id;
+    }
+
+    renderPathSelectors();
+}
+
+function persistPaths(){
+    localStorage.setItem(
+        STORAGE_PATHS,
+        JSON.stringify(savedPaths)
+    );
+
+    localStorage.setItem(
+        STORAGE_PATH_ID,
+        currentPathId
+    );
+
+    renderPathSelectors();
+    refreshCurrentMode();
+    renderFolderMemoryCard();
+    updateStatus();
+}
+
+function renderPathSelectors(){
+    const options=savedPaths.map(item=>`
+        <option value="${htmlEscape(item.id)}">
+            ${htmlEscape(item.name)}
+        </option>
+    `).join("");
+
+    [
+        "homePathSelect",
+        "toolPathSelect"
+    ].forEach(id=>{
+
+        const element=document.getElementById(id);
+
+        if(element){
+            element.innerHTML=options;
+            element.value=currentPathId;
+        }
+    });
+
+    const current=getCurrentSavedPath();
+
+    document.getElementById("homePathView").textContent=
+        current
+            ?normalizeRoot(current.path)
+            :"未设置路径";
+
+    document.getElementById("toolPathText").textContent=
+        current
+            ?normalizeRoot(current.path)
+            :"未设置路径";
+}
+
+function selectSavedPath(id){
+    if(!savedPaths.some(item=>item.id===id)){
+        return;
+    }
+
+    currentPathId=id;
+
+    localStorage.setItem(
+        STORAGE_PATH_ID,
+        id
+    );
+
+    renderPathSelectors();
+    refreshCurrentMode();
+    renderFolderMemoryCard();
+    updateStatus();
+}
+
+function openPathManager(){
+    editingPathId="";
+
+    document.getElementById("pathNameInput").value="";
+    document.getElementById("pathValueInput").value="";
+    document.getElementById("savePathButton").textContent="保存路径";
+
+    renderSavedPaths();
+
+    document.getElementById("pathModal")
+        .classList.remove("hidden");
+}
+
+function closePathManager(){
+    document.getElementById("pathModal")
+        .classList.add("hidden");
+}
+
+function closePathModalByLayer(event){
+    if(event.target===document.getElementById("pathModal")){
+        closePathManager();
+    }
+}
+
+function renderSavedPaths(){
+    document.getElementById("savedPathList").innerHTML=
+        savedPaths.map(item=>`
+            <div class="saved-path">
+
+                <div class="saved-path-name">
+
+                    ${htmlEscape(item.name)}
+
+                    ${
+                        item.id===currentPathId
+                            ?'<span class="badge manual">当前</span>'
+                            :""
+                    }
+
+                </div>
+
+                <div class="saved-path-value">
+                    ${htmlEscape(normalizeRoot(item.path))}
+                </div>
+
+                <div class="saved-path-actions">
+
+                    <button class="btn secondary small"
+                            onclick="setDefaultPath('${item.id}')">
+                        设为当前
+                    </button>
+
+                    <button class="btn ghost small"
+                            onclick="editPath('${item.id}')">
+                        编辑
+                    </button>
+
+                    <button class="btn danger small"
+                            onclick="deletePath('${item.id}')">
+                        删除
+                    </button>
+
+                </div>
+
+            </div>
+        `).join("");
+}
+
+function savePathForm(){
+    const name=document.getElementById("pathNameInput")
+        .value.trim();
+
+    const path=normalizeRoot(
+        document.getElementById("pathValueInput").value
+    );
+
+    if(!name||!path){
+        alert("请填写路径名称和绝对路径。");
+        return;
+    }
+
+    if(editingPathId){
+        const item=savedPaths.find(
+            value=>value.id===editingPathId
+        );
+
+        if(item){
+            item.name=name;
+            item.path=path;
+        }
+    }else{
+        const item={
+            id:makeId("path"),
+            name,
+            path
+        };
+
+        savedPaths.push(item);
+        currentPathId=item.id;
+    }
+
+    editingPathId="";
+
+    document.getElementById("pathNameInput").value="";
+    document.getElementById("pathValueInput").value="";
+    document.getElementById("savePathButton").textContent="保存路径";
+
+    persistPaths();
+    renderSavedPaths();
+}
+
+function editPath(id){
+    const item=savedPaths.find(
+        value=>value.id===id
+    );
+
+    if(!item){
+        return;
+    }
+
+    editingPathId=id;
+
+    document.getElementById("pathNameInput").value=item.name;
+    document.getElementById("pathValueInput").value=item.path;
+    document.getElementById("savePathButton").textContent="保存修改";
+}
+
+function deletePath(id){
+    if(savedPaths.length<=1){
+        alert("至少保留一个常用路径。");
+        return;
+    }
+
+    const item=savedPaths.find(
+        value=>value.id===id
+    );
+
+    if(!item){
+        return;
+    }
+
+    if(!confirm(`确认删除“${item.name}”吗？`)){
+        return;
+    }
+
+    savedPaths=savedPaths.filter(
+        value=>value.id!==id
+    );
+
+    if(currentPathId===id){
+        currentPathId=savedPaths[0].id;
+    }
+
+    persistPaths();
+    renderSavedPaths();
+}
+
+function setDefaultPath(id){
+    currentPathId=id;
+
+    persistPaths();
+    renderSavedPaths();
+}
+
+/* =========================================================
+   设置
+========================================================= */
+
+function loadSettings(){
+    let settings={};
+
+    try{
+        settings=JSON.parse(
+            localStorage.getItem(STORAGE_SETTINGS)
+            ||"{}"
+        );
+    }catch(error){}
+
+    setElementValue(
+        "poolMin",
+        "value",
+        settings.poolMin??0.03
+    );
+
+    setElementValue(
+        "poolMax",
+        "value",
+        settings.poolMax??1
+    );
+
+    setElementValue(
+        "avoidRepeat",
+        "checked",
+        settings.avoidRepeat??true
+    );
+
+    setElementValue(
+        "dedupeSameAudio",
+        "checked",
+        settings.dedupeSameAudio??true
+    );
+
+    setElementValue(
+        "dedupeAnyAudio",
+        "checked",
+        settings.dedupeAnyAudio??false
+    );
+
+    setElementValue(
+        "dedupeFrames",
+        "value",
+        settings.dedupeFrames??2
+    );
+
+    setElementValue(
+        "dedupeFps",
+        "value",
+        settings.dedupeFps??25
+    );
+}
+
+function setElementValue(id,key,value){
+    const element=document.getElementById(id);
+
+    if(element){
+        element[key]=value;
+    }
+}
+
+function saveSettings(){
+    localStorage.setItem(
+        STORAGE_SETTINGS,
+        JSON.stringify({
+            poolMin:
+                Number(
+                    document.getElementById("poolMin")?.value
+                    ||0.03
+                ),
+
+            poolMax:
+                Number(
+                    document.getElementById("poolMax")?.value
+                    ||1
+                ),
+
+            avoidRepeat:
+                document.getElementById("avoidRepeat")?.checked
+                ??true,
+
+            dedupeSameAudio:
+                document.getElementById("dedupeSameAudio")?.checked
+                ??true,
+
+            dedupeAnyAudio:
+                document.getElementById("dedupeAnyAudio")?.checked
+                ??false,
+
+            dedupeFrames:
+                Number(
+                    document.getElementById("dedupeFrames")?.value
+                    ||2
+                ),
+
+            dedupeFps:
+                Number(
+                    document.getElementById("dedupeFps")?.value
+                    ||25
+                )
+        })
+    );
+}
+
+/* =========================================================
+   模式
+========================================================= */
+
+function enterMode(mode){
+    currentMode=mode;
+
+    resetProject();
+
+    document.getElementById("homeView")
+        .classList.add("hidden");
+
+    document.getElementById("toolView")
+        .classList.remove("hidden");
+
+    document.getElementById("footer")
+        .classList.remove("hidden");
+
+    const manual=mode==="manual";
+
+    document.getElementById("toolTitle").textContent=
+        manual
+            ?"手动添加音效"
+            :"随机添加音效";
+
+    const badge=document.getElementById("modeBadge");
+
+    badge.textContent=
+        manual
+            ?"🖐 手动模式"
+            :"🎲 随机模式";
+
+    badge.className=`mode-badge ${mode}`;
+
+    document.getElementById("manualPanel")
+        .classList.add("hidden");
+
+    document.getElementById("randomPanel")
+        .classList.add("hidden");
+
+    document.getElementById("secondaryFooterButton").textContent=
+        manual
+            ?"清除全部音效"
+            :"随机未锁定";
+
+    renderPathSelectors();
+
+    if(mode==="random"){
+        restoreRememberedFolderState();
+    }
+
+    updateStatus();
+}
+
+function backHome(){
+    stopPreview();
+
+    document.getElementById("toolView")
+        .classList.add("hidden");
+
+    document.getElementById("homeView")
+        .classList.remove("hidden");
+
+    document.getElementById("footer")
+        .classList.add("hidden");
+
+    currentMode="";
+}
+
+function resetProject(){
+    originalXml="";
+    xmlFileName="";
+    xmlSourceLabel="";
+    xmlInternalPath="";
+    pendingXmlChoices=[];
+
+    templates=[];
+    groups=[];
+
+    assignments.clear();
+    lockedGroups.clear();
+
+    document.getElementById("xmlInfo").textContent=
+        "未选择 FCPXML 或 FCPXMLD";
+
+    hideXmlScan();
+    showError("");
+}
+
+/* =========================================================
+   文件夹句柄与缓存
+========================================================= */
+
+async function restoreRememberedFolderState(){
+    try{
+        savedFolderRecord=await idbGet(
+            HANDLE_STORE,
+            ACTIVE_FOLDER_KEY
+        );
+
+        rememberedDirectoryHandle=
+            savedFolderRecord?.handle
+            ||null;
+
+        folderPermissionState="none";
+
+        if(savedFolderRecord?.folderId){
+            allCachedAudio=await idbGetFolderCache(
+                savedFolderRecord.folderId
+            );
+
+            rebuildSoundPoolFromCache();
+        }
+
+        if(rememberedDirectoryHandle){
+            folderPermissionState=
+                await queryDirectoryPermission(
+                    rememberedDirectoryHandle
+                );
+        }else if(savedFolderRecord){
+            folderPermissionState="cache-only";
+        }
+
+        renderFolderMemoryCard();
+        renderRandom();
+        updateStatus();
+    }catch(error){
+        console.warn(error);
+        renderFolderMemoryCard();
+    }
+}
+
+async function queryDirectoryPermission(handle){
+    if(!handle?.queryPermission){
+        return "unknown";
+    }
+
+    try{
+        return await handle.queryPermission({
+            mode:"read"
+        });
+    }catch(error){
+        return "unknown";
+    }
+}
+
+function lastPathSegment(path){
+    return normalizeRoot(path)
+        .split("/")
+        .filter(Boolean)
+        .pop()
+        ||"";
+}
+
+function renderFolderMemoryCard(){
+    const title=document.getElementById("rememberedFolderTitle");
+
+    if(!title){
+        return;
+    }
+
+    const meta=document.getElementById("rememberedFolderMeta");
+    const badge=document.getElementById("folderPermissionBadge");
+
+    const chooseButton=document.getElementById("chooseRememberFolderBtn");
+    const restoreButton=document.getElementById("restoreFolderBtn");
+    const rescanButton=document.getElementById("rescanFolderBtn");
+    const forgetButton=document.getElementById("forgetFolderBtn");
+    const fallbackButton=document.getElementById("fallbackFolderBtn");
+    const warning=document.getElementById("apiWarning");
+
+    const supported=supportsPersistentDirectory();
+
+    warning.classList.toggle(
+        "hidden",
+        supported
+    );
+
+    fallbackButton.classList.toggle(
+        "hidden",
+        supported
+    );
+
+    if(!supported){
+        warning.innerHTML=window.isSecureContext
+            ?"当前浏览器不支持持久化目录句柄，将使用兼容模式。缓存可保留，但重新扫描需要再次选择文件夹。"
+            :"当前页面不是 HTTPS / localhost，不能持久保存目录权限。可使用兼容模式。";
+    }
+
+    if(!savedFolderRecord){
+        title.textContent="尚未记住音效文件夹";
+
+        meta.textContent=
+            "首次点击“选择并记住文件夹”。工具只保存目录句柄和音效元数据。";
+
+        badge.className="badge none";
+        badge.textContent="未连接";
+
+        chooseButton.textContent=supported
+            ?"选择并记住文件夹"
+            :"兼容模式选择文件夹";
+
+        restoreButton.classList.add("hidden");
+        rescanButton.classList.add("hidden");
+        forgetButton.classList.add("hidden");
+
+        return;
+    }
+
+    title.textContent=
+        savedFolderRecord.name
+        ||"已保存音效文件夹";
+
+    const pathName=lastPathSegment(
+        getSoundRoot()
+    );
+
+    const matched=
+        pathName
+        &&savedFolderRecord.name
+        &&pathName===savedFolderRecord.name;
+
+    meta.innerHTML=`
+        缓存音频元数据：
+        <strong>${allCachedAudio.length}</strong> 个
+        ｜当前短音效：
+        <strong>${soundPool.length}</strong> 个
+        ｜FCP 路径末级：
+        <code>${htmlEscape(pathName||"未设置")}</code>
+        ｜
+        ${
+            matched
+                ?'<span class="ok">名称匹配</span>'
+                :'<span class="warn">请确认路径对应此文件夹</span>'
+        }
+    `;
+
+    chooseButton.textContent="更换并记住文件夹";
+    forgetButton.classList.remove("hidden");
+
+    if(folderPermissionState==="granted"){
+        badge.className="badge auto";
+        badge.textContent="权限可用";
+
+        restoreButton.classList.add("hidden");
+        rescanButton.classList.remove("hidden");
+    }else if(folderPermissionState==="prompt"){
+        badge.className="badge group";
+        badge.textContent="需确认权限";
+
+        restoreButton.classList.remove("hidden");
+        rescanButton.classList.remove("hidden");
+    }else if(folderPermissionState==="cache-only"){
+        badge.className="badge manual";
+        badge.textContent="仅缓存";
+
+        restoreButton.classList.add("hidden");
+        rescanButton.classList.add("hidden");
+    }else{
+        badge.className="badge none";
+        badge.textContent="权限不可用";
+
+        restoreButton.classList.toggle(
+            "hidden",
+            !rememberedDirectoryHandle
+        );
+
+        rescanButton.classList.toggle(
+            "hidden",
+            !rememberedDirectoryHandle
+        );
+    }
+}
+
+async function chooseAndRememberFolder(){
+    if(supportsPersistentDirectory()){
+        try{
+            const handle=await window.showDirectoryPicker({
+                mode:"read"
+            });
+
+            const oldFolderId=
+                savedFolderRecord?.folderId
+                ||"";
+
+            let sameFolder=false;
+
+            if(savedFolderRecord?.handle?.isSameEntry){
+                try{
+                    sameFolder=
+                        await savedFolderRecord.handle.isSameEntry(
+                            handle
+                        );
+                }catch(error){}
+            }
+
+            const folderId=
+                sameFolder
+                    ?savedFolderRecord.folderId
+                    :`folder_${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
+
+            if(oldFolderId&&oldFolderId!==folderId){
+                await idbDeleteFolderCache(oldFolderId);
+            }
+
+            savedFolderRecord={
+                id:ACTIVE_FOLDER_KEY,
+                folderId,
+                name:handle.name,
+                handle,
+                pathId:currentPathId,
+                savedAt:Date.now(),
+                mode:"handle"
+            };
+
+            await idbPut(
+                HANDLE_STORE,
+                savedFolderRecord
+            );
+
+            rememberedDirectoryHandle=handle;
+            folderPermissionState="granted";
+
+            allCachedAudio=
+                sameFolder
+                    ?await idbGetFolderCache(folderId)
+                    :[];
+
+            rebuildSoundPoolFromCache();
+            renderFolderMemoryCard();
+
+            await scanDirectoryHandle(
+                handle,
+                savedFolderRecord
+            );
+
+            return;
+        }catch(error){
+            if(error?.name!=="AbortError"){
+                alert(
+                    "无法记住该文件夹，请确认浏览器允许目录访问。"
+                );
+            }
+        }
+    }
+
+    document.getElementById("soundFolderInput")
+        .click();
+}
+
+async function restoreSavedFolderPermission(){
+    if(!rememberedDirectoryHandle?.requestPermission){
+        alert(
+            "当前浏览器无法恢复目录权限，请重新选择文件夹。"
+        );
+        return;
+    }
+
+    folderPermissionState=
+        await rememberedDirectoryHandle.requestPermission({
+            mode:"read"
+        });
+
+    renderFolderMemoryCard();
+
+    if(folderPermissionState==="granted"){
+        alert("文件夹权限已恢复。");
+    }
+}
+
+async function rescanRememberedFolder(){
+    if(!rememberedDirectoryHandle){
+        alert("没有可重新扫描的文件夹句柄。");
+        return;
+    }
+
+    let permission=
+        await queryDirectoryPermission(
+            rememberedDirectoryHandle
+        );
+
+    if(
+        permission!=="granted"
+        &&rememberedDirectoryHandle.requestPermission
+    ){
+        permission=
+            await rememberedDirectoryHandle.requestPermission({
+                mode:"read"
+            });
+    }
+
+    folderPermissionState=permission;
+
+    renderFolderMemoryCard();
+
+    if(permission!=="granted"){
+        alert("未获得文件夹读取权限。");
+        return;
+    }
+
+    await scanDirectoryHandle(
+        rememberedDirectoryHandle,
+        savedFolderRecord
+    );
+}
+
+async function forgetRememberedFolder(){
+    if(!savedFolderRecord){
+        return;
+    }
+
+    if(
+        !confirm(
+            "确认忘记文件夹并删除元数据缓存吗？不会删除原始音频。"
+        )
+    ){
+        return;
+    }
+
+    await idbDeleteFolderCache(
+        savedFolderRecord.folderId
+    );
+
+    await idbDelete(
+        HANDLE_STORE,
+        ACTIVE_FOLDER_KEY
+    );
+
+    savedFolderRecord=null;
+    rememberedDirectoryHandle=null;
+    folderPermissionState="none";
+
+    allCachedAudio=[];
+    soundPool=[];
+
+    runtimeAudioFileMap.clear();
+
+    renderFolderMemoryCard();
+    renderRandom();
+    updateStatus();
+
+    document.getElementById("soundPoolInfo").textContent=
+        "已忘记文件夹和缓存。";
+}
+
+async function clearCurrentFolderCache(){
+    if(!savedFolderRecord?.folderId){
+        alert("当前没有缓存。");
+        return;
+    }
+
+    if(
+        !confirm(
+            "确认清除当前音效元数据缓存吗？不会删除原始音频。"
+        )
+    ){
+        return;
+    }
+
+    await idbDeleteFolderCache(
+        savedFolderRecord.folderId
+    );
+
+    allCachedAudio=[];
+    soundPool=[];
+
+    renderFolderMemoryCard();
+    renderRandom();
+    updateStatus();
+
+    document.getElementById("soundPoolInfo").textContent=
+        "缓存已清除。";
+}
+
+async function collectAudioFilesFromHandle(
+    directoryHandle,
+    parentPath="",
+    result=[]
+){
+    for await(
+        const [name,entry]
+        of directoryHandle.entries()
+    ){
+        const relativePath=
+            parentPath
+                ?`${parentPath}/${name}`
+                :name;
+
+        if(entry.kind==="directory"){
+            await collectAudioFilesFromHandle(
+                entry,
+                relativePath,
+                result
+            );
+        }else{
+            const file=await entry.getFile();
+
+            if(isAudioFile(file)){
+                result.push({
+                    file,
+                    relativePath
+                });
+            }
+        }
+    }
+
+    return result;
+}
+
+async function scanDirectoryHandle(handle,record){
+    const info=document.getElementById("soundPoolInfo");
+    const progress=document.getElementById("poolProgress");
+    const progressBar=document.getElementById("poolProgressBar");
+
+    progress.classList.remove("hidden");
+    progressBar.style.width="0%";
+
+    info.textContent="正在读取文件夹目录……";
+
+    const files=
+        await collectAudioFilesFromHandle(handle);
+
+    const oldCache=
+        await idbGetFolderCache(record.folderId);
+
+    const oldMap=
+        new Map(
+            oldCache.map(
+                item=>[
+                    item.relativePath,
+                    item
+                ]
+            )
+        );
+
+    const seenKeys=new Set();
+    const newCache=[];
+
+    let decoded=0;
+    let reused=0;
+    let failed=0;
+
+    runtimeAudioFileMap.clear();
+
+    for(
+        let index=0;
+        index<files.length;
+        index++
+    ){
+        const {
+            file,
+            relativePath
+        }=files[index];
+
+        runtimeAudioFileMap.set(
+            relativePath,
+            file
+        );
+
+        const key=
+            `${record.folderId}|${relativePath}`;
+
+        seenKeys.add(key);
+
+        info.textContent=
+            `正在扫描 ${index+1}/${files.length}`
+            +`｜复用 ${reused}`
+            +`｜分析 ${decoded}`
+            +`｜失败 ${failed}`;
+
+        progressBar.style.width=
+            `${Math.round((index+1)/Math.max(1,files.length)*100)}%`;
+
+        try{
+            const old=oldMap.get(relativePath);
+
+            let cacheItem;
+
+            if(
+                old
+                &&old.size===file.size
+                &&old.lastModified===file.lastModified
+            ){
+                cacheItem={
+                    ...old,
+                    key,
+                    folderId:record.folderId
+                };
+
+                reused++;
+            }else{
+                const metadata=
+                    await getAudioMetadata(file);
+
+                cacheItem={
+                    key,
+                    folderId:record.folderId,
+                    folderName:record.name,
+
+                    relativePath,
+                    fileName:file.name,
+
+                    size:file.size,
+                    lastModified:file.lastModified,
+
+                    duration:metadata.duration,
+
+                    sample:
+                        metadata.sample
+                        ||DEFAULT_AUDIO_RATE,
+
+                    channels:
+                        metadata.channels
+                        ||1,
+
+                    frames:
+                        metadata.frames
+                        ||Math.floor(
+                            (metadata.duration||0)
+                            *(metadata.sample||DEFAULT_AUDIO_RATE)
+                        ),
+
+                    source:
+                        metadata.source
+                        ||"读取完成",
+
+                    updatedAt:Date.now()
+                };
+
+                await idbPut(
+                    CACHE_STORE,
+                    cacheItem
+                );
+
+                decoded++;
+            }
+
+            newCache.push(cacheItem);
+        }catch(error){
+            failed++;
+            console.warn(relativePath,error);
+        }
+
+        await new Promise(
+            resolve=>setTimeout(resolve,0)
+        );
+    }
+
+    await idbDeleteStaleCache(
+        record.folderId,
+        seenKeys
+    );
+
+    allCachedAudio=newCache;
+
+    rebuildSoundPoolFromCache();
+    renderFolderMemoryCard();
+    renderRandom();
+    updateStatus();
+
+    info.innerHTML=`
+        <span class="ok">✅ 扫描完成：</span>
+        音频 ${files.length} 个，
+        复用 ${reused} 个，
+        重新分析 ${decoded} 个，
+        失败 ${failed} 个；
+        短音效 ${soundPool.length} 个。
+    `;
+}
+
+async function chooseSoundFolderFallback(event){
+    const files=
+        Array.from(event.target.files||[])
+            .filter(isAudioFile);
+
+    event.target.value="";
+
+    if(!files.length){
+        alert("文件夹中没有音频文件。");
+        return;
+    }
+
+    const rootName=
+        (
+            files[0].webkitRelativePath
+            ||""
+        )
+        .split("/")[0]
+        ||"兼容模式文件夹";
+
+    const oldFolderId=
+        savedFolderRecord?.folderId
+        ||"";
+
+    const sameFolder=
+        savedFolderRecord?.mode==="fallback"
+        &&savedFolderRecord?.name===rootName;
+
+    const folderId=
+        sameFolder
+            ?savedFolderRecord.folderId
+            :`fallback_${Date.now()}`;
+
+    if(oldFolderId&&oldFolderId!==folderId){
+        await idbDeleteFolderCache(oldFolderId);
+    }
+
+    savedFolderRecord={
+        id:ACTIVE_FOLDER_KEY,
+        folderId,
+        name:rootName,
+        handle:null,
+        pathId:currentPathId,
+        savedAt:Date.now(),
+        mode:"fallback"
+    };
+
+    await idbPut(
+        HANDLE_STORE,
+        savedFolderRecord
+    );
+
+    rememberedDirectoryHandle=null;
+    folderPermissionState="cache-only";
+
+    const info=document.getElementById("soundPoolInfo");
+    const progress=document.getElementById("poolProgress");
+    const progressBar=document.getElementById("poolProgressBar");
+
+    progress.classList.remove("hidden");
+
+    runtimeAudioFileMap.clear();
+
+    const oldCache=
+        await idbGetFolderCache(folderId);
+
+    const oldMap=
+        new Map(
+            oldCache.map(
+                item=>[
+                    item.relativePath,
+                    item
+                ]
+            )
+        );
+
+    const seenKeys=new Set();
+    const newCache=[];
+
+    let reused=0;
+    let decoded=0;
+    let failed=0;
+
+    for(
+        let index=0;
+        index<files.length;
+        index++
+    ){
+        const file=files[index];
+
+        const parts=
+            (
+                file.webkitRelativePath
+                ||file.name
+            )
+            .split("/")
+            .filter(Boolean);
+
+        const relativePath=
+            parts.length>1
+                ?parts.slice(1).join("/")
+                :file.name;
+
+        runtimeAudioFileMap.set(
+            relativePath,
+            file
+        );
+
+        const key=
+            `${folderId}|${relativePath}`;
+
+        seenKeys.add(key);
+
+        info.textContent=
+            `兼容扫描 ${index+1}/${files.length}`
+            +`｜复用 ${reused}`
+            +`｜分析 ${decoded}`
+            +`｜失败 ${failed}`;
+
+        progressBar.style.width=
+            `${Math.round((index+1)/files.length*100)}%`;
+
+        try{
+            const old=oldMap.get(relativePath);
+
+            let cacheItem;
+
+            if(
+                old
+                &&old.size===file.size
+                &&old.lastModified===file.lastModified
+            ){
+                cacheItem={
+                    ...old,
+                    key,
+                    folderId
+                };
+
+                reused++;
+            }else{
+                const metadata=
+                    await getAudioMetadata(file);
+
+                cacheItem={
+                    key,
+                    folderId,
+                    folderName:rootName,
+
+                    relativePath,
+                    fileName:file.name,
+
+                    size:file.size,
+                    lastModified:file.lastModified,
+
+                    duration:metadata.duration,
+
+                    sample:
+                        metadata.sample
+                        ||DEFAULT_AUDIO_RATE,
+
+                    channels:
+                        metadata.channels
+                        ||1,
+
+                    frames:
+                        metadata.frames
+                        ||Math.floor(
+                            (metadata.duration||0)
+                            *(metadata.sample||DEFAULT_AUDIO_RATE)
+                        ),
+
+                    source:
+                        metadata.source
+                        ||"读取完成",
+
+                    updatedAt:Date.now()
+                };
+
+                await idbPut(
+                    CACHE_STORE,
+                    cacheItem
+                );
+
+                decoded++;
+            }
+
+            newCache.push(cacheItem);
+        }catch(error){
+            failed++;
+        }
+    }
+
+    await idbDeleteStaleCache(
+        folderId,
+        seenKeys
+    );
+
+    allCachedAudio=newCache;
+
+    rebuildSoundPoolFromCache();
+    renderFolderMemoryCard();
+    renderRandom();
+    updateStatus();
+
+    info.innerHTML=`
+        <span class="ok">✅ 兼容模式扫描完成：</span>
+        音频 ${files.length} 个，
+        短音效 ${soundPool.length} 个。
+        下次可直接使用缓存，但试听或重扫需要重新选择文件夹。
+    `;
+}
+
+function handlePoolRangeChange(){
+    saveSettings();
+    rebuildSoundPoolFromCache();
+    renderFolderMemoryCard();
+    renderRandom();
+    updateStatus();
+}
+
+function rebuildSoundPoolFromCache(){
+    const min=
+        Math.max(
+            0,
+            Number(
+                document.getElementById("poolMin")?.value
+                ||0.03
+            )
+        );
+
+    const max=
+        Math.max(
+            min,
+            Number(
+                document.getElementById("poolMax")?.value
+                ||1
+            )
+        );
+
+    soundPool=
+        allCachedAudio
+            .filter(item=>
+                Number(item.duration)>=min
+                &&Number(item.duration)<=max
+            )
+            .map(item=>({
+                file:item.fileName,
+                path:item.relativePath,
+
+                duration:item.duration,
+                sample:item.sample,
+                frames:item.frames,
+                channels:item.channels,
+
+                source:item.source,
+                size:item.size,
+
+                autoAssigned:true,
+                fromPool:true
+            }));
+
+    const list=document.getElementById("soundPoolList");
+
+    if(list){
+        if(soundPool.length){
+            list.classList.remove("hidden");
+
+            list.innerHTML=
+                soundPool
+                    .slice(0,120)
+                    .map(
+                        (item,index)=>
+                            `${index+1}. `
+                            +`${htmlEscape(item.path||item.file)}`
+                            +` ｜ ${Number(item.duration).toFixed(4)}s`
+                    )
+                    .join("<br>")
+                +
+                (
+                    soundPool.length>120
+                        ?`<br>……还有 ${soundPool.length-120} 个未显示`
+                        :""
+                );
+        }else{
+            list.classList.add("hidden");
+            list.innerHTML="";
+        }
+    }
+
+    if(savedFolderRecord){
+        document.getElementById("soundPoolInfo").innerHTML=`
+            已恢复缓存：
+            共 ${allCachedAudio.length} 个音频元数据，
+            符合 ${min.toFixed(2)}s - ${max.toFixed(2)}s
+            的音效 ${soundPool.length} 个。
+        `;
+    }
+}
+
+/* =========================================================
+   FCPXML / FCPXMLD 导入
+========================================================= */
+
+function xmlDragOver(event){
+    event.preventDefault();
+
+    if(event.dataTransfer){
+        event.dataTransfer.dropEffect="copy";
+    }
+
+    document.getElementById("xmlDrop")
+        .classList.add("active");
+}
+
+function xmlDragLeave(event){
+    event.preventDefault();
+
+    document.getElementById("xmlDrop")
+        .classList.remove("active");
+}
+
+async function xmlDrop(event){
+    event.preventDefault();
+
+    document.getElementById("xmlDrop")
+        .classList.remove("active");
+
+    showError("");
+    setXmlScan("正在扫描拖入的文件或项目包……");
+
+    try{
+        const candidates=
+            await collectDroppedXmlFiles(
+                event.dataTransfer
+            );
+
+        await validateXmlCandidates(
+            candidates,
+            getDropSourceName(event.dataTransfer)
+        );
+    }catch(error){
+        console.error(error);
+
+        hideXmlScan();
+
+        showError(
+            "无法读取拖入内容。请尝试从 Finder 直接拖入 .fcpxmld，或使用“选择文件夹”。"
+        );
+    }
+}
+
+function chooseXmlFile(event){
+    const file=event.target.files[0];
+
+    event.target.value="";
+
+    if(file){
+        validateXmlCandidates(
+            [
+                {
+                    file,
+                    relativePath:file.name,
+                    rootName:file.name
+                }
+            ],
+            file.name
+        );
+    }
+}
+
+function chooseXmlFolder(event){
+    const files=
+        Array.from(event.target.files||[]);
+
+    event.target.value="";
+
+    if(!files.length){
+        return;
+    }
+
+    setXmlScan(
+        `正在检查文件夹，共 ${files.length} 个文件……`
+    );
+
+    const rootName=
+        (
+            files[0].webkitRelativePath
+            ||""
+        )
+        .split("/")[0]
+        ||"所选文件夹";
+
+    const candidates=
+        files
+            .filter(isXmlFile)
+            .map(file=>({
+                file,
+
+                relativePath:
+                    file.webkitRelativePath
+                    ||file.name,
+
+                rootName
+            }));
+
+    validateXmlCandidates(
+        candidates,
+        rootName
+    );
+}
+
+function isXmlFile(file){
+    return !!file
+        &&/\.(fcpxml|fcpml|xml)$/i
+            .test(file.name||"");
+}
+
+function getDropSourceName(dataTransfer){
+    return Array.from(
+        dataTransfer.files||[]
+    )[0]?.name
+    ||"拖入的 FCPXMLD / 文件夹";
+}
+
+async function collectDroppedXmlFiles(dataTransfer){
+    const result=[];
+    const items=Array.from(dataTransfer.items||[]);
+
+    let handledDirectory=false;
+
+    for(const item of items){
+        if(item.kind!=="file"){
+            continue;
+        }
+
+        if(
+            typeof item.getAsFileSystemHandle
+            ==="function"
+        ){
+            try{
+                const handle=
+                    await item.getAsFileSystemHandle();
+
+                if(handle){
+                    handledDirectory=true;
+
+                    await walkFileHandle(
+                        handle,
+                        "",
+                        result
+                    );
+
+                    continue;
+                }
+            }catch(error){}
+        }
+
+        if(
+            typeof item.webkitGetAsEntry
+            ==="function"
+        ){
+            const entry=
+                item.webkitGetAsEntry();
+
+            if(entry){
+                handledDirectory=true;
+
+                await walkWebkitEntry(
+                    entry,
+                    "",
+                    result
+                );
+            }
+        }
+    }
+
+    if(!handledDirectory||!result.length){
+        for(
+            const file
+            of Array.from(
+                dataTransfer.files||[]
+            )
+        ){
+            if(isXmlFile(file)){
+                result.push({
+                    file,
+                    relativePath:file.name,
+                    rootName:file.name
+                });
+            }
+        }
+    }
+
+    const seen=new Set();
+
+    return result.filter(item=>{
+        const key=[
+            item.relativePath,
+            item.file.size,
+            item.file.lastModified
+        ].join("|");
+
+        if(seen.has(key)){
+            return false;
+        }
+
+        seen.add(key);
+        return true;
+    });
+}
+
+async function walkFileHandle(
+    handle,
+    parentPath,
+    result
+){
+    const relativePath=
+        parentPath
+            ?`${parentPath}/${handle.name}`
+            :handle.name;
+
+    if(handle.kind==="file"){
+        const file=await handle.getFile();
+
+        if(isXmlFile(file)){
+            result.push({
+                file,
+                relativePath,
+
+                rootName:
+                    relativePath
+                        .split("/")[0]
+            });
+        }
+
+        return;
+    }
+
+    for await(const child of handle.values()){
+        await walkFileHandle(
+            child,
+            relativePath,
+            result
+        );
+    }
+}
+
+function readAllWebkitEntries(reader){
+    return new Promise((resolve,reject)=>{
+
+        const all=[];
+
+        const readNext=()=>{
+            reader.readEntries(
+                entries=>{
+                    if(!entries.length){
+                        resolve(all);
+                        return;
+                    }
+
+                    all.push(...entries);
+                    readNext();
+                },
+                reject
+            );
+        };
+
+        readNext();
+    });
+}
+
+async function walkWebkitEntry(
+    entry,
+    parentPath,
+    result
+){
+    const relativePath=
+        parentPath
+            ?`${parentPath}/${entry.name}`
+            :entry.name;
+
+    if(entry.isFile){
+        const file=
+            await new Promise(
+                (resolve,reject)=>
+                    entry.file(
+                        resolve,
+                        reject
+                    )
+            );
+
+        if(isXmlFile(file)){
+            result.push({
+                file,
+                relativePath,
+
+                rootName:
+                    relativePath
+                        .split("/")[0]
+            });
+        }
+
+        return;
+    }
+
+    const entries=
+        await readAllWebkitEntries(
+            entry.createReader()
+        );
+
+    for(const child of entries){
+        await walkWebkitEntry(
+            child,
+            relativePath,
+            result
+        );
+    }
+}
+
+async function validateXmlCandidates(
+    rawCandidates,
+    sourceName
+){
+    showError("");
+
+    if(!rawCandidates.length){
+        hideXmlScan();
+
+        showError(
+            "没有在拖入内容中找到 .fcpxml 或 .xml 文件。"
+        );
+
+        return;
+    }
+
+    const valid=[];
+
+    for(
+        let index=0;
+        index<rawCandidates.length;
+        index++
+    ){
+        const item=rawCandidates[index];
+
+        setXmlScan(
+            `正在验证 ${index+1}/${rawCandidates.length}：${item.relativePath}`
+        );
+
+        try{
+            const text=
+                await item.file.text();
+
+            if(/<fcpxml[\s>]/i.test(text)){
+                valid.push({
+                    ...item,
+                    text,
+
+                    sourceName:
+                        sourceName
+                        ||item.rootName
+                        ||item.file.name,
+
+                    score:
+                        scoreXmlFile(item)
+                });
+            }
+        }catch(error){}
+    }
+
+    if(!valid.length){
+        hideXmlScan();
+
+        showError(
+            "找到了 XML 文件，但没有检测到有效的 <fcpxml> 根内容。"
+        );
+
+        return;
+    }
+
+    valid.sort(
+        (a,b)=>
+            b.score-a.score
+            ||
+            a.relativePath.localeCompare(
+                b.relativePath,
+                "zh-CN"
+            )
+    );
+
+    if(valid.length===1){
+        loadSelectedXml(valid[0]);
+        return;
+    }
+
+    pendingXmlChoices=valid;
+
+    showXmlChoiceModal(
+        valid,
+        sourceName
+    );
+
+    setXmlScan(
+        `检测到 ${valid.length} 个有效 FCPXML，请选择。`
+    );
+}
+
+function scoreXmlFile(item){
+    let score=0;
+
+    const path=
+        String(item.relativePath||"")
+            .toLowerCase();
+
+    const depth=
+        path.split("/").length;
+
+    if(path.endsWith(".fcpxml")){
+        score+=50;
+    }
+
+    if(/(^|\/)info\.fcpxml$/.test(path)){
+        score+=20;
+    }
+
+    if(
+        !/(backup|backups|autosave|old|archive|备份)/i
+            .test(path)
+    ){
+        score+=25;
+    }
+
+    score+=Math.max(
+        0,
+        12-depth
+    );
+
+    score+=Math.min(
+        20,
+        Math.log10(
+            Math.max(
+                1,
+                item.file.size
+            )
+        )*3
+    );
+
+    return score;
+}
+
+function showXmlChoiceModal(
+    list,
+    sourceName
+){
+    document.getElementById("xmlChoiceSummary").innerHTML=`
+        在
+        <strong>${htmlEscape(sourceName||"拖入内容")}</strong>
+        中检测到 ${list.length} 个有效 FCPXML。
+    `;
+
+    document.getElementById("xmlChoiceList").innerHTML=
+        list.map(
+            (item,index)=>`
+                <label class="xml-choice">
+
+                    <input type="radio"
+                           name="xmlChoice"
+                           value="${index}"
+                           ${index===0?"checked":""}>
+
+                    <div>
+
+                        <div class="choice-name">
+                            ${htmlEscape(item.file.name)}
+                        </div>
+
+                        <div class="choice-path">
+                            ${htmlEscape(item.relativePath)}
+                        </div>
+
+                    </div>
+
+                    <div class="choice-side">
+                        ${formatBytes(item.file.size)}
+                    </div>
+
+                </label>
+            `
+        ).join("");
+
+    document.getElementById("xmlModal")
+        .classList.remove("hidden");
+}
+
+function confirmXmlChoice(){
+    const selected=
+        document.querySelector(
+            'input[name="xmlChoice"]:checked'
+        );
+
+    if(!selected){
+        alert("请选择一个 FCPXML 文件。");
+        return;
+    }
+
+    const item=
+        pendingXmlChoices[
+            Number(selected.value)
+        ];
+
+    if(item){
+        loadSelectedXml(item);
+    }
+
+    closeXmlModal();
+}
+
+function closeXmlModal(){
+    document.getElementById("xmlModal")
+        .classList.add("hidden");
+
+    pendingXmlChoices=[];
+}
+
+function closeXmlModalByLayer(event){
+    if(event.target===document.getElementById("xmlModal")){
+        closeXmlModal();
+    }
+}
+
+function loadSelectedXml(item){
+    originalXml=item.text;
+
+    xmlFileName=item.file.name;
+
+    xmlSourceLabel=
+        item.sourceName
+        ||item.rootName
+        ||item.file.name;
+
+    xmlInternalPath=
+        item.relativePath
+        ||item.file.name;
+
+    document.getElementById("xmlInfo").innerHTML=`
+        <span class="ok">
+            ✅ 已读取：
+            ${htmlEscape(xmlSourceLabel)}
+        </span>
+
+        ｜内部文件：
+
+        <code>
+            ${htmlEscape(xmlInternalPath)}
+        </code>
+
+        ｜${formatBytes(item.file.size)}
+    `;
+
+    setXmlScan(
+        "FCPXML 验证通过，正在识别模板……"
+    );
+
+    parseTemplates();
+
+    hideXmlScan();
+}
+
+/* =========================================================
+   清理旧快速音效
+========================================================= */
+
+function getXmlAttribute(tagText,attribute){
+    const match=
+        String(tagText||"").match(
+            new RegExp(
+                `\\b${attribute}="([^"]*)"`
+            )
+        );
+
+    return match
+        ?match[1]
+        :"";
+}
+
+function collectQuickAssetIds(xml){
+    const ids=new Set();
+
+    const prefix=
+        escapeRegex(QUICK_AUDIO_PREFIX);
+
+    const regex=
+        new RegExp(
+            `<asset\\b(?=[^>]*\\bname="${prefix})[\\s\\S]*?</asset>`,
+            "g"
+        );
+
+    let match;
+
+    while((match=regex.exec(xml))!==null){
+        const id=
+            getXmlAttribute(
+                match[0],
+                "id"
+            );
+
+        if(id){
+            ids.add(id);
+        }
+    }
+
+    return ids;
+}
+
+function removeExistingQuickAudio(xml){
+    let output=String(xml||"");
+
+    const quickAssetIds=
+        collectQuickAssetIds(output);
+
+    const removedReferences=new Set();
+
+    let removedClips=0;
+
+    output=output.replace(
+        /<!--\s*快速音效工具:[\s\S]*?-->\s*/g,
+        ""
+    );
+
+    const removeClip=clip=>{
+        const name=
+            getXmlAttribute(
+                clip,
+                "name"
+            );
+
+        const ref=
+            getXmlAttribute(
+                clip,
+                "ref"
+            );
+
+        const isQuick=
+            (
+                name
+                &&name.startsWith(QUICK_AUDIO_PREFIX)
+            )
+            ||
+            (
+                ref
+                &&quickAssetIds.has(ref)
+            );
+
+        if(!isQuick){
+            return clip;
+        }
+
+        if(ref){
+            removedReferences.add(ref);
+        }
+
+        removedClips++;
+
+        return "";
+    };
+
+    output=output.replace(
+        /<asset-clip\b[\s\S]*?<\/asset-clip>/g,
+        removeClip
+    );
+
+    output=output.replace(
+        /<asset-clip\b[^>]*\/>/g,
+        removeClip
+    );
+
+    removedReferences.forEach(ref=>{
+        const escaped=
+            escapeRegex(ref);
+
+        if(
+            !new RegExp(`\\bref="${escaped}"`)
+                .test(output)
+        ){
+            output=output.replace(
+                new RegExp(
+                    `\\s*<asset\\b(?=[^>]*\\bid="${escaped}")[\\s\\S]*?</asset>`,
+                    "g"
+                ),
+                ""
+            );
+        }
+    });
+
+    return {
+        xml:output,
+        removedClips
+    };
+}
+
+function cleanupOriginalXml(){
+    const result=
+        removeExistingQuickAudio(originalXml);
+
+    if(result.removedClips){
+        originalXml=result.xml;
+
+        document.getElementById("xmlInfo").innerHTML+=`
+            <br>
+            <span class="warn">
+                已自动清理旧快速音效
+                ${result.removedClips}
+                个。
+            </span>
+        `;
+    }
+}
+
+/* =========================================================
+   模板识别
+========================================================= */
+
+function nodeName(node){
+    return (
+        node
+        &&(
+            node.localName
+            ||node.nodeName
+        )
+        ||""
+    ).toLowerCase();
+}
+
+function closestParent(node,tagName){
+    let parent=
+        node
+            ?node.parentNode
+            :null;
+
+    const target=tagName.toLowerCase();
+
+    while(
+        parent
+        &&parent.nodeType===1
+    ){
+        if(nodeName(parent)===target){
+            return parent;
+        }
+
+        parent=parent.parentNode;
+    }
+
+    return null;
+}
+
+function hasParent(node,tagName){
+    return !!closestParent(
+        node,
+        tagName
+    );
+}
+
+function resourceMediaParent(node){
+    const media=
+        closestParent(
+            node,
+            "media"
+        );
+
+    return media
+        &&hasParent(media,"resources")
+        ?media
+        :null;
+}
+
+function buildReferenceMap(documentNode){
+    const map=new Map();
+
+    Array.from(
+        documentNode.getElementsByTagName("ref-clip")
+    ).forEach(node=>{
+        const ref=
+            node.getAttribute("ref");
+
+        if(!ref){
+            return;
+        }
+
+        if(!map.has(ref)){
+            map.set(ref,[]);
+        }
+
+        map.get(ref).push({
+            name:
+                node.getAttribute("name")
+                ||"未命名复合片段",
+
+            offset:
+                node.getAttribute("offset")
+                ||"",
+
+            duration:
+                node.getAttribute("duration")
+                ||""
+        });
+    });
+
+    return map;
+}
+
+function titleStartPositions(xml){
+    const positions=[];
+    const regex=/<title(?=[\s/>])/g;
+
+    let match;
+
+    while((match=regex.exec(xml))!==null){
+        positions.push(match.index);
+    }
+
+    return positions;
+}
+
+function findXmlElementEnd(
+    xml,
+    startIndex,
+    tagName
+){
+    const firstTagEnd=
+        xml.indexOf(
+            ">",
+            startIndex
+        );
+
+    if(firstTagEnd===-1){
+        return startIndex;
+    }
+
+    if(
+        /\/\s*>$/.test(
+            xml.slice(
+                startIndex,
+                firstTagEnd+1
+            )
+        )
+    ){
+        return firstTagEnd+1;
+    }
+
+    const openRegex=
+        new RegExp(
+            `<${tagName}(?=[\\s/>])`,
+            "g"
+        );
+
+    const closeRegex=
+        new RegExp(
+            `</${tagName}\\s*>`,
+            "g"
+        );
+
+    let depth=1;
+    let cursor=firstTagEnd+1;
+
+    while(depth>0){
+        openRegex.lastIndex=cursor;
+        closeRegex.lastIndex=cursor;
+
+        const openMatch=
+            openRegex.exec(xml);
+
+        const closeMatch=
+            closeRegex.exec(xml);
+
+        if(!closeMatch){
+            return firstTagEnd+1;
+        }
+
+        if(
+            openMatch
+            &&openMatch.index<closeMatch.index
+        ){
+            const openEnd=
+                xml.indexOf(
+                    ">",
+                    openMatch.index
+                );
+
+            if(openEnd===-1){
+                return firstTagEnd+1;
+            }
+
+            if(
+                !/\/\s*>$/.test(
+                    xml.slice(
+                        openMatch.index,
+                        openEnd+1
+                    )
+                )
+            ){
+                depth++;
+            }
+
+            cursor=openEnd+1;
+        }else{
+            depth--;
+
+            cursor=
+                closeMatch.index
+                +closeMatch[0].length;
+        }
+    }
+
+    return cursor;
+}
+
+function normalizeGroupName(name){
+    return String(name||"")
+        .trim()
+        .replace(/\s+/g," ")
+        .toLowerCase();
+}
+
+function parseTemplates(){
+    showError("");
+    cleanupOriginalXml();
+
+    const documentNode=
+        new DOMParser().parseFromString(
+            originalXml,
+            "application/xml"
+        );
+
+    if(
+        documentNode.getElementsByTagName("parsererror")[0]
+    ){
+        showError(
+            "XML 解析失败，请重新导出。"
+        );
+
+        return;
+    }
+
+    const titleNodes=
+        Array.from(
+            documentNode.getElementsByTagName("title")
+        );
+
+    const positions=
+        titleStartPositions(originalXml);
+
+    const referenceMap=
+        buildReferenceMap(documentNode);
+
+    templates=[];
+
+    assignments.clear();
+    lockedGroups.clear();
+
+    titleNodes.forEach(
+        (titleNode,index)=>{
+            const startIndex=
+                positions[index]
+                ??-1;
+
+            const endIndex=
+                startIndex>=0
+                    ?findXmlElementEnd(
+                        originalXml,
+                        startIndex,
+                        "title"
+                    )
+                    :-1;
+
+            const media=
+                resourceMediaParent(titleNode);
+
+            const parentRefClip=
+                closestParent(
+                    titleNode,
+                    "ref-clip"
+                );
+
+            const isCompound=
+                !!media
+                ||
+                (
+                    !!parentRefClip
+                    &&hasParent(
+                        parentRefClip,
+                        "project"
+                    )
+                );
+
+            const mediaId=
+                media?.getAttribute("id")
+                ||"";
+
+            const mediaName=
+                media?.getAttribute("name")
+                ||"";
+
+            const usages=
+                mediaId
+                &&referenceMap.has(mediaId)
+                    ?referenceMap.get(mediaId)
+                    :[];
+
+            const refClipName=
+                usages[0]?.name
+                ||parentRefClip?.getAttribute("name")
+                ||"";
+
+            const locationName=
+                media
+                    ?(
+                        mediaName
+                        ||refClipName
+                        ||mediaId
+                        ||"未命名复合片段"
+                    )
+                    :(
+                        refClipName
+                        ||"主项目时间线"
+                    );
+
+            const rawName=
+                titleNode.getAttribute("name")
+                ||"";
+
+            const displayName=
+                rawName
+                ||`未命名模板 ${index+1}`;
+
+            const groupKey=
+                rawName.trim()
+                    ?`name:${normalizeGroupName(rawName)}`
+                    :`unique:${index}`;
+
+            templates.push({
+                index,
+                name:displayName,
+                groupKey,
+
+                offset:
+                    titleNode.getAttribute("offset")
+                    ||"0s",
+
+                duration:
+                    titleNode.getAttribute("duration")
+                    ||"",
+
+                startIndex,
+                endIndex,
+
+                isCompound,
+                mediaId,
+                mediaName,
+                locationName,
+
+                note:
+                    media
+                        ?`资源序列：${locationName}`
+                        :parentRefClip
+                            ?`位于 ref-clip：${locationName}`
+                            :"位于主项目时间线"
+            });
+        }
+    );
+
+    buildGroups();
+
+    if(!templates.length){
+        showError(
+            "没有识别到任何 <title> 模板。"
+        );
+
+        return;
+    }
+
+    if(currentMode==="manual"){
+        document.getElementById("manualPanel")
+            .classList.remove("hidden");
+
+        document.getElementById("randomPanel")
+            .classList.add("hidden");
+
+        renderManual();
+    }else{
+        document.getElementById("randomPanel")
+            .classList.remove("hidden");
+
+        document.getElementById("manualPanel")
+            .classList.add("hidden");
+
+        renderRandom();
+    }
+
+    updateStatus();
+}
+
+function buildGroups(){
+    const groupMap=new Map();
+
+    templates.forEach(template=>{
+        if(!groupMap.has(template.groupKey)){
+            groupMap.set(
+                template.groupKey,
+                []
+            );
+        }
+
+        groupMap
+            .get(template.groupKey)
+            .push(template);
+    });
+
+    groups=
+        Array.from(groupMap.values())
+            .map((members,id)=>{
+                const first=members[0];
+
+                const compoundCount=
+                    members.filter(
+                        item=>item.isCompound
+                    ).length;
+
+                const outsideCount=
+                    members.length-compoundCount;
+
+                const displayLocation=
+                    compoundCount&&outsideCount
+                        ?`复合片段内 ${compoundCount} / 外 ${outsideCount}`
+                        :compoundCount
+                            ?`复合片段内 ${compoundCount}`
+                            :`复合片段外 ${outsideCount}`;
+
+                return {
+                    id,
+                    key:first.groupKey,
+                    name:first.name,
+                    members,
+                    count:members.length,
+                    compoundCount,
+                    outsideCount,
+                    displayLocation,
+                    note:first.note,
+                    offset:first.offset
+                };
+            });
+}
+
+function groupById(id){
+    return groups.find(
+        group=>group.id===Number(id)
+    );
+}
+
+function groupVisualClass(group){
+    if(
+        group.compoundCount
+        &&group.outsideCount
+    ){
+        return "mixed";
+    }
+
+    return group.compoundCount
+        ?"compound"
+        :"outside";
+}
+
+function assignmentBadge(data){
+    if(!data){
+        return `
+            <span class="badge none">
+                未添加
+            </span>
+        `;
+    }
+
+    return data.autoAssigned
+        ?`
+            <span class="badge auto">
+                🎲 自动
+            </span>
+        `
+        :`
+            <span class="badge manual">
+                🖐 手动
+            </span>
+        `;
+}
+
+/* =========================================================
+   手动模式
+========================================================= */
+
+function setManualFilter(filter,button){
+    manualFilter=filter;
+
+    document.querySelectorAll("[data-manual-filter]")
+        .forEach(item=>
+            item.classList.remove("active")
+        );
+
+    button.classList.add("active");
+
+    renderManual();
+}
+
+function renderManual(){
+    if(!groups.length){
+        return;
+    }
+
+    const assigned=
+        groups.filter(
+            group=>assignments.has(group.key)
+        ).length;
+
+    document.getElementById("manualSummary").innerHTML=`
+        <div class="stat">
+            <span>模板位置</span>
+            <strong>${templates.length}</strong>
+        </div>
+
+        <div class="stat">
+            <span>模板组</span>
+            <strong>${groups.length}</strong>
+        </div>
+
+        <div class="stat">
+            <span>已添加组</span>
+            <strong>${assigned}</strong>
+        </div>
+
+        <div class="stat">
+            <span>复合片段内</span>
+            <strong>
+                ${templates.filter(item=>item.isCompound).length}
+            </strong>
+        </div>
+    `;
+
+    const query=
+        (
+            document.getElementById("manualSearch")?.value
+            ||""
+        )
+        .trim()
+        .toLowerCase();
+
+    const filtered=
+        groups.filter(group=>{
+            if(
+                manualFilter==="compound"
+                &&!group.compoundCount
+            ){
+                return false;
+            }
+
+            if(
+                manualFilter==="outside"
+                &&!group.outsideCount
+            ){
+                return false;
+            }
+
+            return !query
+                ||
+                [
+                    group.name,
+                    group.note,
+                    group.offset
+                ]
+                .join(" ")
+                .toLowerCase()
+                .includes(query);
+        });
+
+    const container=
+        document.getElementById("manualList");
+
+    if(!filtered.length){
+        container.innerHTML=`
+            <div class="empty">
+                没有符合条件的模板组
+            </div>
+        `;
+
+        updateStatus();
+        return;
+    }
+
+    container.innerHTML=
+        filtered.map(group=>{
+            const data=
+                assignments.get(group.key);
+
+            const visual=
+                groupVisualClass(group);
+
+            return `
+                <article class="template-card ${visual}">
+
+                    <h4>
+
+                        <span>
+                            📌 ${htmlEscape(group.name)}
+                        </span>
+
+                        <span class="badge ${visual}">
+                            ${htmlEscape(group.displayLocation)}
+                        </span>
+
+                        ${
+                            group.count>1
+                                ?`
+                                    <span class="badge group">
+                                        同模板 ×${group.count}
+                                    </span>
+                                `
+                                :""
+                        }
+
+                        ${assignmentBadge(data)}
+
+                    </h4>
+
+                    <div class="meta">
+
+                        ${htmlEscape(group.note)}
+
+                        <br>
+
+                        offset：
+                        <code>
+                            ${htmlEscape(group.offset)}
+                        </code>
+
+                        ${
+                            data
+                                ?`
+                                    <br>
+                                    当前音效：
+                                    <span class="ok">
+                                        ${htmlEscape(data.file)}
+                                    </span>
+                                    ｜${Number(data.duration).toFixed(4)}s
+                                `
+                                :""
+                        }
+
+                    </div>
+
+                    <div class="drop-audio"
+                         onclick="document.getElementById('manualAudio_${group.id}').click()"
+                         ondragover="event.preventDefault();this.classList.add('active')"
+                         ondragleave="this.classList.remove('active')"
+                         ondrop="dropManualAudio(event,${group.id})">
+
+                        ${
+                            data
+                                ?"重新拖入音效，替换当前音效"
+                                :"拖入音效文件，或点击选择"
+                        }
+
+                    </div>
+
+                    <input id="manualAudio_${group.id}"
+                           class="hidden"
+                           type="file"
+                           accept="audio/*"
+                           onchange="chooseManualAudio(event,${group.id})">
+
+                    <div class="file-info">
+
+                        ${
+                            data
+                                ?`
+                                    FCP 路径：
+                                    <code>
+                                        ${htmlEscape(getSoundRoot()+(data.path||data.file))}
+                                    </code>
+
+                                    <button class="btn secondary small"
+                                            onclick="previewGroup(${group.id})">
+                                        ▶ 试听
+                                    </button>
+
+                                    <button class="btn danger small"
+                                            onclick="clearGroup(${group.id})">
+                                        清除
+                                    </button>
+                                `
+                                :"未选择音效"
+                        }
+
+                    </div>
+
+                </article>
+            `;
+        }).join("");
+
+    updateStatus();
+}
+
+function dropManualAudio(event,groupId){
+    event.preventDefault();
+
+    event.currentTarget
+        .classList.remove("active");
+
+    readManualAudio(
+        event.dataTransfer.files[0],
+        groupId
+    );
+}
+
+function chooseManualAudio(event,groupId){
+    readManualAudio(
+        event.target.files[0],
+        groupId
+    );
+
+    event.target.value="";
+}
+
+async function readManualAudio(file,groupId){
+    if(!file||!isAudioFile(file)){
+        alert("请选择音频文件。");
+        return;
+    }
+
+    try{
+        const metadata=
+            await getAudioMetadata(file);
+
+        const group=
+            groupById(groupId);
+
+        const data=
+            audioDataFromFile(
+                file,
+                metadata,
+                {
+                    path:file.name,
+                    autoAssigned:false
+                }
+            );
+
+        runtimeAudioFileMap.set(
+            data.path,
+            file
+        );
+
+        assignments.set(
+            group.key,
+            data
+        );
+
+        lockedGroups.add(
+            group.key
+        );
+
+        renderManual();
+    }catch(error){
+        console.error(error);
+        alert("无法读取音频信息。");
+    }
+}
+
+/* =========================================================
+   随机模式
+========================================================= */
+
+function setRandomFilter(filter,button){
+    randomFilter=filter;
+
+    document.querySelectorAll("[data-random-filter]")
+        .forEach(item=>
+            item.classList.remove("active")
+        );
+
+    button.classList.add("active");
+
+    renderRandom();
+}
+
+function renderRandom(){
+    if(!groups.length){
+        updateStatus();
+        return;
+    }
+
+    const assigned=
+        groups.filter(
+            group=>assignments.has(group.key)
+        ).length;
+
+    const locked=
+        groups.filter(
+            group=>lockedGroups.has(group.key)
+        ).length;
+
+    document.getElementById("randomSummary").innerHTML=`
+        <div class="stat">
+            <span>模板位置</span>
+            <strong>${templates.length}</strong>
+        </div>
+
+        <div class="stat">
+            <span>模板组</span>
+            <strong>${groups.length}</strong>
+        </div>
+
+        <div class="stat">
+            <span>已分配 / 锁定</span>
+            <strong>${assigned} / ${locked}</strong>
+        </div>
+
+        <div class="stat">
+            <span>短音效池</span>
+            <strong>${soundPool.length}</strong>
+        </div>
+    `;
+
+    const query=
+        (
+            document.getElementById("randomSearch")?.value
+            ||""
+        )
+        .trim()
+        .toLowerCase();
+
+    const filtered=
+        groups.filter(group=>{
+            const hasAssignment=
+                assignments.has(group.key);
+
+            const isLocked=
+                lockedGroups.has(group.key);
+
+            if(
+                randomFilter==="assigned"
+                &&!hasAssignment
+            ){
+                return false;
+            }
+
+            if(
+                randomFilter==="unassigned"
+                &&hasAssignment
+            ){
+                return false;
+            }
+
+            if(
+                randomFilter==="locked"
+                &&!isLocked
+            ){
+                return false;
+            }
+
+            const data=
+                assignments.get(group.key);
+
+            return !query
+                ||
+                [
+                    group.name,
+                    group.note,
+                    group.offset,
+                    data?.file||"",
+                    data?.path||""
+                ]
+                .join(" ")
+                .toLowerCase()
+                .includes(query);
+        });
+
+    const container=
+        document.getElementById("randomResults");
+
+    if(!filtered.length){
+        container.innerHTML=`
+            <div class="empty">
+                没有符合条件的模板组
+            </div>
+        `;
+
+        updateStatus();
+        return;
+    }
+
+    container.innerHTML=`
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>模板组</th>
+                        <th>数量</th>
+                        <th>位置</th>
+                        <th>当前音效</th>
+                        <th>操作</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    ${filtered.map(group=>{
+                        const data=
+                            assignments.get(group.key);
+
+                        const visual=
+                            groupVisualClass(group);
+
+                        const isLocked=
+                            lockedGroups.has(group.key);
+
+                        return `
+                            <tr class="${isLocked?"lock-row":""}">
+
+                                <td>
+
+                                    <strong>
+                                        ${htmlEscape(group.name)}
+                                    </strong>
+
+                                    <br>
+
+                                    <span class="muted">
+                                        ${htmlEscape(group.offset)}
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    ${group.count}
+                                </td>
+
+                                <td>
+
+                                    <span class="badge ${visual}">
+                                        ${htmlEscape(group.displayLocation)}
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    ${assignmentBadge(data)}
+
+                                    ${
+                                        isLocked
+                                            ?`
+                                                <span class="badge locked">
+                                                    🔒 已锁定
+                                                </span>
+                                            `
+                                            :""
+                                    }
+
+                                    ${
+                                        data
+                                            ?`
+                                                <br>
+
+                                                <span class="sound-name">
+                                                    ${htmlEscape(data.file)}
+                                                </span>
+
+                                                <br>
+
+                                                <span class="muted">
+                                                    ${Number(data.duration).toFixed(4)}s
+                                                </span>
+                                            `
+                                            :`
+                                                <br>
+                                                <span class="muted">
+                                                    待分配
+                                                </span>
+                                            `
+                                    }
+
+                                </td>
+
+                                <td>
+
+                                    <div class="row-actions">
+
+                                        <button class="btn secondary small"
+                                                ${data?"":"disabled"}
+                                                onclick="previewGroup(${group.id})">
+                                            ▶ 试听
+                                        </button>
+
+                                        <button class="btn purple small"
+                                                ${soundPool.length?"":"disabled"}
+                                                onclick="replaceOne(${group.id})">
+                                            🎲 换一个
+                                        </button>
+
+                                        <button class="btn ghost small"
+                                                ${soundPool.length?"":"disabled"}
+                                                onclick="openPoolModal(${group.id})">
+                                            手动选择
+                                        </button>
+
+                                        <button class="btn ${isLocked?"warn":"ghost"} small"
+                                                onclick="toggleLock(${group.id})">
+
+                                            ${
+                                                isLocked
+                                                    ?"解锁"
+                                                    :"🔒 锁定"
+                                            }
+
+                                        </button>
+
+                                        <button class="btn danger small"
+                                                ${data?"":"disabled"}
+                                                onclick="clearGroup(${group.id})">
+                                            清除
+                                        </button>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        `;
+                    }).join("")}
+
+                </tbody>
+
+            </table>
+
+        </div>
+    `;
+
+    updateStatus();
+}
+
+function clearGroup(groupId){
+    const group=groupById(groupId);
+
+    if(!group){
+        return;
+    }
+
+    assignments.delete(group.key);
+    lockedGroups.delete(group.key);
+
+    refreshCurrentMode();
+}
+
+function toggleLock(groupId){
+    const group=groupById(groupId);
+
+    if(!group){
+        return;
+    }
+
+    if(lockedGroups.has(group.key)){
+        lockedGroups.delete(group.key);
+    }else{
+        if(!assignments.has(group.key)){
+            alert("请先为该模板组分配音效。");
+            return;
+        }
+
+        lockedGroups.add(group.key);
+    }
+
+    renderRandom();
+}
+
+function pickRandomSound(
+    excludedPath="",
+    usedPaths=new Set()
+){
+    let candidates=
+        soundPool.filter(
+            item=>
+                (item.path||item.file)
+                !==excludedPath
+        );
+
+    if(!candidates.length){
+        return null;
+    }
+
+    if(
+        document.getElementById("avoidRepeat")
+            .checked
+    ){
+        const fresh=
+            candidates.filter(
+                item=>
+                    !usedPaths.has(
+                        item.path||item.file
+                    )
+            );
+
+        if(fresh.length){
+            candidates=fresh;
+        }
+    }
+
+    return candidates[
+        Math.floor(
+            Math.random()*candidates.length
+        )
+    ];
+}
+
+function randomizeUnlocked(){
+    if(!groups.length){
+        alert("请先导入 FCPXML。");
+        return;
+    }
+
+    if(!soundPool.length){
+        alert("短音效池为空。");
+        return;
+    }
+
+    const usedPaths=new Set();
+
+    groups.forEach(group=>{
+        const data=
+            assignments.get(group.key);
+
+        if(
+            lockedGroups.has(group.key)
+            &&data
+        ){
+            usedPaths.add(
+                data.path||data.file
+            );
+        }
+    });
+
+    let changed=0;
+
+    groups.forEach(group=>{
+        if(lockedGroups.has(group.key)){
+            return;
+        }
+
+        const current=
+            assignments.get(group.key);
+
+        const picked=
+            pickRandomSound(
+                current?.path
+                ||current?.file
+                ||"",
+                usedPaths
+            );
+
+        if(picked){
+            assignments.set(
+                group.key,
+                {
+                    ...picked,
+                    autoAssigned:true,
+                    fromPool:true
+                }
+            );
+
+            usedPaths.add(
+                picked.path||picked.file
+            );
+
+            changed++;
+        }
+    });
+
+    renderRandom();
+
+    alert(
+        `已随机更新 ${changed} 个未锁定模板组。`
+    );
+}
+
+function randomizeAll(){
+    if(!groups.length){
+        alert("请先导入 FCPXML。");
+        return;
+    }
+
+    if(!soundPool.length){
+        alert("短音效池为空。");
+        return;
+    }
+
+    if(
+        !confirm(
+            "将重新随机全部模板组，包括已锁定项。锁定状态会保留。继续吗？"
+        )
+    ){
+        return;
+    }
+
+    const usedPaths=new Set();
+
+    groups.forEach(group=>{
+        const current=
+            assignments.get(group.key);
+
+        const picked=
+            pickRandomSound(
+                current?.path
+                ||current?.file
+                ||"",
+                usedPaths
+            );
+
+        if(picked){
+            assignments.set(
+                group.key,
+                {
+                    ...picked,
+                    autoAssigned:true,
+                    fromPool:true
+                }
+            );
+
+            usedPaths.add(
+                picked.path||picked.file
+            );
+        }
+    });
+
+    renderRandom();
+}
+
+function clearUnlockedAssignments(){
+    let count=0;
+
+    groups.forEach(group=>{
+        if(
+            !lockedGroups.has(group.key)
+            &&assignments.delete(group.key)
+        ){
+            count++;
+        }
+    });
+
+    renderRandom();
+
+    alert(
+        `已清除 ${count} 个未锁定结果。`
+    );
+}
+
+function replaceOne(groupId){
+    const group=groupById(groupId);
+
+    if(!group||!soundPool.length){
+        return;
+    }
+
+    const current=
+        assignments.get(group.key);
+
+    const usedPaths=
+        new Set(
+            Array.from(assignments.values())
+                .map(
+                    item=>item.path||item.file
+                )
+        );
+
+    if(current){
+        usedPaths.delete(
+            current.path||current.file
+        );
+    }
+
+    const picked=
+        pickRandomSound(
+            current?.path
+            ||current?.file
+            ||"",
+            usedPaths
+        );
+
+    if(!picked){
+        alert(
+            "当前音效池里没有其他可替换音效。"
+        );
+
+        return;
+    }
+
+    assignments.set(
+        group.key,
+        {
+            ...picked,
+            autoAssigned:true,
+            fromPool:true
+        }
+    );
+
+    renderRandom();
+}
+
+/* =========================================================
+   音效池选择弹窗
+========================================================= */
+
+function openPoolModal(groupId){
+    poolTargetGroupId=Number(groupId);
+
+    const group=
+        groupById(groupId);
+
+    document.getElementById("poolModalTitle").textContent=
+        `为“${group?.name||"模板组"}”选择音效`;
+
+    document.getElementById("poolSearch").value="";
+
+    renderPoolChoices();
+
+    document.getElementById("poolModal")
+        .classList.remove("hidden");
+}
+
+function closePoolModal(){
+    document.getElementById("poolModal")
+        .classList.add("hidden");
+
+    poolTargetGroupId=null;
+
+    stopPreview();
+}
+
+function closePoolModalByLayer(event){
+    if(event.target===document.getElementById("poolModal")){
+        closePoolModal();
+    }
+}
+
+function renderPoolChoices(){
+    const query=
+        (
+            document.getElementById("poolSearch").value
+            ||""
+        )
+        .trim()
+        .toLowerCase();
+
+    const filtered=
+        soundPool
+            .map(
+                (item,index)=>({
+                    ...item,
+                    index
+                })
+            )
+            .filter(item=>
+                !query
+                ||
+                [
+                    item.file,
+                    item.path
+                ]
+                .join(" ")
+                .toLowerCase()
+                .includes(query)
+            );
+
+    document.getElementById("poolChoiceList").innerHTML=
+        filtered.length
+            ?filtered
+                .slice(0,300)
+                .map(item=>`
+                    <div class="pool-choice">
+
+                        <div>
+                            🔊
+                        </div>
+
+                        <div>
+
+                            <div class="choice-name">
+                                ${htmlEscape(item.file)}
+                            </div>
+
+                            <div class="choice-path">
+                                ${htmlEscape(item.path||item.file)}
+                                ｜${Number(item.duration).toFixed(4)}s
+                            </div>
+
+                        </div>
+
+                        <div class="pool-choice-actions">
+
+                            <button class="btn secondary small"
+                                    onclick="previewPoolItem(${item.index})">
+                                ▶ 试听
+                            </button>
+
+                            <button class="btn primary small"
+                                    onclick="usePoolSound(${item.index})">
+                                使用
+                            </button>
+
+                        </div>
+
+                    </div>
+                `)
+                .join("")
+            :`
+                <div class="empty">
+                    没有匹配的短音效
+                </div>
+            `;
+}
+
+function usePoolSound(index){
+    const group=
+        groupById(poolTargetGroupId);
+
+    const sound=
+        soundPool[index];
+
+    if(!group||!sound){
+        return;
+    }
+
+    assignments.set(
+        group.key,
+        {
+            ...sound,
+            autoAssigned:false,
+            fromPool:true
+        }
+    );
+
+    lockedGroups.add(
+        group.key
+    );
+
+    closePoolModal();
+    renderRandom();
+}
+
+/* =========================================================
+   试听
+========================================================= */
+
+async function getFileFromDirectoryHandle(
+    directoryHandle,
+    relativePath
+){
+    const parts=
+        String(relativePath||"")
+            .split("/")
+            .filter(Boolean);
+
+    if(!parts.length){
+        return null;
+    }
+
+    let currentDirectory=directoryHandle;
+
+    for(
+        let index=0;
+        index<parts.length-1;
+        index++
+    ){
+        currentDirectory=
+            await currentDirectory.getDirectoryHandle(
+                parts[index]
+            );
+    }
+
+    const fileHandle=
+        await currentDirectory.getFileHandle(
+            parts[parts.length-1]
+        );
+
+    return await fileHandle.getFile();
+}
+
+async function resolveAudioFile(data){
+    const key=
+        data?.path
+        ||data?.file;
+
+    if(!key){
+        return null;
+    }
+
+    if(runtimeAudioFileMap.has(key)){
+        return runtimeAudioFileMap.get(key);
+    }
+
+    if(rememberedDirectoryHandle){
+        let permission=
+            await queryDirectoryPermission(
+                rememberedDirectoryHandle
+            );
+
+        if(
+            permission!=="granted"
+            &&rememberedDirectoryHandle.requestPermission
+        ){
+            permission=
+                await rememberedDirectoryHandle.requestPermission({
+                    mode:"read"
+                });
+        }
+
+        folderPermissionState=permission;
+        renderFolderMemoryCard();
+
+        if(permission==="granted"){
+            try{
+                const file=
+                    await getFileFromDirectoryHandle(
+                        rememberedDirectoryHandle,
+                        key
+                    );
+
+                runtimeAudioFileMap.set(
+                    key,
+                    file
+                );
+
+                return file;
+            }catch(error){
+                console.warn(error);
+            }
+        }
+    }
+
+    return null;
+}
+
+async function playSoundData(data){
+    if(!data){
+        return;
+    }
+
+    stopPreview();
+
+    const file=
+        await resolveAudioFile(data);
+
+    if(!file){
+        alert(
+            "当前只有音效元数据缓存，无法试听。请恢复文件夹权限、重新扫描，或在兼容模式下重新选择文件夹。"
+        );
+
+        return;
+    }
+
+    currentPreviewUrl=
+        URL.createObjectURL(file);
+
+    currentPreviewAudio=
+        new Audio(currentPreviewUrl);
+
+    currentPreviewAudio.onended=
+        stopPreview;
+
+    currentPreviewAudio.onerror=()=>{
+        stopPreview();
+        alert("无法播放这个音效。");
+    };
+
+    try{
+        await currentPreviewAudio.play();
+    }catch(error){
+        stopPreview();
+        alert("浏览器阻止了播放，请再次点击试听。");
+    }
+}
+
+function previewGroup(groupId){
+    const group=
+        groupById(groupId);
+
+    if(group){
+        playSoundData(
+            assignments.get(group.key)
+        );
+    }
+}
+
+function previewPoolItem(index){
+    playSoundData(
+        soundPool[index]
+    );
+}
+
+function stopPreview(){
+    if(currentPreviewAudio){
+        currentPreviewAudio.pause();
+        currentPreviewAudio.src="";
+        currentPreviewAudio=null;
+    }
+
+    if(currentPreviewUrl){
+        URL.revokeObjectURL(
+            currentPreviewUrl
+        );
+
+        currentPreviewUrl="";
+    }
+}
+
+/* =========================================================
+   音频元数据
+========================================================= */
+
+function isAudioFile(file){
+    if(!file){
+        return false;
+    }
+
+    if(
+        file.type
+        &&file.type.startsWith("audio/")
+    ){
+        return true;
+    }
+
+    return /\.(wav|aif|aiff|mp3|m4a|aac|flac|caf|ogg)$/i
+        .test(file.name||"");
+}
+
+function readAscii(view,offset,length){
+    let text="";
+
+    for(
+        let index=0;
+        index<length;
+        index++
+    ){
+        text+=String.fromCharCode(
+            view.getUint8(offset+index)
+        );
+    }
+
+    return text;
+}
+
+function parseWavMetadata(buffer){
+    const view=new DataView(buffer);
+
+    if(
+        view.byteLength<44
+        ||readAscii(view,0,4)!=="RIFF"
+        ||readAscii(view,8,4)!=="WAVE"
+    ){
+        return null;
+    }
+
+    let position=12;
+    let sampleRate=0;
+    let channels=1;
+    let blockAlign=0;
+    let dataBytes=0;
+
+    while(position+8<=view.byteLength){
+        const chunkId=
+            readAscii(
+                view,
+                position,
+                4
+            );
+
+        const size=
+            view.getUint32(
+                position+4,
+                true
+            );
+
+        const dataStart=
+            position+8;
+
+        if(
+            chunkId==="fmt "
+            &&size>=16
+        ){
+            channels=
+                view.getUint16(
+                    dataStart+2,
+                    true
+                )
+                ||1;
+
+            sampleRate=
+                view.getUint32(
+                    dataStart+4,
+                    true
+                )
+                ||DEFAULT_AUDIO_RATE;
+
+            blockAlign=
+                view.getUint16(
+                    dataStart+12,
+                    true
+                )
+                ||0;
+        }else if(chunkId==="data"){
+            dataBytes=size;
+        }
+
+        position=
+            dataStart
+            +size
+            +(size%2);
+    }
+
+    if(!sampleRate){
+        return null;
+    }
+
+    const frames=
+        dataBytes
+        &&blockAlign
+            ?Math.floor(dataBytes/blockAlign)
+            :0;
+
+    return {
+        sample:sampleRate,
+        channels,
+        frames,
+
+        duration:
+            frames
+                ?frames/sampleRate
+                :0,
+
+        source:
+            "WAV 真实采样数"
+    };
+}
+
+function readAiffExtended80(view,offset){
+    const exponent=
+        view.getUint16(offset,false)
+        &0x7fff;
+
+    const high=
+        view.getUint32(
+            offset+2,
+            false
+        );
+
+    const low=
+        view.getUint32(
+            offset+6,
+            false
+        );
+
+    if(
+        exponent===0
+        &&high===0
+        &&low===0
+    ){
+        return 0;
+    }
+
+    return Math.round(
+        high
+        *Math.pow(
+            2,
+            exponent-16383-31
+        )
+        +
+        low
+        *Math.pow(
+            2,
+            exponent-16383-63
+        )
+    );
+}
+
+function parseAiffMetadata(buffer){
+    const view=new DataView(buffer);
+
+    if(
+        view.byteLength<54
+        ||readAscii(view,0,4)!=="FORM"
+    ){
+        return null;
+    }
+
+    const type=
+        readAscii(
+            view,
+            8,
+            4
+        );
+
+    if(
+        type!=="AIFF"
+        &&type!=="AIFC"
+    ){
+        return null;
+    }
+
+    let position=12;
+
+    while(position+8<=view.byteLength){
+        const chunkId=
+            readAscii(
+                view,
+                position,
+                4
+            );
+
+        const size=
+            view.getUint32(
+                position+4,
+                false
+            );
+
+        const dataStart=
+            position+8;
+
+        if(
+            chunkId==="COMM"
+            &&size>=18
+        ){
+            const channels=
+                view.getUint16(
+                    dataStart,
+                    false
+                )
+                ||1;
+
+            const frames=
+                view.getUint32(
+                    dataStart+2,
+                    false
+                )
+                ||0;
+
+            const sampleRate=
+                readAiffExtended80(
+                    view,
+                    dataStart+8
+                )
+                ||DEFAULT_AUDIO_RATE;
+
+            return {
+                sample:sampleRate,
+                channels,
+                frames,
+
+                duration:
+                    frames
+                        ?frames/sampleRate
+                        :0,
+
+                source:
+                    "AIFF 真实采样数"
+            };
+        }
+
+        position=
+            dataStart
+            +size
+            +(size%2);
+    }
+
+    return null;
+}
+
+async function decodeAudioMetadata(buffer){
+    const AudioContextClass=
+        window.AudioContext
+        ||window.webkitAudioContext;
+
+    if(!AudioContextClass){
+        return null;
+    }
+
+    const context=
+        new AudioContextClass();
+
+    try{
+        const audioBuffer=
+            await context.decodeAudioData(
+                buffer.slice(0)
+            );
+
+        const sampleRate=
+            audioBuffer.sampleRate
+            ||DEFAULT_AUDIO_RATE;
+
+        const frames=
+            Math.max(
+                1,
+                Math.floor(
+                    audioBuffer.duration
+                    *sampleRate
+                )
+            );
+
+        return {
+            sample:sampleRate,
+
+            channels:
+                audioBuffer.numberOfChannels
+                ||1,
+
+            frames,
+
+            duration:
+                frames/sampleRate,
+
+            source:
+                "浏览器音频解码"
+        };
+    }finally{
+        if(context.close){
+            await context.close();
+        }
+    }
+}
+
+async function getAudioMetadata(file){
+    const buffer=
+        await file.arrayBuffer();
+
+    const exact=
+        parseWavMetadata(buffer)
+        ||parseAiffMetadata(buffer);
+
+    if(exact&&exact.frames){
+        return exact;
+    }
+
+    const decoded=
+        await decodeAudioMetadata(buffer);
+
+    if(decoded){
+        return decoded;
+    }
+
+    return new Promise((resolve,reject)=>{
+        const audio=new Audio();
+
+        const url=
+            URL.createObjectURL(file);
+
+        audio.src=url;
+
+        audio.onloadedmetadata=()=>{
+            const sampleRate=
+                DEFAULT_AUDIO_RATE;
+
+            const frames=
+                Math.max(
+                    1,
+                    Math.floor(
+                        audio.duration
+                        *sampleRate
+                    )
+                );
+
+            URL.revokeObjectURL(url);
+
+            resolve({
+                sample:sampleRate,
+                channels:1,
+                frames,
+
+                duration:
+                    frames/sampleRate,
+
+                source:
+                    "HTML Audio 估算"
+            });
+        };
+
+        audio.onerror=()=>{
+            URL.revokeObjectURL(url);
+
+            reject(
+                new Error("无法读取音频")
+            );
+        };
+    });
+}
+
+function audioDataFromFile(
+    file,
+    metadata,
+    extra={}
+){
+    return {
+        file:file.name,
+
+        path:
+            extra.path
+            ||file.name,
+
+        duration:
+            metadata.duration,
+
+        sample:
+            metadata.sample
+            ||DEFAULT_AUDIO_RATE,
+
+        frames:
+            metadata.frames
+            ||Math.floor(
+                (metadata.duration||0)
+                *(metadata.sample||DEFAULT_AUDIO_RATE)
+            ),
+
+        channels:
+            metadata.channels
+            ||1,
+
+        source:
+            metadata.source
+            ||"读取完成",
+
+        size:
+            file.size
+            ||0,
+
+        autoAssigned:
+            !!extra.autoAssigned,
+
+        fromPool:
+            !!extra.fromPool
+    };
+}
+
+/* =========================================================
+   时间与去重
+========================================================= */
+
+function fcpxTimeToSeconds(value){
+    if(!value){
+        return 0;
+    }
+
+    let time=
+        String(value).trim();
+
+    if(time.endsWith("s")){
+        time=time.slice(0,-1);
+    }
+
+    if(time.includes("/")){
+        const [
+            numerator,
+            denominator
+        ]=
+            time.split("/")
+                .map(Number);
+
+        return denominator
+            ?numerator/denominator
+            :0;
+    }
+
+    const number=
+        Number(time);
+
+    return Number.isFinite(number)
+        ?number
+        :0;
+}
+
+function framesToFcpxTime(
+    frames,
+    sampleRate
+){
+    return `${
+        Math.max(
+            1,
+            Math.floor(
+                Number(frames||0)
+            )
+        )
+    }/${
+        Math.max(
+            1,
+            Math.floor(
+                Number(
+                    sampleRate
+                    ||DEFAULT_AUDIO_RATE
+                )
+            )
+        )
+    }s`;
+}
+
+function audioDurationForXml(data){
+    if(
+        data?.frames
+        &&data?.sample
+    ){
+        return framesToFcpxTime(
+            data.frames,
+            data.sample
+        );
+    }
+
+    return framesToFcpxTime(
+        Math.floor(
+            (data?.duration||0)
+            *(data?.sample||DEFAULT_AUDIO_RATE)
+        ),
+        data?.sample||DEFAULT_AUDIO_RATE
+    );
+}
+
+function templateContainerKey(template){
+    if(template.mediaId){
+        return `media:${template.mediaId}`;
+    }
+
+    if(template.isCompound){
+        return `compound:${
+            template.locationName
+            ||"unknown"
+        }`;
+    }
+
+    return "main-project";
+}
+
+function buildInsertionCandidates(){
+    const result=[];
+
+    groups.forEach(group=>{
+        const data=
+            assignments.get(group.key);
+
+        if(!data){
+            return;
+        }
+
+        group.members.forEach(template=>{
+            result.push({
+                group,
+                template,
+                data,
+
+                duration:
+                    audioDurationForXml(data),
+
+                containerKey:
+                    templateContainerKey(template),
+
+                audioKey:
+                    String(
+                        data.path
+                        ||data.file
+                        ||""
+                    ).toLowerCase(),
+
+                offsetSeconds:
+                    fcpxTimeToSeconds(
+                        template.offset
+                    )
+            });
+        });
+    });
+
+    return result;
+}
+
+function deduplicateCandidates(candidates){
+    const dedupeAny=
+        document.getElementById("dedupeAnyAudio")
+            .checked;
+
+    const dedupeSame=
+        document.getElementById("dedupeSameAudio")
+            .checked;
+
+    if(!dedupeAny&&!dedupeSame){
+        return {
+            kept:candidates,
+            skipped:[]
+        };
+    }
+
+    const fps=
+        Math.max(
+            1,
+            Number(
+                document.getElementById("dedupeFps").value
+                ||25
+            )
+        );
+
+    const frames=
+        Math.max(
+            0,
+            Number(
+                document.getElementById("dedupeFrames").value
+                ||2
+            )
+        );
+
+    const tolerance=
+        frames/fps;
+
+    const kept=[];
+    const skipped=[];
+
+    candidates.forEach(candidate=>{
+        const existing=
+            kept.find(item=>
+                item.containerKey===candidate.containerKey
+                &&
+                Math.abs(
+                    item.offsetSeconds
+                    -candidate.offsetSeconds
+                )<=tolerance
+                &&
+                (
+                    dedupeAny
+                    ||item.audioKey===candidate.audioKey
+                )
+            );
+
+        if(existing){
+            skipped.push({
+                skipped:candidate,
+                kept:existing
+            });
+        }else{
+            kept.push(candidate);
+        }
+    });
+
+    return {
+        kept,
+        skipped
+    };
+}
+
+/* =========================================================
+   FCPXML 生成
+========================================================= */
+
+function existingResourceIds(xml){
+    const ids=new Set();
+    const regex=/\bid="([^"]+)"/g;
+
+    let match;
+
+    while((match=regex.exec(xml))!==null){
+        ids.add(match[1]);
+    }
+
+    return ids;
+}
+
+function nextResourceId(ids){
+    let largest=0;
+
+    ids.forEach(id=>{
+        const match=
+            id.match(/^r(\d+)$/);
+
+        if(match){
+            largest=
+                Math.max(
+                    largest,
+                    Number(match[1])
+                );
+        }
+    });
+
+    let number=
+        Math.max(
+            1000,
+            largest+1
+        );
+
+    while(ids.has(`r${number}`)){
+        number++;
+    }
+
+    const id=`r${number}`;
+
+    ids.add(id);
+
+    return id;
+}
+
+function safeDecodeURIComponent(value){
+    try{
+        return decodeURIComponent(value);
+    }catch(error){
+        return value;
+    }
+}
+
+function localPathToFileUrl(
+    root,
+    filePath
+){
+    const fullPath=
+        normalizeRoot(root)
+        +String(filePath||"");
+
+    if(/^file:\/\//i.test(fullPath)){
+        const path=
+            fullPath.replace(
+                /^file:\/\//i,
+                ""
+            );
+
+        return "file://"
+            +path
+                .split("/")
+                .map(part=>
+                    encodeURIComponent(
+                        safeDecodeURIComponent(part)
+                    )
+                )
+                .join("/");
+    }
+
+    return "file://"
+        +fullPath
+            .split("/")
+            .map((part,index)=>
+                index===0
+                &&part===""
+                    ?""
+                    :encodeURIComponent(
+                        safeDecodeURIComponent(part)
+                    )
+            )
+            .join("/");
+}
+
+function makeAudioAssetXml(
+    id,
+    data,
+    duration
+){
+    const baseName=
+        (data.file||"audio")
+            .replace(/\.[^.]+$/,"");
+
+    const source=
+        localPathToFileUrl(
+            getSoundRoot(),
+            data.path||data.file
+        );
+
+    return `
+<asset id="${xmlEscape(id)}"
+       name="${xmlEscape(QUICK_AUDIO_PREFIX+baseName)}"
+       start="0s"
+       duration="${duration}"
+       hasAudio="1"
+       audioSources="1"
+       audioChannels="${data.channels||1}"
+       audioRate="${data.sample||DEFAULT_AUDIO_RATE}">
+    <media-rep kind="original-media"
+               src="${xmlEscape(source)}"/>
+</asset>`;
+}
+
+function makeAudioClipXml(
+    assetId,
+    template,
+    data,
+    duration
+){
+    return `
+<!-- 快速音效工具: template="${xmlEscape(template.name)}" file="${xmlEscape(data.file)}" -->
+<asset-clip ref="${xmlEscape(assetId)}"
+            lane="-1"
+            offset="${xmlEscape(template.offset||"0s")}"
+            name="${xmlEscape(QUICK_AUDIO_PREFIX+data.file)}"
+            start="0s"
+            duration="${duration}"
+            audioRole="effects"/>`;
+}
+
+function updateProjectNameAndUid(xml){
+    return xml.replace(
+        /<project\b([^>]*)>/,
+        (full,attributes)=>{
+            let updated=attributes;
+
+            const uid=
+                "PROJ_"
+                +Math.random()
+                    .toString(36)
+                    .slice(2,10)
+                    .toUpperCase();
+
+            updated=
+                /\buid="[^"]*"/.test(updated)
+                    ?updated.replace(
+                        /\buid="[^"]*"/,
+                        `uid="${uid}"`
+                    )
+                    :updated+` uid="${uid}"`;
+
+            updated=
+                /\bname="[^"]*"/.test(updated)
+                    ?updated.replace(
+                        /\bname="([^"]*)"/,
+                        (match,name)=>
+                            `name="${xmlEscape(name)}_带音效"`
+                    )
+                    :updated+` name="带音效项目"`;
+
+            return `<project${updated}>`;
+        }
+    );
+}
+
+function generateXml(){
+    showError("");
+
+    if(!templates.length){
+        alert("请先导入 FCPXML。");
+        return;
+    }
+
+    if(!assignments.size){
+        alert("还没有为模板添加音效。");
+        return;
+    }
+
+    const dedupeResult=
+        deduplicateCandidates(
+            buildInsertionCandidates()
+        );
+
+    const candidates=
+        dedupeResult.kept;
+
+    if(!candidates.length){
+        alert(
+            "所有音效都被去重规则跳过。"
+        );
+
+        return;
+    }
+
+    let xml=originalXml;
+
+    const resourcesClose=
+        xml.indexOf("</resources>");
+
+    if(resourcesClose<0){
+        showError(
+            "未找到 </resources>。"
+        );
+
+        return;
+    }
+
+    const ids=
+        existingResourceIds(xml);
+
+    const reusableAssets=
+        new Map();
+
+    const candidateAssetIds=
+        new Map();
+
+    let assetXml="";
+
+    candidates.forEach(candidate=>{
+        const key=[
+            localPathToFileUrl(
+                getSoundRoot(),
+                candidate.data.path
+                ||candidate.data.file
+            ),
+
+            candidate.duration,
+            candidate.data.sample,
+            candidate.data.channels||1
+        ].join("|");
+
+        let assetId;
+
+        if(reusableAssets.has(key)){
+            assetId=
+                reusableAssets.get(key);
+        }else{
+            assetId=
+                nextResourceId(ids);
+
+            reusableAssets.set(
+                key,
+                assetId
+            );
+
+            assetXml+=
+                makeAudioAssetXml(
+                    assetId,
+                    candidate.data,
+                    candidate.duration
+                );
+        }
+
+        candidateAssetIds.set(
+            candidate,
+            assetId
+        );
+    });
+
+    xml=
+        xml.slice(0,resourcesClose)
+        +assetXml
+        +"\n"
+        +xml.slice(resourcesClose);
+
+    const positionShift=
+        assetXml.length+1;
+
+    const insertions=
+        candidates.map(candidate=>({
+            position:
+                candidate.template.endIndex
+                +
+                (
+                    candidate.template.endIndex
+                    >resourcesClose
+                        ?positionShift
+                        :0
+                ),
+
+            xml:
+                makeAudioClipXml(
+                    candidateAssetIds.get(candidate),
+                    candidate.template,
+                    candidate.data,
+                    candidate.duration
+                )
+        }));
+
+    insertions
+        .sort(
+            (a,b)=>b.position-a.position
+        )
+        .forEach(insertion=>{
+            xml=
+                xml.slice(
+                    0,
+                    insertion.position
+                )
+                +insertion.xml
+                +xml.slice(
+                    insertion.position
+                );
+        });
+
+    xml=
+        updateProjectNameAndUid(xml);
+
+    const usedGroups=
+        new Set(
+            candidates.map(
+                candidate=>
+                    candidate.group.key
+            )
+        ).size;
+
+    const modeName=
+        currentMode==="manual"
+            ?"手动"
+            :"随机";
+
+    downloadTextFile(
+        xml,
+        `快速音6.3_${modeName}_模板组${usedGroups}_跳过重叠${dedupeResult.skipped.length}.fcpxml`
+    );
+
+    if(dedupeResult.skipped.length){
+        setTimeout(()=>{
+            alert(
+                `已生成 XML，并跳过 ${dedupeResult.skipped.length} 个同时间点重叠音效。`
+            );
+        },0);
+    }
+}
+
+function downloadTextFile(
+    content,
+    filename
+){
+    const blob=
+        new Blob(
+            [content],
+            {
+                type:"text/xml;charset=utf-8"
+            }
+        );
+
+    const link=
+        document.createElement("a");
+
+    link.href=
+        URL.createObjectURL(blob);
+
+    link.download=
+        filename;
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    URL.revokeObjectURL(link.href);
+
+    link.remove();
+}
+
+/* =========================================================
+   状态
+========================================================= */
+
+function refreshCurrentMode(){
+    if(
+        currentMode==="manual"
+        &&groups.length
+    ){
+        renderManual();
+    }
+
+    if(currentMode==="random"){
+        renderRandom();
+    }
+}
+
+function getStats(){
+    return {
+        xml:
+            !!originalXml,
+
+        positions:
+            templates.length,
+
+        groupCount:
+            groups.length,
+
+        assigned:
+            groups.filter(
+                group=>assignments.has(group.key)
+            ).length,
+
+        locked:
+            groups.filter(
+                group=>lockedGroups.has(group.key)
+            ).length,
+
+        pool:
+            soundPool.length,
+
+        cache:
+            allCachedAudio.length,
+
+        path:
+            !!getCurrentSavedPath(),
+
+        folder:
+            !!savedFolderRecord
+    };
+}
+
+function updateStatus(){
+    const stats=getStats();
+
+    const modeLabel=
+        currentMode==="manual"
+            ?"手动"
+            :currentMode==="random"
+                ?"随机"
+                :"未选择";
+
+    document.getElementById("statusList").innerHTML=`
+        <div class="status-row">
+            <span>当前模式</span>
+            <strong>${modeLabel}</strong>
+        </div>
+
+        <div class="status-row">
+            <span>FCPXML</span>
+            <strong>
+                ${stats.xml?"已读取":"未读取"}
+            </strong>
+        </div>
+
+        <div class="status-row">
+            <span>模板位置 / 组</span>
+            <strong>
+                ${stats.positions} / ${stats.groupCount}
+            </strong>
+        </div>
+
+        <div class="status-row">
+            <span>已分配 / 锁定</span>
+            <strong>
+                ${stats.assigned} / ${stats.locked}
+            </strong>
+        </div>
+
+        ${
+            currentMode==="random"
+                ?`
+                    <div class="status-row">
+                        <span>缓存 / 音效池</span>
+                        <strong>
+                            ${stats.cache} / ${stats.pool}
+                        </strong>
+                    </div>
+                `
+                :""
+        }
+
+        <div class="status-row">
+            <span>FCP 路径</span>
+            <strong>
+                ${stats.path?"已设置":"未设置"}
+            </strong>
+        </div>
+    `;
+
+    const dedupeMode=
+        document.getElementById("dedupeAnyAudio")?.checked
+            ?"同位置只保留一个"
+            :document.getElementById("dedupeSameAudio")?.checked
+                ?"相同音效去重"
+                :"关闭";
+
+    document.getElementById("preflight").innerHTML=`
+        <div>
+            ${stats.xml?"✅":"⚠️"}
+            FCPXML：
+            ${stats.xml?"已读取":"未读取"}
+        </div>
+
+        <div>
+            ${stats.groupCount?"✅":"⚠️"}
+            模板：
+            ${
+                stats.groupCount
+                    ?`${stats.groupCount} 个模板组`
+                    :"尚未识别"
+            }
+        </div>
+
+        <div>
+            ${stats.path?"✅":"⚠️"}
+            FCP 路径：
+            ${htmlEscape(getSoundRoot()||"未设置")}
+        </div>
+
+        ${
+            currentMode==="random"
+                ?`
+                    <div>
+                        ${stats.pool?"✅":"⚠️"}
+                        短音效池：
+                        ${
+                            stats.pool
+                                ?`${stats.pool} 个可用`
+                                :"尚未恢复或扫描"
+                        }
+                    </div>
+                `
+                :""
+        }
+
+        <div>
+            ${stats.assigned?"✅":"⚠️"}
+            音效分配：
+            ${
+                stats.assigned
+                    ?`${stats.assigned} 个模板组已分配`
+                    :"尚未分配"
+            }
+        </div>
+
+        <div>
+            ℹ️ 去重模式：
+            ${dedupeMode}
+        </div>
+    `;
+
+    document.getElementById("footerStats").innerHTML=`
+        <span>
+            模板组
+            <b>${stats.groupCount}</b>
+        </span>
+
+        <span>
+            已分配
+            <b>${stats.assigned}</b>
+        </span>
+
+        ${
+            currentMode==="random"
+                ?`
+                    <span>
+                        已锁定
+                        <b>${stats.locked}</b>
+                    </span>
+
+                    <span>
+                        音效池
+                        <b>${stats.pool}</b>
+                    </span>
+                `
+                :""
+        }
+
+        <span>
+            路径
+            <b>
+                ${htmlEscape(getCurrentSavedPath()?.name||"未设置")}
+            </b>
+        </span>
+    `;
+}
+
+function footerSecondaryAction(){
+    if(currentMode==="manual"){
+        if(
+            confirm(
+                "确认清除全部手动音效吗？"
+            )
+        ){
+            assignments.clear();
+            lockedGroups.clear();
+            renderManual();
+        }
+    }else{
+        randomizeUnlocked();
+    }
+}
+
+/* =========================================================
+   初始化
+========================================================= */
+
+async function initialize(){
+    loadSavedPaths();
+    loadSettings();
+
+    try{
+        savedFolderRecord=
+            await idbGet(
+                HANDLE_STORE,
+                ACTIVE_FOLDER_KEY
+            );
+
+        if(savedFolderRecord?.folderId){
+            rememberedDirectoryHandle=
+                savedFolderRecord.handle
+                ||null;
+
+            folderPermissionState=
+                rememberedDirectoryHandle
+                    ?await queryDirectoryPermission(
+                        rememberedDirectoryHandle
+                    )
+                    :"cache-only";
+
+            allCachedAudio=
+                await idbGetFolderCache(
+                    savedFolderRecord.folderId
+                );
+
+            rebuildSoundPoolFromCache();
+        }
+    }catch(error){
+        console.warn(error);
+    }
+
+    renderFolderMemoryCard();
+    updateStatus();
+}
+
+initialize();
+</script>
+
+</body>
+</html>

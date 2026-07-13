@@ -1,4 +1,4 @@
-const seedUrl = "./content/tools.seed.json?v=20260626b";
+const seedUrl = "./content/tools.seed.json?v=20260710d";
 const supabaseConfig = globalThis.AI_TOOLBOX_SUPABASE || {};
 const supabaseApi = createSupabaseApi(supabaseConfig);
 const commentSelectColumns = "id,tool_id,nickname,issue_type,content,likes,status,created_at";
@@ -86,6 +86,8 @@ const submissionStatusLabels = {
 const toolCategoryAssignments = {
   "dianmao-prompt-assistant": ["text-tools", "workflow-automation"],
   "promptpilot-prompt-assistant": ["text-tools", "workflow-automation"],
+  "mac-video-batch-compressor": ["video-processing", "workflow-automation"],
+  "kn-fixed-size-export-extension": ["image-processing", "workflow-automation"],
   "elementtap-web-element-picker": ["image-processing", "workflow-automation"],
   "black-screen-splitcut": ["video-processing", "workflow-automation"],
   "fcpx-quick-portal": ["video-processing", "workflow-automation"],
@@ -115,13 +117,15 @@ const legacyDocumentHost = String.fromCharCode(109, 121, 46, 102, 101, 105, 115,
 const sourceDocumentLinks = {
   "itv-auto-marker": "https://alidocs.dingtalk.com/i/nodes/YMyQA2dXW792qoPNI5Nd40n0JzlwrZgb?utm_scene=team_space",
   "dianmao-prompt-assistant": "https://alidocs.dingtalk.com/i/nodes/amweZ92PV6v25O1jCM0Gzq5bVxEKBD6p?utm_scene=team_space",
-  "promptpilot-prompt-assistant": "https://alidocs.dingtalk.com/i/nodes/Y1OQX0akWm3ZvBRQfbGG4jmQJGlDd3mE?utm_scene=person_space",
+  "promptpilot-prompt-assistant": "https://alidocs.dingtalk.com/i/nodes/oP0MALyR8k7AKn3QHYz6p0rK83bzYmDO?utm_scene=team_space",
+  "mac-video-batch-compressor": "https://alidocs.dingtalk.com/i/nodes/G1DKw2zgV2R0xvb9Uq6K5yo4VB5r9YAn?utm_scene=team_space",
+  "kn-fixed-size-export-extension": "https://alidocs.dingtalk.com/i/nodes/o14dA3GK8g5ZdkyOfnylr2v2V9ekBD76?utm_scene=team_space",
   "elementtap-web-element-picker": "https://alidocs.dingtalk.com/i/nodes/oP0MALyR8k7AKn3QHYz69vdB83bzYmDO?utm_scene=team_space",
   "black-screen-splitcut": "https://alidocs.dingtalk.com/i/nodes/kDnRL6jAJM3jpNdKfq4ppoyaWyMoPYe1?utm_scene=team_space",
   "fcpx-quick-portal": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHNbPNxoeJxkXOEP2?utm_scene=team_space",
   "codex-sound-effect-method": "https://alidocs.dingtalk.com/i/nodes/gwva2dxOW4K2Pkbgf0MLdQ5z8bkz3BRL?utm_scene=team_space",
   "auto-sound-html": "https://alidocs.dingtalk.com/i/nodes/amweZ92PV6v25O1jCKBnRg4xVxEKBD6p?utm_scene=team_space",
-  "batch-cutout-upscale": "https://alidocs.dingtalk.com/i/nodes/20eMKjyp81RkyMbvUeNlzzlxWxAZB1Gv?utm_scene=person_space",
+  "batch-cutout-upscale": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHZrRyAjpJxkXOEP2?utm_scene=team_space",
   "block-layout-tool": "https://alidocs.dingtalk.com/i/nodes/ZgpG2NdyVXrAYQbpIPNrOOd48MwvDqPk?utm_scene=team_space",
   "finalcut-motion-html-bridge": "https://alidocs.dingtalk.com/i/nodes/R1zknDm0WR3Amzdgf0Mond4EVBQEx5rG?utm_scene=team_space",
   "fcpx-align-distribute-tool": "https://alidocs.dingtalk.com/i/nodes/mExel2BLV542wgbMtPMx9apOWgk9rpMq?utm_scene=team_space",
@@ -132,6 +136,8 @@ const sourceDocumentLinks = {
 const authoritativeSeedTools = new Set([
   "dianmao-prompt-assistant",
   "promptpilot-prompt-assistant",
+  "mac-video-batch-compressor",
+  "kn-fixed-size-export-extension",
   "elementtap-web-element-picker",
   "black-screen-splitcut",
   "fcpx-quick-portal",
@@ -359,6 +365,7 @@ function typeLabel(type) {
     method: "制作方法",
     html_tool: "HTML工具",
     workflow_package: "工作流包",
+    automation_script: "自动化脚本",
     codex_skill: "Codex Skill"
   };
   return map[type] || type || "工具";

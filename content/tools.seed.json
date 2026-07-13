@@ -55,10 +55,10 @@
       "detailStyle": "source_document",
       "sourceMeta": {
         "provider": "dingtalk",
-        "nodeId": "Y1OQX0akWm3ZvBRQfbGG4jmQJGlDd3mE",
-        "url": "https://alidocs.dingtalk.com/i/nodes/Y1OQX0akWm3ZvBRQfbGG4jmQJGlDd3mE?utm_scene=person_space",
-        "updateTime": 1782291877000,
-        "updateTimeText": "2026-06-24 18:24:37"
+        "nodeId": "oP0MALyR8k7AKn3QHYz6p0rK83bzYmDO",
+        "url": "https://alidocs.dingtalk.com/i/nodes/oP0MALyR8k7AKn3QHYz6p0rK83bzYmDO?utm_scene=team_space",
+        "updateTime": 1782786020000,
+        "updateTimeText": "2026-06-30 10:20:20"
       },
       "targetUsers": [
         "经常需要写图片、视频提示词，并希望快速调用模板和角色设定图的制作者。"
@@ -98,7 +98,13 @@
         {
           "kind": "source_doc",
           "label": "钉钉原文 / 产品与安装资源",
-          "url": "https://alidocs.dingtalk.com/i/nodes/Y1OQX0akWm3ZvBRQfbGG4jmQJGlDd3mE?utm_scene=person_space",
+          "url": "https://alidocs.dingtalk.com/i/nodes/oP0MALyR8k7AKn3QHYz6p0rK83bzYmDO?utm_scene=team_space",
+          "status": "external_link"
+        },
+        {
+          "kind": "external_link",
+          "label": "Google 商店安装",
+          "url": "https://chromewebstore.google.com/detail/ejhagmoniohccfgdodejfgnmlhpmnjbj?utm_source=item-share-cb",
           "status": "external_link"
         }
       ],
@@ -107,14 +113,15 @@
         "提示词",
         "Chrome插件",
         "模板库",
-        "角色设定图"
+        "角色设定图",
+        "谷歌商店"
       ],
       "version": "1.0.0",
       "documentSections": [
         {
           "title": "产品资源",
           "paragraphs": [
-            "原文提供 PromptPilot-v1.0.0 插件包、素材库备份、模板库备份和安装说明。安装包、大文件和模板文件以钉钉原文为准。"
+            "PromptPilot-v1.0.0 提示词助手已上架谷歌商店。原文提供谷歌安装地址、素材库备份、模板库备份和安装教程，素材库、模板库和安装说明以钉钉原文为准。"
           ]
         },
         {
@@ -143,6 +150,240 @@
       ]
     },
     {
+      "id": "mac-video-batch-compressor",
+      "slug": "mac-video-batch-compressor",
+      "name": "MAC视频批量压缩脚本",
+      "categoryId": "video-audio",
+      "categoryIds": [
+        "video-processing",
+        "workflow-automation"
+      ],
+      "type": "automation_script",
+      "developer": "待补充",
+      "status": "published",
+      "summary": "轻量快捷的视频压缩脚本，固定输出 1920x1080，并补充支持 GIF 压缩，适合快速批量减小文件体积。",
+      "detailStyle": "source_document",
+      "sourceMeta": {
+        "provider": "dingtalk",
+        "nodeId": "G1DKw2zgV2R0xvb9Uq6K5yo4VB5r9YAn",
+        "url": "https://alidocs.dingtalk.com/i/nodes/G1DKw2zgV2R0xvb9Uq6K5yo4VB5r9YAn?utm_scene=team_space",
+        "updateTime": 1782872282000,
+        "updateTimeText": "2026-07-01 10:18:02"
+      },
+      "targetUsers": [
+        "需要快速压缩视频或 GIF 文件、减少等待时间的课程和视频制作同学。",
+        "希望用轻量脚本批量处理素材，而不是打开复杂软件逐个导出的人。"
+      ],
+      "painPoints": [
+        "临时压缩视频时，打开专业软件设置参数比较慢。",
+        "批量处理视频或 GIF 时，重复导入、导出很耗时间。",
+        "输出尺寸不统一会影响后续上传、归档和协作。"
+      ],
+      "features": [
+        "快捷压缩视频，卖点是节约时间和轻量。",
+        "为保证输出稳定，限定输出为 1920x1080。",
+        "补充支持 GIF 压缩。",
+        "可通过双击启动、拖拽文件/文件夹到工具、或创建桌面替身等方式使用。"
+      ],
+      "usageSteps": [
+        "第一次使用时按提示开通权限。",
+        "方式 A：双击启动终端后使用。",
+        "方式 B：拖动目标文件夹或文件到绿头蛙。",
+        "方式 C：制作绿头蛙替身放在桌面，使用时拖动目标文件夹或文件到桌面绿头蛙。",
+        "注意：绿头蛙依赖同文件夹里的“工具文件”子文件夹，不要单独拿出来移动或转发。"
+      ],
+      "coverImage": {
+        "kind": "image",
+        "label": "MAC视频批量压缩脚本封面",
+        "description": "轻量视频压缩脚本的文档封面图。",
+        "src": "assets/doc-images/dingtalk-20260710/mac-video-compressor/cover.jpeg",
+        "status": "site_asset"
+      },
+      "featureMedia": [
+        {
+          "kind": "image",
+          "label": "MAC视频批量压缩脚本封面",
+          "description": "轻量视频压缩脚本的文档封面图。",
+          "src": "assets/doc-images/dingtalk-20260710/mac-video-compressor/cover.jpeg",
+          "status": "site_asset"
+        }
+      ],
+      "documentSections": [
+        {
+          "title": "前置说明",
+          "bullets": [
+            "此脚本为快捷压缩工具，卖点：节约时间，轻量。",
+            "为保证输出绝不发生错误，限定为 1920x1080。",
+            "其他小量定制需求建议使用 HandBrake。",
+            "考虑到目前 GIF 压缩需要 HandBrake 以外的 App，所以也增加了 GIF 压缩。"
+          ]
+        },
+        {
+          "title": "使用说明",
+          "mediaBlocks": [
+            {
+              "title": "第一次使用：开通权限",
+              "paragraphs": [
+                "第一次使用时需要按系统提示开通权限。"
+              ],
+              "images": [
+                {
+                  "kind": "image",
+                  "label": "首次使用权限设置",
+                  "src": "assets/doc-images/dingtalk-20260710/mac-video-compressor/permission.png",
+                  "status": "site_asset"
+                }
+              ]
+            },
+            {
+              "title": "方式 A：双击启动终端",
+              "paragraphs": [
+                "双击启动终端后使用脚本。"
+              ],
+              "images": [
+                {
+                  "kind": "image",
+                  "label": "双击启动终端",
+                  "src": "assets/doc-images/dingtalk-20260710/mac-video-compressor/open-terminal.png",
+                  "status": "site_asset"
+                }
+              ]
+            },
+            {
+              "title": "方式 B：拖动目标文件到绿头蛙",
+              "paragraphs": [
+                "拖动目标文件夹或文件到绿头蛙即可开始压缩。"
+              ],
+              "images": [
+                {
+                  "kind": "image",
+                  "label": "拖动目标文件到绿头蛙",
+                  "src": "assets/doc-images/dingtalk-20260710/mac-video-compressor/drag-to-frog.png",
+                  "status": "site_asset"
+                }
+              ]
+            },
+            {
+              "title": "方式 C：制作桌面替身",
+              "paragraphs": [
+                "可以制作绿头蛙替身并放置在桌面，使用时把目标文件夹或文件拖到桌面绿头蛙。"
+              ],
+              "images": [
+                {
+                  "kind": "image",
+                  "label": "制作绿头蛙桌面替身",
+                  "src": "assets/doc-images/dingtalk-20260710/mac-video-compressor/desktop-alias.png",
+                  "status": "site_asset"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "注意事项",
+          "bullets": [
+            "绿头蛙依赖同文件夹里的“工具文件”子文件夹，不要直接单独拿出来移动或转发。",
+            "其他细致问题请查看钉钉原文。"
+          ],
+          "images": [
+            {
+              "kind": "image",
+              "label": "细致问题说明入口",
+              "src": "assets/doc-images/dingtalk-20260710/mac-video-compressor/details.png",
+              "status": "site_asset"
+            }
+          ]
+        }
+      ],
+      "resources": [
+        {
+          "kind": "source_doc",
+          "label": "钉钉原文 / 下载入口",
+          "url": "https://alidocs.dingtalk.com/i/nodes/G1DKw2zgV2R0xvb9Uq6K5yo4VB5r9YAn?utm_scene=team_space",
+          "status": "external_link"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "视频压缩",
+        "GIF压缩",
+        "Mac脚本",
+        "批量处理"
+      ],
+      "version": "2.0"
+    },
+    {
+      "id": "kn-fixed-size-export-extension",
+      "slug": "kn-fixed-size-export-extension",
+      "name": "KN积木固定尺寸导出-谷歌插件",
+      "categoryId": "course-layout",
+      "categoryIds": [
+        "image-processing",
+        "workflow-automation"
+      ],
+      "type": "chrome_extension",
+      "developer": "待补充",
+      "status": "published",
+      "summary": "用于在 KN 积木相关页面中按固定尺寸导出截图，减少手动裁切和尺寸不统一的问题。",
+      "detailStyle": "source_document",
+      "sourceMeta": {
+        "provider": "dingtalk",
+        "nodeId": "o14dA3GK8g5ZdkyOfnylr2v2V9ekBD76",
+        "url": "https://alidocs.dingtalk.com/i/nodes/o14dA3GK8g5ZdkyOfnylr2v2V9ekBD76?utm_scene=team_space",
+        "updateTime": 1782713422000,
+        "updateTimeText": "2026-06-29 14:10:22"
+      },
+      "targetUsers": [
+        "需要把 KN 积木截图以统一尺寸导出到课件、视频或说明文档里的制作同学。"
+      ],
+      "painPoints": [
+        "手动截图容易出现尺寸不统一、边缘裁切不一致的问题。",
+        "后续排版或视频制作时，需要反复调整截图大小。"
+      ],
+      "features": [
+        "面向 KN 积木截图的固定尺寸导出。",
+        "减少截图后再裁切、缩放、统一尺寸的重复操作。",
+        "适合教程、课件和视频制作中的积木画面整理。"
+      ],
+      "usageSteps": [
+        "打开钉钉原文查看插件安装包和使用说明。",
+        "按原文说明安装谷歌插件。",
+        "在 KN 积木相关页面中按固定尺寸导出需要的画面。"
+      ],
+      "documentSections": [
+        {
+          "title": "资源说明",
+          "paragraphs": [
+            "当前钉钉文档内容为同步块引用，站内暂时只能读取到标题和原文链接。完整图文、安装包和使用说明以钉钉原文为准。"
+          ]
+        },
+        {
+          "title": "适用场景",
+          "bullets": [
+            "KN 积木截图需要统一尺寸。",
+            "课件、视频或说明文档中需要批量使用积木截图。",
+            "希望减少手动裁切和重复排版。"
+          ]
+        }
+      ],
+      "resources": [
+        {
+          "kind": "source_doc",
+          "label": "钉钉原文 / 插件说明",
+          "url": "https://alidocs.dingtalk.com/i/nodes/o14dA3GK8g5ZdkyOfnylr2v2V9ekBD76?utm_scene=team_space",
+          "status": "external_link"
+        }
+      ],
+      "media": [],
+      "tags": [
+        "KN积木",
+        "固定尺寸",
+        "Chrome插件",
+        "截图导出"
+      ],
+      "version": "待补充"
+    },
+    {
       "id": "elementtap-web-element-picker",
       "slug": "elementtap-web-element-picker",
       "name": "ElementTap - 网页元素点取器",
@@ -153,15 +394,15 @@
       ],
       "type": "chrome_extension",
       "developer": "三盛",
-      "status": "iterating",
+      "status": "published",
       "summary": "一键从网页中截取需要的角色图标，减少截图、裁剪和导出素材的重复操作。",
       "detailStyle": "source_document",
       "sourceMeta": {
         "provider": "dingtalk",
         "nodeId": "oP0MALyR8k7AKn3QHYz69vdB83bzYmDO",
         "url": "https://alidocs.dingtalk.com/i/nodes/oP0MALyR8k7AKn3QHYz69vdB83bzYmDO?utm_scene=team_space",
-        "updateTime": 1782382266000,
-        "updateTimeText": "2026-06-25 18:11:06"
+        "updateTime": 1782786026000,
+        "updateTimeText": "2026-06-30 10:20:26"
       },
       "targetUsers": [
         "需要从 KN 项目或网页里快速截取角色图标、素材图标的制作同学。",
@@ -202,7 +443,7 @@
         {
           "title": "安装说明",
           "paragraphs": [
-            "原文提供 ElementTap 插件包、ElementTap-v0.1.0 安装说明和功能演示视频。安装包与演示资源以钉钉原文为准。"
+            "ElementTap 已上架谷歌商店。原文提供 ElementTap 插件包、ElementTap-v0.1.0 安装说明和功能演示视频，安装包与演示资源以钉钉原文为准。"
           ]
         },
         {
@@ -228,6 +469,12 @@
           "label": "钉钉原文 / 安装包与演示",
           "url": "https://alidocs.dingtalk.com/i/nodes/oP0MALyR8k7AKn3QHYz69vdB83bzYmDO?utm_scene=team_space",
           "status": "external_link"
+        },
+        {
+          "kind": "external_link",
+          "label": "Google 商店安装",
+          "url": "https://chromewebstore.google.com/detail/ElementTap%20-%20%E7%BD%91%E9%A1%B5%E5%85%83%E7%B4%A0%E7%82%B9%E5%8F%96%E5%99%A8/nblgokjpenlcjddfpfofdilldgnhkelg",
+          "status": "external_link"
         }
       ],
       "media": [],
@@ -235,14 +482,15 @@
         "Chrome插件",
         "网页元素",
         "素材截取",
-        "图标"
+        "图标",
+        "谷歌商店"
       ],
       "version": "0.1.0"
     },
     {
       "id": "black-screen-splitcut",
       "slug": "black-screen-splitcut",
-      "name": "黑场自动拆分压缩视频工具 1.0",
+      "name": "黑场自动拆分压缩视频工具 1.1",
       "categoryId": "video-processing",
       "categoryIds": [
         "video-processing",
@@ -257,8 +505,8 @@
         "provider": "dingtalk",
         "nodeId": "kDnRL6jAJM3jpNdKfq4ppoyaWyMoPYe1",
         "url": "https://alidocs.dingtalk.com/i/nodes/kDnRL6jAJM3jpNdKfq4ppoyaWyMoPYe1?utm_scene=team_space",
-        "updateTime": 1782373973000,
-        "updateTimeText": "2026-06-25 15:52:53"
+        "updateTime": 1783654765000,
+        "updateTimeText": "2026-07-10 11:39:25"
       },
       "targetUsers": [
         "需要把长视频课程按节点拆分成多个片段的制作同学。",
@@ -301,7 +549,7 @@
         {
           "title": "资源说明",
           "paragraphs": [
-            "原文提供 macOS 一键安装包，也提供网页旧版压缩包，适合 Windows 系统或缺少 ffmpeg 后端时使用。安装包和版本更新以钉钉原文为准。",
+            "原文提供 macOS 一键安装包，也提供网页旧版压缩包，适合 Windows 系统或缺少 ffmpeg 后端时使用。2026-07-10 已更新，修复长视频缓存问题。安装包和版本更新以钉钉原文为准。",
             "文档备注：已经自行测试拆过两节课，并找其他伙伴测试，能用好用。"
           ]
         },
@@ -382,12 +630,12 @@
         "黑场检测",
         "课程制作"
       ],
-      "version": "1.0"
+      "version": "1.1"
     },
     {
       "id": "fcpx-quick-portal",
       "slug": "fcpx-quick-portal",
-      "name": "FCPX 超快速任意门",
+      "name": "FCPX 超快速任意门 1.0",
       "categoryId": "video-processing",
       "categoryIds": [
         "video-processing",
@@ -395,15 +643,15 @@
       ],
       "type": "workflow_package",
       "developer": "文帆",
-      "status": "in_development",
+      "status": "published",
       "summary": "在 FCPX 中用快捷面板集中搜索素材、添加效果、打开网页入口，并快速调用最近素材。",
       "detailStyle": "source_document",
       "sourceMeta": {
         "provider": "dingtalk",
         "nodeId": "r1R7q3QmWe7OGlxyHNbPNxoeJxkXOEP2",
         "url": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHNbPNxoeJxkXOEP2?utm_scene=team_space",
-        "updateTime": 1782372719000,
-        "updateTimeText": "2026-06-25 15:31:59"
+        "updateTime": 1782804670000,
+        "updateTimeText": "2026-06-30 15:31:10"
       },
       "targetUsers": [
         "高频使用 Final Cut Pro，并需要快速搜索素材、添加效果和打开网页工具的人。",
@@ -414,14 +662,15 @@
         "常用网页、HTML 工具、下载和截图素材分散在不同位置，切换成本高。"
       ],
       "features": [
-        "目前需要挂载 CommandPost 使用。",
+        "正式版 1.0 需要挂载 CommandPost 使用。",
         "面板分为搜索框、文件夹、网页栏三个可折叠版面。",
-        "在 FCPX 内按 Shift+空格打开界面，中间是快速搜索框，Enter 可快速添加选中效果到时间轴。",
+        "在 FCPX 内按 Shift+空格打开界面，中间是快速搜索框，支持模糊搜索和拼音搜索，Enter 可快速添加选中效果到时间轴。",
         "增加层级标签、按照使用次数排序和收藏标签，减少同名素材管理压力。",
         "左侧快速网页支持添加最多 9 个网页或 HTML 快捷跳转。",
         "右侧近期素材窗口默认自动读取下载和截图系统文件夹里的最新图片/视频素材，可直接从面板拖出，也可添加额外文件夹。"
       ],
       "usageSteps": [
+        "没有安装过 CommandPost 的同学，使用原文中的正式版 1.0 分发包；电脑里已有 CommandPost 的同学，可直接安装 DMG 包。",
         "按原文说明挂载 CommandPost。",
         "在 FCPX 内使用 Shift+空格打开快速任意门界面。",
         "通过搜索框查找素材或效果，按 Enter 快速添加到时间轴。",
@@ -431,7 +680,7 @@
       "coverImage": {
         "kind": "image",
         "label": "FCPX 超快速任意门占位图",
-        "description": "成品正在打包和 UI 调试中。",
+        "description": "正式版 1.0 主界面。",
         "src": "assets/doc-images/dingtalk-20260625/fcpx-portal/cover.png",
         "status": "site_asset"
       },
@@ -455,7 +704,7 @@
         {
           "title": "当前状态",
           "paragraphs": [
-            "成品还差 UI 和打包，目前需要挂载 CommandPost 使用。文档说明：分为搜索框、文件夹、网页栏三个可折叠版面。"
+            "正式版 1.0 已提供两个安装包：没有安装过 CommandPost 的同学使用分发包，里面包含老版本不用付费的 CommandPost；电脑里已经有 CommandPost 的同学可以直接安装 DMG 包。"
           ],
           "images": [
             {
@@ -472,7 +721,7 @@
             {
               "title": "快速搜索与添加效果",
               "paragraphs": [
-                "FCPX 内 Shift+空格打开界面，中间是快速搜索框，Enter 可以快速添加选中效果到时间轴，并增加层级标签、使用次数排序和收藏标签功能。"
+                "FCPX 内 Shift+空格打开界面，中间是快速搜索框，支持模糊搜索和拼音搜索，不用切换中文也可以搜出结果。Enter 可以快速添加选中效果到时间轴，并增加层级标签、使用次数排序和收藏标签功能。"
               ],
               "images": [
                 {
@@ -515,7 +764,7 @@
         "素材管理",
         "快捷入口"
       ],
-      "version": "测试中"
+      "version": "1.0"
     },
     {
       "id": "batch-cutout-upscale",
@@ -569,7 +818,7 @@
         {
           "kind": "source_doc",
           "label": "钉钉原文 / 测试记录",
-          "url": "https://alidocs.dingtalk.com/i/nodes/20eMKjyp81RkyMbvUeNlzzlxWxAZB1Gv?utm_scene=person_space",
+          "url": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHZrRyAjpJxkXOEP2?utm_scene=team_space",
           "status": "external_link"
         },
         {
@@ -590,16 +839,16 @@
       "version": "2.0",
       "sourceMeta": {
         "provider": "dingtalk",
-        "nodeId": "20eMKjyp81RkyMbvUeNlzzlxWxAZB1Gv",
-        "url": "https://alidocs.dingtalk.com/i/nodes/20eMKjyp81RkyMbvUeNlzzlxWxAZB1Gv?utm_scene=person_space",
-        "updateTime": 1782288315000,
-        "updateTimeText": "2026-06-24 17:25:15"
+        "nodeId": "r1R7q3QmWe7OGlxyHZrRyAjpJxkXOEP2",
+        "url": "https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7OGlxyHZrRyAjpJxkXOEP2?utm_scene=team_space",
+        "updateTime": 1782384571000,
+        "updateTimeText": "2026-06-25 18:49:31"
       },
       "documentSections": [
         {
           "title": "产品",
           "paragraphs": [
-            "图片&视频后期处理工具已提供网页入口。"
+            "图片&视频后期处理工具已提供网页入口：https://image-video-post-tool.pages.dev/"
           ]
         },
         {
@@ -782,8 +1031,8 @@
         "provider": "dingtalk",
         "nodeId": "YMyQA2dXW792qoPNI5Nd40n0JzlwrZgb",
         "url": "https://alidocs.dingtalk.com/i/nodes/YMyQA2dXW792qoPNI5Nd40n0JzlwrZgb?utm_scene=team_space",
-        "updateTime": 1782121097000,
-        "updateTimeText": "2026-06-22 09:38:17"
+        "updateTime": 1782466871000,
+        "updateTimeText": "2026-06-26 17:41:11"
       },
       "targetUsers": [
         "需要批量制作分支、单选等 itv 交互视频的制作者。",
@@ -823,7 +1072,7 @@
         {
           "title": "体验版",
           "paragraphs": [
-            "生成了 HTML 工具，还有很多需要优化的地方，但是一秒生成。体验版安装包和演示视频以钉钉原文为准。"
+            "生成了 HTML 工具，还有很多需要优化的地方，但可以快速生成。体验版安装包和演示视频以钉钉原文为准。"
           ],
           "bullets": [
             "只需3步即可完成配置，且耗时极短：上传原视频、xml文件；点击“自动分析”；如无问题，点击“生成并下载”。",
@@ -1026,8 +1275,8 @@
         "provider": "dingtalk",
         "nodeId": "lyQod3RxJK3gkQdwforrA6elJkb4Mw9r",
         "url": "https://alidocs.dingtalk.com/i/nodes/lyQod3RxJK3gkQdwforrA6elJkb4Mw9r?utm_scene=team_space",
-        "updateTime": 1781782749000,
-        "updateTimeText": "2026-06-18 19:39:09"
+        "updateTime": 1782444346000,
+        "updateTimeText": "2026-06-26 11:25:46"
       }
     },
     {
@@ -1042,14 +1291,14 @@
       "type": "workflow_package",
       "developer": "阿政",
       "status": "iterating",
-      "summary": "读取钉钉文档中的角色台词，自动提取并分类，为后续 AI 配音补录和音色克隆做准备。",
+      "summary": "一键扫描钉钉文档，筛选剧情台词和迭代文案，并跳转 AI 配音流程，减少配音补录整理成本。",
       "detailStyle": "source_document",
       "sourceMeta": {
         "provider": "dingtalk",
         "nodeId": "AR4GpnMqJzMvaO3QikYYmXaoVKe0xjE3",
         "url": "https://alidocs.dingtalk.com/i/nodes/AR4GpnMqJzMvaO3QikYYmXaoVKe0xjE3?utm_scene=team_space",
-        "updateTime": 1781778542000,
-        "updateTimeText": "2026-06-18 18:29:02"
+        "updateTime": 1782443465000,
+        "updateTimeText": "2026-06-26 11:11:05"
       },
       "targetUsers": [
         "需要从剧本文档或制作文档里整理角色台词的配音制作同学。",
@@ -1062,10 +1311,11 @@
         "传统流程需要导出文档再导入其他工具，步骤较重。"
       ],
       "features": [
-        "读取钉钉文档，精准识别角色台词并按角色分类。",
-        "去除与台词无关的元素，包括图片、视频附件、评论和动画剧情等内容。",
-        "目标是接入 RunningHub 声音克隆模型，并预置常用角色音色。",
-        "后续计划支持筛选提取标红或标绿文字，一键 AI 补录导出。"
+        "一键扫描钉钉文档。",
+        "一键筛选剧情台词和迭代文案。",
+        "一键跳转书梦 AI 配音。",
+        "一键导出配音稿链接。",
+        "支持文案模板等自定义功能。"
       ],
       "usageSteps": [
         "将需要处理的台词内容整理在钉钉文档中。",
@@ -1087,8 +1337,8 @@
         {
           "title": "核心能力",
           "paragraphs": [
-            "同步制作一键 AI 补录：读取钉钉文档，精准识别角色台词并分好类。它类似 AES 的处理思路，但一个角色的台词会放在一起，并且不用导出文档再导入 AES。",
-            "目前已经实现第一步：提取角色台词，并去除与台词无关的元素，例如图片、视频附件、评论和动画剧情等。"
+            "当前版本号：0.13.32。",
+            "工具可一键扫描钉钉文档，一键筛选剧情台词和迭代文案，一键跳转书梦 AI 配音，并一键导出配音稿链接。具体功能可打开插件介绍网页查看。"
           ],
           "images": [
             {
@@ -1102,10 +1352,10 @@
         {
           "title": "迭代计划",
           "bullets": [
-            "添加筛选提取能力，例如标红或标绿文字。",
-            "接入 RunningHub 声音克隆模型。",
-            "预置常用角色音色，一键 AI 补录导出。",
-            "继续美化 UI 并进行测试。"
+            "已修复阿短加载动画背景不完全透明底。",
+            "已修复钉钉文档标题前加入爱心后被识别为台词内容的问题。",
+            "待更新角色图标。",
+            "计划尝试直接在插件内一键生成配音文件，使用公司内部配置好的接口。"
           ]
         }
       ],
@@ -1114,6 +1364,12 @@
           "kind": "source_doc",
           "label": "图文文档 / 后续资源",
           "url": "https://alidocs.dingtalk.com/i/nodes/AR4GpnMqJzMvaO3QikYYmXaoVKe0xjE3?utm_scene=team_space",
+          "status": "external_link"
+        },
+        {
+          "kind": "external_link",
+          "label": "插件介绍网页",
+          "url": "https://dialogue-extractor-intro.pages.dev/",
           "status": "external_link"
         }
       ],
@@ -1125,7 +1381,7 @@
         "钉钉文档",
         "工作流"
       ],
-      "version": "持续迭代",
+      "version": "0.13.32",
       "coverImage": {
         "kind": "image",
         "label": "AI 自动化配音补录界面",
@@ -1869,8 +2125,8 @@
         },
         {
           "kind": "html",
-          "label": "快速音效5.0.html",
-          "url": "./tools/instant-sound-effects-5.html",
+          "label": "快速音效工具6.3.html",
+          "url": "./tools/instant-sound-effects-6-3.html",
           "status": "uploaded"
         }
       ],
@@ -1881,13 +2137,13 @@
         "音效",
         "剪辑"
       ],
-      "version": "5.0",
+      "version": "6.3",
       "sourceMeta": {
         "provider": "dingtalk",
         "nodeId": "amweZ92PV6v25O1jCKBnRg4xVxEKBD6p",
         "url": "https://alidocs.dingtalk.com/i/nodes/amweZ92PV6v25O1jCKBnRg4xVxEKBD6p?utm_scene=team_space",
-        "updateTime": 1781019812000,
-        "updateTimeText": "2026-06-09 23:43:32"
+        "updateTime": 1783655881000,
+        "updateTimeText": "2026-07-10 11:58:01"
       }
     },
     {
